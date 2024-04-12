@@ -3,6 +3,8 @@ import React from 'react';
 import Navbar from "./components/Account/Navbar";
 import Signup from "./components/Account/Signup";
 import Login from "./components/Account/Login";
+import PasswordResetRequest from "./components/Account/PasswordResetRequest";
+import PasswordReset from "./components/Account/PasswordReset";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
             <Route path="/" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/resetPassword" element={<PasswordResetRequest />} />
+            <Route path="/resetPassword/:token" element={<PasswordReset />} />
           </Routes>
         </div>
       </div>

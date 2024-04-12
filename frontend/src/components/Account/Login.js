@@ -52,7 +52,7 @@ function Login() {
                           <button className="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                       </div>
                     </form>
-                    <a className="small text-muted" href="#!">Forgot password?</a>
+                    <Link to="/resetPassword" className="small text-muted">Forgot password?</Link>
                     <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>
                         Don't have an account? <Link to="/signup" style={{ color: "#393f81" }}>Register here</Link>
                     </p>
