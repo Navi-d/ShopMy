@@ -32,6 +32,7 @@ function Signup() {
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div className="card" style={{borderRadius: "15px"}}>
                 <div className="card-body p-4">
+                  <h5 className="text-center mb-4">Create your account</h5>
                   <form onSubmit={handleSubmit}>
                     <div className="form-outline mb-3">
                       <input type="text" id="form3Example1cg" className="form-control form-control-lg" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -54,10 +55,10 @@ function Signup() {
                     </div>
 
                     <div className="d-flex justify-content-center">
-                      <button type="submit" className="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                      <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>
                     </div>
                   </form>
-                  <p className="text-center text-muted mt-4 mb-0">
+                  <p className="text-center text-muted mt-4 mb-0" style={{ color: "#393f81" }}>
                     Already have an account? <Link to="/login" style={{color: "#393f81"}}>Login here</Link>
                   </p>
                   {signupSuccess && <div className="alert alert-success mt-3" role="alert">Successfully signed up!</div>}
