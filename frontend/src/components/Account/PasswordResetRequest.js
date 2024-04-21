@@ -17,7 +17,7 @@ function PasswordResetRequest() {
   };
 
   return (
-    <div className="container-fluid h-100 d-flex justify-content-center align-items-center">
+    <div className="container-fluid h-100 d-flex mt-5 justify-content-center align-items-center">
       <div className="card text-center" style={{ width: '300px' }}>
         <div className="card-header h5 text-white bg-primary">Password Reset</div>
         <div className="card-body px-5">
