@@ -151,7 +151,7 @@ function Cart() {
         </div>
         <div className="col-md-4">
           <h2>.</h2>
-          <div className="sticky-top">
+          <div className="">
             <div className="card">
               <div className="card-header">Cart Summary</div>
               <div className="card-body d-flex flex-column">
