@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinus, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
+import { faHeart } from '@fortawesome/free-regular-svg-icons';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([
@@ -112,7 +115,7 @@ function Cart() {
       <div className="row">
         <div className="col-md-8">
           <h2>Shopping Cart</h2>
-          <ul className="list-group">
+          <ul className="list-group mb-5">
             {cartItems.map((item, index) => (
               <li key={item.id} className="list-group-item d-flex align-items-start">
                 <div className="row d-flex justify-content-between align-items-center">
@@ -124,7 +127,7 @@ function Cart() {
                   </div>
                   <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
                     <button className="btn btn-link px-2" onClick={() => decrementQuantity(index)}>
-                      <i className="fas fa-minus"></i>
+                    <FontAwesomeIcon icon={faMinus} />
                     </button>
                     <input
                       type="number"
@@ -133,7 +136,7 @@ function Cart() {
                       className="form-control form-control-sm"
                     />
                     <button className="btn btn-link px-2" onClick={() => incrementQuantity(index)}>
-                      <i className="fas fa-plus"></i>
+                    <FontAwesomeIcon icon={faPlus} />
                     </button>
                   </div>
                   <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
@@ -141,7 +144,12 @@ function Cart() {
                   </div>
                   <div className="col-md-1 col-lg-1 col-xl-1 text-end">
                     <button onClick={() => handleRemoveItem(index)} className="btn btn-link text-danger">
-                      <i className="fas fa-trash fa-lg"></i>
+                    <FontAwesomeIcon icon={faHeart} />
+                    </button>
+                  </div>
+                  <div className="col-md-1 col-lg-1 col-xl-1 text-end">
+                    <button onClick={() => handleRemoveItem(index)} className="btn btn-link text-danger">
+                    <FontAwesomeIcon icon={faTrash} />
                     </button>
                   </div>
                 </div>
@@ -150,7 +158,6 @@ function Cart() {
           </ul>
         </div>
         <div className="col-md-4">
-          <h2>.</h2>
           <div className="sticky-top" style={{ top: '125px'}}>
             <div className="card">
               <div className="card-header">Cart Summary</div>
