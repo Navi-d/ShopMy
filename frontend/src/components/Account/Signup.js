@@ -32,7 +32,7 @@ function Signup() {
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div className="card" style={{borderRadius: "15px"}}>
                 <div className="card-body p-4">
-                  <h5 className="text-center mb-4">Create your account</h5>
+                  <h5 className="text-center mb-4">Create your ShopMy account</h5>
                   <form onSubmit={handleSubmit}>
                     <div className="form-outline mb-3">
                       <input type="text" id="form3Example1cg" className="form-control form-control-lg" value={username} onChange={(e) => setUsername(e.target.value)} />
