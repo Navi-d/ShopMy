@@ -67,8 +67,8 @@ function Checkout() {
   ];
 
   const items = [
-    { id: 1, img: "", name: "Item 1", description: "this is the description for item 1", price: 10 },
-    { id: 2, img: "", name: "item 2", description: "this is the description for item 2", price: 5 },
+    { id: 1, img: "https://images-na.ssl-images-amazon.com/images/I/714im+KNaqL._AC_UL320_SR320,320_.jpg", name: "Item 1", description: "this is the description for item 1", price: 10 },
+    { id: 2, img: "https://images-na.ssl-images-amazon.com/images/I/714im+KNaqL._AC_UL320_SR320,320_.jpg", name: "item 2", description: "this is the description for item 2", price: 5 },
   ];
 
   const subtotal = items.reduce((total, item) => total + item.price, 0);

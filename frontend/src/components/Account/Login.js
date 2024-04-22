@@ -49,7 +49,10 @@ function Login() {
                           <label className="form-label" htmlFor="form2Example27">Password</label>
                       </div>
                       <div className="pt-1 mb-4">
-                          <button className="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                    
+                          
+                      <Link to="/home" className="btn btn-dark btn-lg btn-block" type="submit">Login</Link>
+      
                       </div>
                     </form>
                     <Link to="/resetPassword" className="small text-muted">Forgot password?</Link>

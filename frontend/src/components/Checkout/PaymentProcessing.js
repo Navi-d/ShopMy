@@ -12,7 +12,7 @@ function PaymentProcessing() {
 
     if (countdown === 0) {
       clearInterval(timer);
-      navigate('/login');
+      navigate('/home');
     }
 
     return () => clearInterval(timer);

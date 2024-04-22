@@ -28,12 +28,12 @@ function Navbar() {
                   <ul class="nav justify-content-end">
                       
                       <li class="nav-item">
-                          <a class="nav-link" href="#">
+                          <a class="nav-link" href="/cart">
                               <i class="fa fa-shopping-cart"></i> Cart (0)
                           </a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="#">
+                          <a class="nav-link" href="/wishlist">
                               <i class="fa fa-heart"></i> Wishlist (0)
                           </a>
                       </li>
@@ -42,11 +42,13 @@ function Navbar() {
                               <i class="fa fa-user"></i> Username 
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-list"></i> My Orders</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> My Wishlist</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
-                          <li><a class="dropdown-item" href="/signup"><i class="fa fa-sign-out"></i> Signup</a></li>
+                            <li><a class="dropdown-item" href="/profile"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="/manageorders"><i class="fa fa-list"></i> My Orders</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> My Wishlist</a></li>
+                            <li><a class="dropdown-item" href="/cart"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
+                            <li><a class="dropdown-item" href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
+                            <li><a class="dropdown-item" href="/signup"><i class="fa fa-sign-out"></i> Signup</a></li>
+                            <li><a class="dropdown-item" href="/support"><i class="fa fa-headphones"></i> Support</a></li>
                           </ul>
                       </li>
                   </ul>
@@ -84,9 +86,6 @@ function Navbar() {
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="#">Accessories</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#">Home</a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="#">Appliances</a>

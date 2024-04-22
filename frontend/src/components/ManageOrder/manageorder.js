@@ -66,8 +66,8 @@ function ManageOrder() {
   ];
 
   return (
-    <div className="manage-order">
-      <h2>My Orders</h2>
+    <div className="manage-order m-4 p-3 rounded-2 shadow">
+      <h2 class="section-heading">My Orders</h2>
       <ul className="order-list">
         {orders.map((order) => (
           <li key={order.id} className="order-item">

@@ -13,16 +13,16 @@ function HomePage() {
             <div class="container-xxl">
                 <div class="row">
                     <div class="col-6">
-                        <div class="main-banner-content position-relative me-3">
+                        <div class="main-banner-content position-relative me-3 rounded-3 bg-white ">
                             <img 
-                            class="img-fluid rounded-3"
-                            src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
+                            class="img-fluid shadow-sm"
+                            src='https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-pro-finish-select-202212-12-9inch-space-gray-wificell_AV2?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1670865919694' 
                             alt='Main banner' />
 
-                            <div class="main-banner-content position-absolute">
+                            <div class="main-banner-content position-absolute h-100">
                                 <h4>SUPER CHARGED FOR PROS</h4>
                                 <h5>iPad Pro</h5>
-                                <p>From 999$</p>
+                                <p class="mb-4">From 999$</p>
                                 <Link class="button">BUY NOW</Link>
                             </div>
                         </div>
@@ -30,10 +30,10 @@ function HomePage() {
 
                     <div class="col-6 ">
                         <div class="d-flex flex-wrap mt-4 justify-content-between align-items-center ">
-                            <div class="small-banner position-relative">
+                            <div class="small-banner rounded-3 position-relative mb-2">
                                 <img 
-                                class="img-fluid rounded-3"
-                                src='Products/images/ScreenShot-2023-2-6_18-16-18.png' 
+                                class="img-fluid shadow-sm"
+                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
                                 alt='Main banner' />
 
                                 <div class="small-banner-content position-absolute">
@@ -44,13 +44,13 @@ function HomePage() {
                                 </div>
                             </div>
 
-                            <div class="small-banner position-relative ">
+                            <div class="small-banner rounded-3 position-relative mb-2">
                                 <img 
-                                class="img-fluid rounded-3"
-                                src='Products/images/ScreenShot-2023-2-6_18-16-18.png' 
+                                class="img-fluid shadow-sm"
+                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
                                 alt='Main banner' />
 
-                                <div class="small-banner-content position-absolute">
+                                <div class="small-banner-content position-absolute ">
                                     <h4>BEST SALE</h4>
                                     <h5>iPad Pro</h5>
                                     <p>From 999$</p>
@@ -58,10 +58,10 @@ function HomePage() {
                                 </div>
                             </div>
 
-                            <div class="small-banner position-relative py-3">
+                            <div class="small-banner rounded-3 position-relative ">
                                 <img 
-                                class="img-fluid rounded-3"
-                                src='Products/images/ScreenShot-2023-2-6_18-16-18.png' 
+                                class="img-fluid shadow-sm"
+                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
                                 alt='Main banner' />
 
                                 <div class="small-banner-content position-absolute">
@@ -72,10 +72,10 @@ function HomePage() {
                                 </div>
                             </div>
 
-                            <div class="small-banner position-relative ">
+                            <div class="small-banner rounded-3 position-relative ">
                                 <img 
-                                class="img-fluid rounded-3"
-                                src='Products/images/ScreenShot-2023-2-6_18-16-18.png' 
+                                class="img-fluid shadow-sm"
+                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
                                 alt='Main banner' />
 
                                 <div class="small-banner-content position-absolute">

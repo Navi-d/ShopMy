@@ -2,6 +2,9 @@
     margin-top: 20px; 
   } */
 
+.default-window-footer {
+    min-height: 100vh;
+}
 
   .main-navbar{
     border-bottom: 1px solid #ccc;

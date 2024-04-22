@@ -89,13 +89,12 @@ const Profile = () => {
               
               <div className="my-account-card">
                 <h5 onClick={() => handleOptionClick('profile')}>
-                  <i className="fa fa-user-o pe-2" />
-                  <i className="fa fa-user" /> Profile Details
+                  <i className="fa fa-user pe-1" /> Profile Details
                 </h5>
               </div>
 
               <h5 onClick={() => handleOptionClick('vouchers')}>
-                <i className="fa-solid fa-ticket"></i> My Vouchers
+                <i className="fa fa-solid fa-ticket"></i> My Vouchers
               </h5>
               <h5 onClick={() => handleOptionClick('wishlist')}>
                 <i className="fa fa-heart"></i>
