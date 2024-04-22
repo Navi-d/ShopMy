@@ -84,13 +84,13 @@ function ManageOrder() {
               </div>
               <div className="order-actions">
                 <Link to={`/track-order/${order.id}`}>
-                  <button className="track-order-btn">Track Order</button>
+                  <button className="btn btn-success mx-2 track-order-btn">Track Order</button>
                 </Link>
                 <Link to={`/track-order/${order.id}`}>
-                  <button className="track-order-btn">Contact Seller</button>
+                  <button className="btn btn-dark mx-2 track-order-btn">Contact Seller</button>
                 </Link>
                 <Link to={`/track-order/${order.id}`}>
-                <button className="contact-seller-btn">Request Refund</button>
+                <button className="btn btn-danger mx-2 contact-seller-btn">Request Refund</button>
                 </Link>
               </div>
             </div>

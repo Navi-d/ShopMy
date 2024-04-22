@@ -131,6 +131,7 @@ function Cart() {
                     <FontAwesomeIcon icon={faMinus} />
                     </button>
                     <input
+                      style={{"min-width":"50px"}}
                       type="number"
                       value={item.quantity}
                       onChange={(e) => handleQuantityChange(index, e.target.value)}

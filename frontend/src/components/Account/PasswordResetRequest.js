@@ -34,10 +34,10 @@ function PasswordResetRequest() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              <button type="submit" className="btn btn-primary w-100">
+                Reset password
+              </button>
             </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Reset password
-            </button>
           </form>
           {alert && (
             <div className={`alert alert-${alert.type} mt-3`} role="alert">
