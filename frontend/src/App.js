@@ -6,6 +6,7 @@ import Login from "./components/Account/Login";
 import PasswordResetRequest from "./components/Account/PasswordResetRequest";
 import PasswordReset from "./components/Account/PasswordReset";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Support from './components/Support/Support';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/resetPassword" element={<PasswordResetRequest />} />
             <Route path="/resetPassword/:token" element={<PasswordReset />} />
+            <Route path="/support" element={<Support/>} />
           </Routes>
         </div>
       </div>

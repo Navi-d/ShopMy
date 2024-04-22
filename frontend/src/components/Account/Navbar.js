@@ -1,5 +1,5 @@
 import React from 'react'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+//import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 function Navbar() {
   return (
@@ -46,6 +46,7 @@ function Navbar() {
                           <li><a class="dropdown-item" href="#"><i class="fa fa-list"></i> My Orders</a></li>
                           <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> My Wishlist</a></li>
                           <li><a class="dropdown-item" href="#"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
+                          <li><a class="dropdown-item" href="/support"><i class="fa fa-info-circle"></i> Support</a></li>
                           <li><a class="dropdown-item" href="/signup"><i class="fa fa-sign-out"></i> Signup</a></li>
                           </ul>
                       </li>
