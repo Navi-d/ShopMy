@@ -140,7 +140,7 @@ function Cart() {
                     </button>
                   </div>
                   <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                    <h5 className="mb-0">${item.price.toFixed(2)}</h5>
+                    <h5 className="mb-0">RM{item.price.toFixed(2)}</h5>
                   </div>
                   <div className="col-md-1 col-lg-1 col-xl-1 text-end">
                     <button onClick={() => handleRemoveItem(index)} className="btn btn-link text-danger">
@@ -164,15 +164,15 @@ function Cart() {
               <div className="card-body d-flex flex-column">
                 <div className="d-flex justify-content-between mb-2">
                   <span>Subtotal:</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>RM{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
                   <span>Shipping:</span>
-                  <span>${subtotal > 0 ? '25.00' : '0.00'}</span>
+                  <span>RM{subtotal > 0 ? '25.00' : '0.00'}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-3">
                   <strong>Total:</strong>
-                  <strong>${total.toFixed(2)}</strong>
+                  <strong>RM{total.toFixed(2)}</strong>
                 </div>
                 <button className="btn btn-dark btn-block">Proceed to Checkout</button>
               </div>
@@ -186,7 +186,7 @@ function Cart() {
                     <img src={product.imageUrl} alt={product.name} className="mr-3" style={{ width: '60px', height: '60px' }} />
                     <div className="flex-column">
                         <span className="font-weight-normal" style={{ fontSize: '14px', color: '#333', margin: '10px' }}>{product.name}</span>
-                        <span className="text-muted" style={{ fontSize: '12px' }}>{product.price.toFixed(2)}</span>
+                        <span className="text-muted" style={{ fontSize: '12px' }}>RM{product.price.toFixed(2)}</span>
                     </div>
                 </div>
               ))}
