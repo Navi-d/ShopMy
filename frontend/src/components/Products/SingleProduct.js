@@ -22,9 +22,22 @@ const SingleProduct = () => {
                                 class="img-fluid rounded-3"
                                 src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
                                 alt="prod Img" />
-
                             </div>
-
+                            
+                            <div class="img-slider d-flex justify-content-center gap-10 py-2 bg-light rounded-3">
+                                <img 
+                                class="img-fluid"
+                                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
+                                alt="prod Img" />
+                                <img 
+                                class="img-fluid"
+                                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
+                                alt="prod Img" />
+                                <img 
+                                class="img-fluid"
+                                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
+                                alt="prod Img" />
+                            </div>
                         </div>
 
 

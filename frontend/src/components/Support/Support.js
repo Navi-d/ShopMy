@@ -18,8 +18,8 @@ export const Support = () => {
                     <div className="d-flex">
                     </div>
                     <div class="d-grid gap-5 col-lg mx-auto">
-                      <button class="btn btn-lg btn-outline-dark p-3" type="button">Contact us</button>
-                      <button class="btn btn-lg btn-outline-dark p-3" type="button">Contact chatbot</button>
+                      <Link to="./ContactUs" class="btn btn-lg btn-outline-dark p-3" type="button">Contact us</Link>
+                      <Link to="./Contactchatbot" class="btn btn-lg btn-outline-dark p-3" type="button">Contact chatbot </Link>
                       <Link to="./FAQ" class="btn btn-lg btn-outline-dark p-3" type="button">FAQ</Link>
                     </div>
               </div>

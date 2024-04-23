@@ -290,7 +290,7 @@ function Checkout() {
                             </p>
                           </div>
                         </div>
-                        <p class="item-price">${item.price}</p>
+                        <p class="item-price">RM{item.price}</p>
                       </div>
                     ))}
                     
@@ -298,26 +298,26 @@ function Checkout() {
                     <hr class="my-2" />
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Subtotal:</p>
-                      <p>${subtotal}</p>
+                      <p>RM{subtotal}</p>
                     </div>
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Shipping:</p>
-                      <p>$2</p>
+                      <p>RM2</p>
                     </div>
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Tax:</p>
-                      <p>${tax}</p>
+                      <p>RM{tax}</p>
                     </div>
                     {selectedVoucher &&(
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">{selectedVoucher}:</p>
-                      <p>-${discount}</p>
+                      <p>-RM{discount}</p>
                     </div>
                     )}
                     <hr class="my-2" />
                     <div class="order-summary d-flex justify-content-between font-weight-bold">
                       <p>Total:</p>
-                      <p>${total}</p>
+                      <p>RM{total}</p>
                     </div>
                     <div class="d-flex mt-4">
                       <input
@@ -362,7 +362,7 @@ function Checkout() {
                           <ul class="voucher-list">
                             {vouchers.map((voucher) => (
                               <li class="voucher-button" key={voucher.id} onClick={() => applyVoucher(voucher)} data-bs-dismiss="modal">
-                                {voucher.code} - ${voucher.amount}
+                                {voucher.code} - RM{voucher.amount}
                               </li>
                             ))}
                           </ul>

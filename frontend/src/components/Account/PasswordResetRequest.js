@@ -34,20 +34,25 @@ function PasswordResetRequest() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <button type="submit" className="btn btn-primary w-100">
+            </div>
+
+            <div class="d-flex justify-content-center mt-3">
+              <button type="submit" className="btn btn-primary" style={{"position" : "static"}}>
                 Reset password
               </button>
             </div>
+            
           </form>
+
           {alert && (
             <div className={`alert alert-${alert.type} mt-3`} role="alert">
               {alert.message}
             </div>
           )}
-          <div className="d-flex justify-content-between mt-4">
+          {/* <div className="d-flex justify-content-between mt-4">
             <a href="/login">Login</a>
             <a href="/signup">Register</a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

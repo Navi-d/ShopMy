@@ -48,7 +48,7 @@ function Navbar() {
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/profile"><i class="fa fa-user"></i> Profile</a></li>
                             <li><a class="dropdown-item" href="/manageorders"><i class="fa fa-list"></i> My Orders</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> My Wishlist</a></li>
+                            <li><a class="dropdown-item" href="/wishlist"><i class="fa fa-heart"></i> My Wishlist</a></li>
                             <li><a class="dropdown-item" href="/cart"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
                             <li><a class="dropdown-item" href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
                             <li><a class="dropdown-item" href="/signup"><i class="fa fa-sign-out"></i> Signup</a></li>

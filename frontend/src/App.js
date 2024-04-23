@@ -17,6 +17,9 @@ import Cart from "./components/Cart/Cart"
 import ManageOrder from './components/ManageOrder/manageorder.js';
 import TrackOrderPage from './components/ManageOrder/trackorder.js';
 import Faq from './components/Support/Faq.js';
+import ContactUs from './components/Support/ContactUs.js';
+import ContactChatbot from './components/Support/ContactChatbot.js';
+import Wishlist from './components/Profile/Wishlist';
 
 
 
@@ -45,15 +48,18 @@ function App() {
               <Route path="/browse" element={<OurStore />} />
               <Route path="/product" element={<SingleProduct />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/Wishlist" element={<Wishlist />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/payment" element={<PaymentProcessing/>} />
               <Route path="/cart" element={<Cart />} />
               
               <Route path="/support" element={<Support />}></Route>
               <Route path="/support/FAQ" element={<Faq />} />
-              
+              <Route path="/support/ContactUs" element={<ContactUs />} />
+              <Route path="/support/Contactchatbot" element={<ContactChatbot />} />
+
               <Route path="/manageorders" element={<ManageOrder />} />
-              <Route path={`/track-order/${order}`} element={<TrackOrderPage/>} />
+              <Route path={`/track-order/:orderId`} element={<TrackOrderPage/>} />
             </Route>
           </Routes>
         </div>

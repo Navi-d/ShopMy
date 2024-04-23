@@ -22,7 +22,7 @@ function HomePage() {
                             <div class="main-banner-content position-absolute h-100">
                                 <h4>SUPER CHARGED FOR PROS</h4>
                                 <h5>iPad Pro</h5>
-                                <p class="mb-4">From 999$</p>
+                                <p class="mb-4">From RM999</p>
                                 <Link class="button">BUY NOW</Link>
                             </div>
                         </div>
@@ -39,7 +39,7 @@ function HomePage() {
                                 <div class="small-banner-content position-absolute">
                                     <h4>SUPER CHARGED FOR PROS</h4>
                                     <h5>iPad Pro</h5>
-                                    <p>From 999$</p>
+                                    <p>From RM999</p>
                                     {/* <Link class="button">BUY NOW</Link> */}
                                 </div>
                             </div>
@@ -53,7 +53,7 @@ function HomePage() {
                                 <div class="small-banner-content position-absolute ">
                                     <h4>BEST SALE</h4>
                                     <h5>iPad Pro</h5>
-                                    <p>From 999$</p>
+                                    <p>From RM999</p>
                                     {/* <Link class="button">BUY NOW</Link> */}
                                 </div>
                             </div>
@@ -67,7 +67,7 @@ function HomePage() {
                                 <div class="small-banner-content position-absolute">
                                     <h4>NEW ARRIVAL</h4>
                                     <h5>iPad Pro</h5>
-                                    <p>From 999$</p>
+                                    <p>From RM999</p>
                                     {/* <Link class="button">BUY NOW</Link> */}
                                 </div>
                             </div>
@@ -81,7 +81,7 @@ function HomePage() {
                                 <div class="small-banner-content position-absolute">
                                     <h4>NEW ARRIVAL</h4>
                                     <h5>iPad Pro</h5>
-                                    <p>From 999$</p>
+                                    <p>From RM999</p>
                                     {/* <Link class="button">BUY NOW</Link> */}
                                 </div>
                             </div>
