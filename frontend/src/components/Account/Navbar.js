@@ -1,7 +1,10 @@
 import React from 'react'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import {NavLink, Link} from 'react-router-dom'
 
 function Navbar() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const username = loggedInUser ? loggedInUser.username : '';
+
   return (
   <div class="main-navbar shadow-sm sticky-top">
   <div class="top-navbar">
@@ -39,7 +42,7 @@ function Navbar() {
                       </li>
                       <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="fa fa-user"></i> Username 
+                              <i class="fa fa-user"></i> {username} 
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                           <Link className="dropdown-item" to="/profile"><i className="fa fa-user"></i> Profile</Link>
