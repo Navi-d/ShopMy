@@ -1,24 +1,31 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from "./components/Account/Navbar";
 import Signup from "./components/Account/Signup";
 import Login from "./components/Account/Login";
 import PasswordResetRequest from "./components/Account/PasswordResetRequest";
 import PasswordReset from "./components/Account/PasswordReset";
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import OurStore from "./components/Products/OurStore"
-import Product from "./components/Products/HomePage"
-import SingleProduct from "./components/Products/SingleProduct"
-import Profile from "./components/Profile/Profile"
-import Layout from "./components/Common/Layout"
-
+import OurStore from "./components/Products/OurStore";
+import Product from "./components/Products/HomePage";
+import SingleProduct from "./components/Products/SingleProduct";
+import Profile from "./components/Profile/Profile";
+import Layout from "./components/Common/Layout";
 
 function App() {
   const AppContent = () => {
     const location = useLocation();
 
-    const hideNavbarPaths = ['/login', '/signup', '/resetPassword', '/'];
+    // List of paths where the Navbar should be hidden
+    const hideNavbarPaths = [
+      /^\/login$/,
+      /^\/signup$/,
+      /^\/resetPassword$/,
+      /^\/resetPassword\/.+$/, // Regex to match /resetPassword/:token
+      /^\/$/ // Root path
+    ];
 
-    const hideNavbar = hideNavbarPaths.includes(location.pathname);
+    // Check if the current path matches any of the hideNavbarPaths
+    const hideNavbar = hideNavbarPaths.some(path => path.test(location.pathname));
 
     return (
       <div className="App">
@@ -30,7 +37,6 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/resetPassword" element={<PasswordResetRequest />} />
             <Route path="/resetPassword/:token" element={<PasswordReset />} />
-            
             <Route path="/" element={<Layout />}>
               <Route path="/home" element={<Product />} />
               <Route path="/browse" element={<OurStore />} />

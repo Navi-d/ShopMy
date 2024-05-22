@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function PasswordResetRequest() {
   const [email, setEmail] = useState('');
   const [alert, setAlert] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (alert && alert.type === 'success') {
+      const timeoutId = setTimeout(() => {
+        if (window.opener) {
+          window.close();  // This will only work if the page was opened by a script
+        } else {
+          navigate('/login');  // Fallback: redirect to login page
+        }
+      }, 5000); // 5-second delay
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [alert, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:3001/resetPasswordRequest', { email });
-      setAlert({ type: 'success', message: 'Password reset instructions sent to your email' });
+      setAlert({ type: 'success', message: 'Password reset instructions sent to your email. Redirecting to Login in 5 seconds.' });
     } catch (error) {
       console.error(error);
       setAlert({ type: 'danger', message: 'Failed to send password reset instructions' });
