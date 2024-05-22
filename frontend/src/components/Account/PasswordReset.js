@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Changed import
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom'; // Changed import
 import axios from 'axios';
 
 function PasswordReset() {
   const { token } = useParams();
   const [newPassword, setNewPassword] = useState('');
   const [alert, setAlert] = useState(null);
-  const navigate = useNavigate(); // Changed hook
-
-  useEffect(() => {
-    if (alert) {
-      const timeoutId = setTimeout(() => {
-        navigate('/login'); // Changed navigation
-      }, 3000);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [alert, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:3001/resetPassword', { token, newPassword });
-      setAlert({ type: 'success', message: 'Password reset successfully' });
+      setAlert({ type: 'success', message: 'Password reset successfully. You can now close this page and log in with your new password.' });
     } catch (error) {
       console.error(error);
       setAlert({ type: 'danger', message: 'Failed to reset password' });
