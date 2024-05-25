@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 mongoose.connect('mongodb+srv://Navid:NavidShopMy@shopmycluster.fe5vuty.mongodb.net/ShopMy?retryWrites=true&w=majority&appName=ShopMyCluster');
 
+//import the usermodel: it returns a value
 const UserModel = require('./models/Users');
 
 app.get("/getUsers", async (req, res) => {
@@ -124,6 +125,19 @@ app.post("/resetPassword", async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 });
+
+
+//Products
+let ProductModel = require('./models/Products')
+
+app.get('/getProducts', async (req, res) => {
+    try {
+        const result = await ProductModel.find({});
+        res.json(result);
+    } catch (error) {
+        res.json(error);
+    }
+})
 
 app.listen(3001, () => {
     console.log("server has started")

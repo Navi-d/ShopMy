@@ -5,10 +5,23 @@ import "./Home.css";
 import Marquee from 'react-fast-marquee';
 import ProductCard from './ProductCard';
 import SpecialProduct from './SpecialProduct';
+import axios from 'axios';
+
 
 function HomePage() {
+    const products = async (e) => {
+        e.preventDefault(); //don't refresh page
+        try {
+          const response = await axios.get('http://localhost:3001/getProducts');
+          console.log('data is'+ response.data); // Assuming backend responds with user data
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
     return (
         <>
+        {products}
          <section class="home-wrapper-1 py-5">
             <div class="container-xxl">
                 <div class="row">

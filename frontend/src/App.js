@@ -12,6 +12,15 @@ import Profile from "./components/Profile/Profile"
 import Layout from "./components/Common/Layout"
 import Checkout from "./components/Checkout/Checkout"
 import PaymentProcessing from "./components/Checkout/PaymentProcessing"
+import Support from "./components/Support/Support"
+import Cart from "./components/Cart/Cart"
+import ManageOrder from './components/ManageOrder/manageorder.js';
+import TrackOrderPage from './components/ManageOrder/trackorder.js';
+import Faq from './components/Support/Faq.js';
+import ContactUs from './components/Support/ContactUs.js';
+import ContactChatbot from './components/Support/ContactChatbot.js';
+import Wishlist from './components/Profile/Wishlist';
+
 
 
 
