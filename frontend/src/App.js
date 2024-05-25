@@ -5,7 +5,6 @@ import Signup from "./components/Account/Signup";
 import Login from "./components/Account/Login";
 import PasswordResetRequest from "./components/Account/PasswordResetRequest";
 import PasswordReset from "./components/Account/PasswordReset";
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import OurStore from "./components/Products/OurStore"
 import Product from "./components/Products/HomePage"
 import SingleProduct from "./components/Products/SingleProduct"
@@ -23,12 +22,6 @@ import ContactChatbot from './components/Support/ContactChatbot.js';
 import Wishlist from './components/Profile/Wishlist';
 
 
-
-import OurStore from "./components/Products/OurStore";
-import Product from "./components/Products/HomePage";
-import SingleProduct from "./components/Products/SingleProduct";
-import Profile from "./components/Profile/Profile";
-import Layout from "./components/Common/Layout";
 
 function App() {
   const AppContent = () => {
