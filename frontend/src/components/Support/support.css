@@ -1,0 +1,18 @@
+.p-text {
+    font-weight: 200;
+    letter-spacing: -0.2px;
+}
+
+.footer-form {
+    max-width: 100px;
+    background-color: rgb(231, 231, 231);
+}
+
+.p-footer {
+    font-size: small;
+    text-align: center;
+}
+
+.contact-wrapper {
+    background: url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=960,h=640,fit=crop/YBg8Oqy2oQsXp8y5/building-an-ios-app-5-ALpb8Rpn27cGN4wM.png');
+}

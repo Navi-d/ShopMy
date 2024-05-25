@@ -8,9 +8,9 @@ const OurStore = () => {
             <div class="container-xxl">
                 <div class="row">
                     <div class="col-3">
-                            <div class="filter-card bg-white shadow rounded-2 p-3 my-2">
+                            <div class="filter-card-1 bg-white shadow rounded-2 p-3 my-2">
                                 <h4>Shop By Categories</h4>
-                                <div class="filter-card-1 bg-white p-2 my-2">
+                                <div class="filter-card-2 bg-white p-2 my-2">
                                 <h6 class="text-secondary ms-2">Watch</h6>
                                 <h6 class="text-secondary ms-2 ">Tv</h6>
                                 <h6 class="text-secondary ms-2">Camera</h6>
@@ -56,6 +56,13 @@ const OurStore = () => {
                             </div>
                             <div class="filter-card-1 bg-white p-2 my-2">
                                 <h6>Colors</h6>
+                                <div class="d-flex gap-10">
+                                    <span class="color-circle rounded-5 p-3" />
+                                    <span class="color-circle rounded-5 px-3 bg-success" />
+                                    <span class="color-circle rounded-5 px-3 bg-primary" />
+                                    <span class="color-circle rounded-5 px-3 bg-secondary" />
+                                </div>
+                                
                             </div>
 
                             
@@ -65,7 +72,7 @@ const OurStore = () => {
                             <h4>Product Tags</h4>
                             <div class="filter-card-1 bg-white p-2 my-25">
                                 
-                                <div class="d-flex flex-wrap justify-content-between gap-10">
+                                <div class="d-flex flex-wrap gap-10">
                                     <span class="badge bg-secondary rouded-3">
                                         Headphone
                                     </span>
@@ -82,13 +89,6 @@ const OurStore = () => {
                                         Laptop
                                     </span>
                                 </div>
-                                
-                            </div>
-                        </div>
-
-                        <div class="filter-card bg-white shadow rounded-2 p-3 my-2">
-                            <h4>Random Product</h4>
-                            <div class="filter-card-1 bg-white p-2 my-25">
                                 
                             </div>
                         </div>

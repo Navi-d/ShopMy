@@ -6,8 +6,17 @@ import { Link } from 'react-router-dom';
 let ratingValue = 3;
 let ratingEdit = false;
 let productLink = "/product";
+let productTitle = 'Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam';
+let productBrand = 'Amazon';
+let productPrice = '100.00';
 
-const ProductCard = () => {
+const ProductCard = (props) => {
+    const ratingValue = props.ratingValue;
+    const ratingEdit = false;
+    const productLink = props.productLink;
+    const productTitle = 'Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam';
+    const productBrand = 'Amazon';
+    const productPrice = '100.00';
     //Inside bootstraprow component
   return (
     <div class="col" style={{"min-width": "250px", "max-width" : "312px"}}>
@@ -33,9 +42,9 @@ const ProductCard = () => {
             </div>
             {/*  */}
             <div class="product-details py-3">
-                <h6 class="brand">Amazon</h6>
+                <h6 class="brand">{productBrand}</h6>
                 <h5 class="product-title">
-                    Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam
+                    {productTitle}
                 </h5>
                 <ReactStars
                     count={5}
@@ -44,7 +53,7 @@ const ProductCard = () => {
                     edit= {ratingEdit}
                     activeColor='#ffd700' />
 
-                <p class="price">RM100.00</p>
+                <p class="price">RM{productPrice}</p>
                 
             </div>
 

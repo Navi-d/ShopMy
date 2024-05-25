@@ -1,0 +1,130 @@
+/* Manage Order Styles */
+.manage-order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+h2 {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.order-list {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.order-item:hover {
+  transform: scale(1.02);
+}
+
+.order-details-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.order-image-wrapper {
+  width: 30%;
+}
+
+.order-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.order-info {
+  flex: 1;
+  padding-left: 1rem;
+}
+
+.order-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.order-status-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.order-status {
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #4CAF50; /* Green for delivered status, modify for others */
+}
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.track-order-btn,
+.contact-seller-btn,
+.request-refund-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.track-order-btn {
+  background-color: #3F51B5; /* Indigo for track order */
+  color: #fff;
+}
+
+.track-order-btn:hover {
+  background-color: #283593;
+}
+
+.contact-seller-btn {
+  background-color: #FFA726; /* Orange for contact seller */
+  color: #fff;
+  margin-left: 0.5rem;
+}
+
+.contact-seller-btn:hover {
+  background-color: #FF9800;
+}
+
+.request-refund-btn {
+  background-color: #EF476F; /* Red for request refund */
+  color: #fff;
+  margin-left: 0.5rem;
+}
+
+.request-refund-btn:hover {
+  background-color: #D73B57;
+}

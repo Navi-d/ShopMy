@@ -2,6 +2,9 @@
     margin-top: 20px; 
   } */
 
+.default-window-footer {
+    min-height: 100vh;
+}
 
   .main-navbar{
     border-bottom: 1px solid #ccc;
@@ -50,3 +53,29 @@
         padding: 8px 10px;
     }
 }
+
+.profile-side-menu {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: sticky;
+    top: 20px;
+  }
+  
+  .profile-side-menu h6 {
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .profile-side-menu h6:hover {
+    color: #007bff; 
+  }
+  
+  .profile-side-menu img {
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+  }
+

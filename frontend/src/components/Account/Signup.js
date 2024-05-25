@@ -1,4 +1,3 @@
-// Signup.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -9,18 +8,21 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signupSuccess, setSignupSuccess] = useState(false);
-
+  const [signupError, setSignupError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setSignupError('Passwords do not match.');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:3001/createUser', { username, email, password });
       console.log(response.data); // Assuming backend responds with user data
-      // Handle success (redirect, display success message, etc.)
       setSignupSuccess(true);
     } catch (error) {
       console.error(error);
-      // Handle error (display error message, reset form, etc.)
+      setSignupError('Error creating account. Please try again.');
     }
   };
 
@@ -30,9 +32,9 @@ function Signup() {
         <div className="container">
           <div className="row justify-content-center align-items-center">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div className="card" style={{borderRadius: "15px"}}>
+              <div className="card" style={{ borderRadius: "15px" }}>
                 <div className="card-body p-4">
-                  <h5 className="text-center mb-4">Create your account</h5>
+                  <h5 className="text-center mb-4">Create your ShopMy account</h5>
                   <form onSubmit={handleSubmit}>
                     <div className="form-outline mb-3">
                       <input type="text" id="form3Example1cg" className="form-control form-control-lg" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -58,10 +60,11 @@ function Signup() {
                       <button type="submit" className="btn btn-dark btn-lg btn-block">Register</button>
                     </div>
                   </form>
-                  <p className="text-center text-muted mt-4 mb-0" style={{ color: "#393f81" }}>
-                    Already have an account? <Link to="/login" style={{color: "#393f81"}}>Login here</Link>
-                  </p>
+                  {signupError && <div className="alert alert-danger mt-3" role="alert">{signupError}</div>}
                   {signupSuccess && <div className="alert alert-success mt-3" role="alert">Successfully signed up!</div>}
+                  <p className="text-center text-muted mt-4 mb-0" style={{ color: "#393f81" }}>
+                    Already have an account? <Link to="/login" style={{ color: "#393f81" }}>Login here</Link>
+                  </p>
                 </div>
               </div>
             </div>

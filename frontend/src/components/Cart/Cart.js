@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([
@@ -130,6 +131,7 @@ function Cart() {
                     <FontAwesomeIcon icon={faMinus} />
                     </button>
                     <input
+                      style={{"min-width":"50px"}}
                       type="number"
                       value={item.quantity}
                       onChange={(e) => handleQuantityChange(index, e.target.value)}
@@ -157,8 +159,9 @@ function Cart() {
             ))}
           </ul>
         </div>
+
         <div className="col-md-4">
-          <div className="sticky-top" style={{ top: '125px'}}>
+          <div className="sticky-top-x" style={{ top: '125px'}}>
             <div className="card">
               <div className="card-header">Cart Summary</div>
               <div className="card-body d-flex flex-column">
@@ -174,7 +177,11 @@ function Cart() {
                   <strong>Total:</strong>
                   <strong>RM{total.toFixed(2)}</strong>
                 </div>
-                <button className="btn btn-dark btn-block">Proceed to Checkout</button>
+                
+                
+                <Link to="/checkout" className="btn btn-dark btn-block">Proceed to Checkout</Link>
+                
+                
               </div>
             </div>
             <div className="mt-3 p-0 border rounded">
@@ -197,5 +204,4 @@ function Cart() {
     </div>
   );
 }
-
 export default Cart;
