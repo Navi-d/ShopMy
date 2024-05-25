@@ -22,9 +22,22 @@ const SingleProduct = () => {
                                 class="img-fluid rounded-3"
                                 src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
                                 alt="prod Img" />
-
                             </div>
-
+                            
+                            <div class="img-slider d-flex justify-content-center gap-10 py-2 bg-light rounded-3">
+                                <img 
+                                class="img-fluid"
+                                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
+                                alt="prod Img" />
+                                <img 
+                                class="img-fluid"
+                                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
+                                alt="prod Img" />
+                                <img 
+                                class="img-fluid"
+                                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
+                                alt="prod Img" />
+                            </div>
                         </div>
 
 
@@ -46,7 +59,7 @@ const SingleProduct = () => {
                                         activeColor='#ffd700' />
                                     <span>549 Ratings</span>
                                 </div>
-                                <Link class='a'><small>Write a review</small></Link>
+                                <Link class='a a-modern'><small>Write a review</small></Link>
                                 <hr />
                                 
                                 {/* Product Meta Data */}
@@ -61,7 +74,7 @@ const SingleProduct = () => {
                                     </tr>
                                     <tr>
                                         <td><label>Categories : </label></td>
-                                        <td><small> airpods cameras headphones laptops electronics</small></td>
+                                        <td><small> airpods headphones laptops electronics</small></td>
                                     </tr>
                                     <tr>
                                         <td><label>Tags : </label></td>
@@ -81,9 +94,17 @@ const SingleProduct = () => {
                                     </tr>
                                     <tr>
                                         <td><label>Color :</label></td>
-                                        <td></td>
+                                        <td><span class="color-circle bg-danger rounded-5 px-3 mx-2"></span>
+                                        <span class="color-circle bg-black rounded-5 px-3 mx-2"></span>
+                                        <span class="color-circle bg-primary rounded-5 px-3 mx-2"></span></td>
                                     </tr>
                                 </table>
+
+                                <hr/> 
+                                <Link class='a a-modern report-product'>
+                                    <i class="fa fa-flag-o text-danger"></i>
+                                    <span class="text-danger"> Report an issue with this product or seller</span>
+                                </Link>
 
                                 {/* <div class="d-flex justify-content-start gap-15">
                                     <Link class='a'>
@@ -189,7 +210,7 @@ const SingleProduct = () => {
                                             edit= {ratingEdit}
                                             activeColor='#ffd700' />
                                 <p class='h6 text-secondary'>Based on 1 review</p>  
-                                <Link class=''><small>Write a review</small></Link>         
+                                <Link class='a a-modern'><small>Write a review</small></Link>         
                                 <br /> 
                             </span>
                             

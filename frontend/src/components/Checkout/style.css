@@ -181,6 +181,7 @@
 
 #notification {
   position: fixed;
+  margin: 15px 0 0 0;
   top: 80px;
   left: 50%;
   transform: translateX(-50%);

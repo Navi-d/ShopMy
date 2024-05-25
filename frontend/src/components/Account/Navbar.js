@@ -1,5 +1,6 @@
 import React from 'react'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
@@ -8,7 +9,10 @@ function Navbar() {
       <div class="container-fluid">
           <div class="row">
               <div class="col-md-2 my-auto d-none d-sm-none d-md-block d-lg-block">
-                  <h5 class="brand-name">ShopMY</h5>
+                    <Link to="/home" class='a'>
+                        <h5 class="brand-name ms-4">ShopMY</h5>
+                    </Link>
+                  
                   {/* <div class="nav-brand">
                     <h5 class='brand-name'> <a href='/home'>ShopMY</a></h5>
                   </div> */}
@@ -18,9 +22,9 @@ function Navbar() {
                   <form role="search">
                       <div class="input-group">
                           <input type="search" placeholder="Search your product" class="form-control" />
-                          <button class="btn bg-white" type="submit">
+                          <Link class="btn" style={{"background-color":"#ffa808"}} type="submit" to="/browse">
                               <i class="fa fa-search"></i>
-                          </button>
+                          </Link>
                       </div>
                   </form>
               </div>
@@ -28,12 +32,12 @@ function Navbar() {
                   <ul class="nav justify-content-end">
                       
                       <li class="nav-item">
-                          <a class="nav-link" href="#">
+                          <a class="nav-link" href="/cart">
                               <i class="fa fa-shopping-cart"></i> Cart (0)
                           </a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="#">
+                          <a class="nav-link" href="/wishlist">
                               <i class="fa fa-heart"></i> Wishlist (0)
                           </a>
                       </li>
@@ -42,11 +46,13 @@ function Navbar() {
                               <i class="fa fa-user"></i> Username 
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-list"></i> My Orders</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> My Wishlist</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
-                          <li><a class="dropdown-item" href="/signup"><i class="fa fa-sign-out"></i> Signup</a></li>
+                            <li><a class="dropdown-item" href="/profile"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="/manageorders"><i class="fa fa-list"></i> My Orders</a></li>
+                            <li><a class="dropdown-item" href="/wishlist"><i class="fa fa-heart"></i> My Wishlist</a></li>
+                            <li><a class="dropdown-item" href="/cart"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
+                            <li><a class="dropdown-item" href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
+                            <li><a class="dropdown-item" href="/signup"><i class="fa fa-sign-out"></i> Signup</a></li>
+                            <li><a class="dropdown-item" href="/support"><i class="fa fa-headphones"></i> Support</a></li>
                           </ul>
                       </li>
                   </ul>
@@ -84,9 +90,6 @@ function Navbar() {
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="#">Accessories</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="#">Home</a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="#">Appliances</a>

@@ -17,7 +17,7 @@ function PasswordResetRequest() {
   };
 
   return (
-    <div className="container-fluid h-100 d-flex justify-content-center align-items-center">
+    <div className="container-fluid h-100 d-flex mt-5 justify-content-center align-items-center">
       <div className="card text-center" style={{ width: '300px' }}>
         <div className="card-header h5 text-white bg-primary">Password Reset</div>
         <div className="card-body px-5">
@@ -35,19 +35,24 @@ function PasswordResetRequest() {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Reset password
-            </button>
+
+            <div class="d-flex justify-content-center mt-3">
+              <button type="submit" className="btn btn-primary" style={{"position" : "static"}}>
+                Reset password
+              </button>
+            </div>
+            
           </form>
+
           {alert && (
             <div className={`alert alert-${alert.type} mt-3`} role="alert">
               {alert.message}
             </div>
           )}
-          <div className="d-flex justify-content-between mt-4">
+          {/* <div className="d-flex justify-content-between mt-4">
             <a href="/login">Login</a>
             <a href="/signup">Register</a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

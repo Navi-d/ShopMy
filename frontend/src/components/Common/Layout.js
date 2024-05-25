@@ -8,7 +8,10 @@ const Layout = () => {
     <>
       {/* <Header /> */}
       {/* Outlet render show all the router nested children */}
-      <Outlet />
+      <div class="default-window-footer">
+        <Outlet />
+      </div>
+     
       <Footer />
     </>
   )

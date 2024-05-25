@@ -67,8 +67,8 @@ function Checkout() {
   ];
 
   const items = [
-    { id: 1, img: "", name: "Item 1", description: "this is the description for item 1", price: 10 },
-    { id: 2, img: "", name: "item 2", description: "this is the description for item 2", price: 5 },
+    { id: 1, img: "https://images-na.ssl-images-amazon.com/images/I/714im+KNaqL._AC_UL320_SR320,320_.jpg", name: "Item 1", description: "this is the description for item 1", price: 10 },
+    { id: 2, img: "https://images-na.ssl-images-amazon.com/images/I/714im+KNaqL._AC_UL320_SR320,320_.jpg", name: "item 2", description: "this is the description for item 2", price: 5 },
   ];
 
   const subtotal = items.reduce((total, item) => total + item.price, 0);
@@ -290,7 +290,7 @@ function Checkout() {
                             </p>
                           </div>
                         </div>
-                        <p class="item-price">${item.price}</p>
+                        <p class="item-price">RM{item.price}</p>
                       </div>
                     ))}
                     
@@ -298,26 +298,26 @@ function Checkout() {
                     <hr class="my-2" />
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Subtotal:</p>
-                      <p>${subtotal}</p>
+                      <p>RM{subtotal}</p>
                     </div>
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Shipping:</p>
-                      <p>$2</p>
+                      <p>RM2</p>
                     </div>
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Tax:</p>
-                      <p>${tax}</p>
+                      <p>RM{tax}</p>
                     </div>
                     {selectedVoucher &&(
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">{selectedVoucher}:</p>
-                      <p>-${discount}</p>
+                      <p>-RM{discount}</p>
                     </div>
                     )}
                     <hr class="my-2" />
                     <div class="order-summary d-flex justify-content-between font-weight-bold">
                       <p>Total:</p>
-                      <p>${total}</p>
+                      <p>RM{total}</p>
                     </div>
                     <div class="d-flex mt-4">
                       <input
@@ -362,7 +362,7 @@ function Checkout() {
                           <ul class="voucher-list">
                             {vouchers.map((voucher) => (
                               <li class="voucher-button" key={voucher.id} onClick={() => applyVoucher(voucher)} data-bs-dismiss="modal">
-                                {voucher.code} - ${voucher.amount}
+                                {voucher.code} - RM{voucher.amount}
                               </li>
                             ))}
                           </ul>

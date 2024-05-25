@@ -22,11 +22,12 @@ function App() {
     const hideNavbarPaths = ['/login', '/signup', '/resetPassword', '/'];
 
     const hideNavbar = hideNavbarPaths.includes(location.pathname);
+    let order = 1;
 
     return (
       <div className="App">
         {!hideNavbar && <Navbar />}
-        <div className="content">
+        <div className="content ">
           <Routes>
             {/* <Route path="/" element={<Signup />} /> */}
             <Route path="/login" element={<Login />} />
@@ -39,8 +40,18 @@ function App() {
               <Route path="/browse" element={<OurStore />} />
               <Route path="/product" element={<SingleProduct />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/Wishlist" element={<Wishlist />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/payment" element={<PaymentProcessing/>} />
+              <Route path="/cart" element={<Cart />} />
+              
+              <Route path="/support" element={<Support />}></Route>
+              <Route path="/support/FAQ" element={<Faq />} />
+              <Route path="/support/ContactUs" element={<ContactUs />} />
+              <Route path="/support/Contactchatbot" element={<ContactChatbot />} />
+
+              <Route path="/manageorders" element={<ManageOrder />} />
+              <Route path={`/track-order/:orderId`} element={<TrackOrderPage/>} />
             </Route>
           </Routes>
         </div>
