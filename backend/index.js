@@ -1,14 +1,14 @@
-const express = require('express')
+const express = require('express');
 const app = express();
-
-const mongoose = require('mongoose')
-
-const cors = require('cors')
+const mongoose = require('mongoose');
+const cors = require('cors');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 
 app.use(express.json());
 app.use(cors());
+
 mongoose.connect('mongodb+srv://Navid:NavidShopMy@shopmycluster.fe5vuty.mongodb.net/ShopMy?retryWrites=true&w=majority&appName=ShopMyCluster');
 
 //import the usermodel: it returns a value
@@ -22,23 +22,26 @@ app.get("/getUsers", async (req, res) => {
         res.json(error);
     }
 });
-app.post("/createUser", async (req, res) => {
-    const user = req.body
-    const newUser = new UserModel(user);
-    await newUser.save();
 
-    res.json(user)
-})
+app.post("/createUser", async (req, res) => {
+    const { username, email, password } = req.body;
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new UserModel({ username, email, password: hashedPassword });
+        await newUser.save();
+        res.json({ message: "User created successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error creating user" });
+    }
+});
 
 app.post("/authenticateUser", async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await UserModel.findOne({ email, password });
-        if (user) {
-            // Authentication successful
+        const user = await UserModel.findOne({ email });
+        if (user && await bcrypt.compare(password, user.password)) {
             res.json({ message: "Authentication successful", user });
         } else {
-            // Authentication failed
             res.status(401).json({ message: "Invalid email or password" });
         }
     } catch (error) {
@@ -46,16 +49,14 @@ app.post("/authenticateUser", async (req, res) => {
     }
 });
 
-// Nodemailer configuration
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'shopmy.official@gmail.com',
-        pass: 'yfmkgsmrdkjlesjx' 
+        pass: 'yfmkgsmrdkjlesjx'
     }
 });
 
-// Generate random token
 const generateToken = () => {
     return crypto.randomBytes(20).toString('hex');
 };
@@ -69,15 +70,11 @@ app.post("/resetPasswordRequest", async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Generate reset token
         const resetToken = generateToken();
-        
-        // Save reset token and expiry date in user document
         user.resetPasswordToken = resetToken;
         user.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
         await user.save();
 
-        // Send email with reset link
         const mailOptions = {
             from: 'shopmy.official@gmail.com',
             to: email,
@@ -104,17 +101,16 @@ app.post("/resetPassword", async (req, res) => {
     const { token, newPassword } = req.body;
 
     try {
-        const user = await UserModel.findOne({ 
+        const user = await UserModel.findOne({
             resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() } 
+            resetPasswordExpires: { $gt: Date.now() }
         });
 
         if (!user) {
             return res.status(400).json({ message: "Invalid or expired token" });
         }
 
-        // Update password and clear reset token
-        user.password = newPassword;
+        user.password = await bcrypt.hash(newPassword, 10);
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
         await user.save();
@@ -140,5 +136,5 @@ app.get('/getProducts', async (req, res) => {
 })
 
 app.listen(3001, () => {
-    console.log("server has started")
-})
+    console.log("server has started");
+});

@@ -1,5 +1,4 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import "./Home.css";
 import Marquee from 'react-fast-marquee';
@@ -19,6 +18,15 @@ function HomePage() {
         }
       };
 
+    useEffect(() => {
+        // Retrieve logged-in user data from local storage
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (loggedInUser) {
+          console.log('Logged-in user details:', loggedInUser);
+          // You can use the logged-in user data to customize the page content
+        }
+      }, []);
+      
     return (
         <>
         {products}
