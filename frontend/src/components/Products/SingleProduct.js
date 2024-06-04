@@ -1,14 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'
 import ReactStars from 'react-rating-stars-component';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import ProductCard from './ProductCard';
+import axios from 'axios';
 
-//Star rating value
-let ratingValue = 3;
-let ratingEdit = false;
 
 
 const SingleProduct = () => {
+    const {productId} = useParams();
+    //Get from search bar
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [ratingsNumber, setRatingsNumber] = useState(0);
+    const [ratingValue, setRatingValue] = useState(0);
+    const [productTitle, setProductTitle] = useState('');
+    const [productBrand, setProductBrand] = useState('');
+    const [productPrice, setProductPrice] = useState(0);
+
+    //Variables
+    const ratingEdit = false;
+
+    //Get single product
+    useEffect(() => {
+        const productFunc = async (e) => {
+            // e.preventDefault(); //don't refresh page
+            try {
+                const response = await axios.get(`http://localhost:3001/getProduct/${productId}`);
+                setProduct(response.data);
+                console.log('Data is ='+ product)
+                if(product)
+                    setLoading(false);
+                
+                //Variable Settings
+                setRatingValue(product.ratingValue);
+                setRatingsNumber(500);
+                setProductBrand(product.productBrand);
+                setProductPrice(product.productPrice);
+                setProductTitle(product.productTitle);
+
+                console.log('data is\n'+ response.data); // Assuming backend responds with user data
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        //call the method
+        productFunc();
+      }, [product]); //On change of product id
+
+      if(loading) {
+        return (
+            <div>Loading...</div>
+        );
+       }
+
+
+    
   return (
     <div class="main-product-wrapper py-5 home-wrapper-2">
         <div class="container-xxl">
@@ -43,21 +90,21 @@ const SingleProduct = () => {
 
                         <div class="col">
                             <div class="main-product-details mx-2">
-                                <small >Amazon</small>
-                                <h5>Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam</h5>
+                                <small >{productBrand}</small>
+                                <h5>{productTitle}</h5>
                                 <hr />
-                                <h5>Price:<span class="h4"> RM100.00</span></h5>
+                                <h5>Price:<span class="h4"> RM{productPrice}</span></h5>
                                 
                                 {/* Rating & Review*/}
                                 <div class="d-flex justify-content-start align-items-center gap-10">
-                                    <span><strong>3</strong></span>
+                                    <span><strong>{ratingValue}</strong></span>
                                     <ReactStars
                                         count={5}
                                         size ={24}
                                         value={ratingValue}
                                         edit= {ratingEdit}
                                         activeColor='#ffd700' />
-                                    <span>549 Ratings</span>
+                                    <span>{ratingsNumber} Ratings</span>
                                 </div>
                                 <Link class='a a-modern'><small>Write a review</small></Link>
                                 <hr />
@@ -70,7 +117,7 @@ const SingleProduct = () => {
                                     </tr>
                                     <tr>
                                         <td><label>Brand :</label></td>
-                                        <td><small>Havells</small></td>
+                                        <td><small>{productBrand}</small></td>
                                     </tr>
                                     <tr>
                                         <td><label>Categories : </label></td>

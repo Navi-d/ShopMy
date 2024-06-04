@@ -123,6 +123,7 @@ app.post("/resetPassword", async (req, res) => {
 });
 
 
+
 //Products
 let ProductModel = require('./models/Products')
 
@@ -134,6 +135,58 @@ app.get('/getProducts', async (req, res) => {
         res.json(error);
     }
 })
+
+app.get('/getProduct/:id', async (req, res) => {
+    try {
+        const result = await ProductModel.findById(req.params.id);
+        console.log("Product Data Sent")
+        if (!result) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json(result);
+    } catch (error) {
+        res.json(error);
+    }
+})
+
+
+//Contactus
+let ContactusModel = require('./models/Contactus')
+
+app.get('/getContactus', async (req, res) => {
+    try {
+        const result = await ContactusModel.findById("usernameId");
+        res.json(result);
+    } catch (error) {
+        res.json(error);
+    }
+})
+
+app.post('/postContactus', async (req, res) => {
+    try {
+        const {firstName, lastName, email, description} = req.body;
+        const newContactUs = new ContactusModel({firstName, lastName, email, description});
+        let result = await newContactUs.save();
+        res.json(result);
+    } catch (error) {
+        res.json(error);
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.listen(3001, () => {
     console.log("server has started");

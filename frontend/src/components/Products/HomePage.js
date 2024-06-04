@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import "./Home.css";
 import Marquee from 'react-fast-marquee';
@@ -8,15 +8,26 @@ import axios from 'axios';
 
 
 function HomePage() {
-    const products = async (e) => {
-        e.preventDefault(); //don't refresh page
-        try {
-          const response = await axios.get('http://localhost:3001/getProducts');
-          console.log('data is'+ response.data); // Assuming backend responds with user data
-        } catch (error) {
-          console.error(error);
+    const [products, setProducts] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    //Get Products
+    useEffect(() => {
+        const products = async (e) => {
+            // e.preventDefault(); //don't refresh page
+            try {
+                const response = await axios.get('http://localhost:3001/getProducts');
+                setProducts(response.data);
+                setLoading(false);
+                console.log('data is\n'+ response.data); // Assuming backend responds with user data
+            } catch (error) {
+            console.error(error);
+            }
         }
-      };
+        
+        //call the method
+        products();
+      }, []);
 
     useEffect(() => {
         // Retrieve logged-in user data from local storage
@@ -27,9 +38,14 @@ function HomePage() {
         }
       }, []);
       
+    if(loading) {
+        return (
+            <div>Loading...</div>
+        );
+    }
+
     return (
         <>
-        {products}
          <section class="home-wrapper-1 py-5">
             <div class="container-xxl">
                 <div class="row">
@@ -213,10 +229,12 @@ function HomePage() {
                     <div class="col-12 py-5">
                         <h3 class="section-heading">Featured Collection</h3>
                     </div>
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
+
+                    {/* //Map all the input */}
+                    {products.map((item) => (
+                        <ProductCard {...item}/>
+                        ))}
+                    
                 </div>
             </div>
          </section>
