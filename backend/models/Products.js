@@ -19,7 +19,7 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
     ratingValue: {
-        type: String,
+        type: Number,
         required: true
     }
 });

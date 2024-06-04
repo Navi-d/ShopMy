@@ -32,6 +32,27 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/resetPassword" element={<PasswordResetRequest />} />
             <Route path="/resetPassword/:token" element={<PasswordReset />} />
+<<<<<<< HEAD
+=======
+            <Route path="/" element={<Layout />}>
+              <Route path="/home" element={<Product />} />
+              <Route path="/browse" element={<OurStore />} />
+              <Route path={`/product/:productId`} element={<SingleProduct />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/Wishlist" element={<Wishlist />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment" element={<PaymentProcessing/>} />
+              <Route path="/cart" element={<Cart />} />
+              
+              <Route path="/support" element={<Support />}></Route>
+              <Route path="/support/FAQ" element={<Faq />} />
+              <Route path="/support/ContactUs" element={<ContactUs />} />
+              <Route path="/support/Contactchatbot" element={<ContactChatbot />} />
+
+              <Route path="/manageorders" element={<ManageOrder />} />
+              <Route path={`/track-order/:orderId`} element={<TrackOrderPage/>} />
+            </Route>
+>>>>>>> 8de9aec165486f536382fe466ac0a59b9155a93e
           </Routes>
         </div>
       </div>

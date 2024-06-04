@@ -2,25 +2,29 @@ import React from 'react'
 import ReactStars from 'react-rating-stars-component';
 import { Link } from 'react-router-dom';
 
-//Star rating value
-let ratingValue = 3;
-let ratingEdit = false;
-let productLink = "/product";
-let productTitle = 'Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam';
-let productBrand = 'Amazon';
-let productPrice = '100.00';
+// //Star rating value
+// let ratingValue = 3;
+// let ratingEdit = false;
+// let productLink = "/product";
+// let productTitle = 'Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam';
+// let productBrand = 'Amazon';
+// let productPrice = '100.00';]
+
+const addToCart = (productId) => {
+    //Given the Product Id, add the product to cart. If needed you can pass the whole product information
+    //But just for simplicity, pass id then axios(/getProduct/${productId}) to get product details
+    return 0
+};
 
 const ProductCard = (props) => {
-    const ratingValue = props.ratingValue;
-    const ratingEdit = false;
-    const productLink = props.productLink;
-    const productTitle = 'Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam';
-    const productBrand = 'Amazon';
-    const productPrice = '100.00';
+    const {_id, productBrand, productTitle, productLink,   productPrice, ratingValue} = props;
+    const productId = _id;
+    const ratingEdit = false; // Assuming ratingEdit should always be false
+    
     //Inside bootstraprow component
   return (
     <div class="col" style={{"min-width": "250px", "max-width" : "312px"}}>
-      <Link class='a' to={productLink}>
+      <Link class='a' to={`/product/${_id}`}>
         <div class="product-card position-relative my-2">
             <div class="wishlist-icon position-absolute align-items-right">
                 <Link>
@@ -63,7 +67,13 @@ const ProductCard = (props) => {
                         <i class="fa fa-eye"></i>
                     </Link>
 
+                    {
+                        //Add to cart 
+                        //Perhaps can change to button
+                        //Cart Icon in Card view of product
+                    }
                     <Link to={productLink}>
+                        {addToCart(productId)}
                         <i class="fa fa-cart-plus"></i>
                     </Link>
                 </div>
