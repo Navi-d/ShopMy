@@ -5,7 +5,6 @@ import Signup from "./components/Account/Signup";
 import Login from "./components/Account/Login";
 import PasswordResetRequest from "./components/Account/PasswordResetRequest";
 import PasswordReset from "./components/Account/PasswordReset";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   const AppContent = () => {
