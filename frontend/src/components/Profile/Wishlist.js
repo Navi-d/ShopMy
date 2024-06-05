@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import "../Products/Home.css";
 import ProductCard from '../Products/ProductCard';
 
-const Profile = () => {
-  const [selectedOption, setSelectedOption] = useState('profile');
+const Wishlist = () => {
+  const [selectedOption, setSelectedOption] = useState('wishlist');
   const [editMode, setEditMode] = useState(false);
   const [userData, setUserData] = useState({
     name: "User Name",
@@ -13,10 +13,11 @@ const Profile = () => {
   });
   const [newVoucher, setNewVoucher] = useState('');
   const [vouchers, setVouchers] = useState([
-    { id: 1, code: "VOUCHER1", discount: "10%", expiryDate: "2024-06-01" },
+    { id: 1, code: "VOUCHER1", discount: "10%", expiryDate: "2024-06-01" },  
     { id: 2, code: "VOUCHER2", discount: "20%", expiryDate: "2024-06-15" },
     { id: 3, code: "VOUCHER3", discount: "15%", expiryDate: "2024-07-01" },
     { id: 4, code: "VOUCHER4", discount: "25%", expiryDate: "2024-07-15" }
+  
   ]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
@@ -37,9 +38,8 @@ const Profile = () => {
   };
 
   const handleAddVoucher = () => {
-    // Check if the voucher code is not empty
     if (newVoucher.trim() !== '') {
-      const newVoucherObj = { id: vouchers.length + 1, code: newVoucher, discount: 'Unknown', expiryDate: "YYYY-MM-DD" }; // Add a placeholder expiry date
+      const newVoucherObj = { id: vouchers.length + 1, code: newVoucher, discount: 'Unknown' };
       setVouchers([...vouchers, newVoucherObj]);
       setNewVoucher('');
       setShowSuccessPopup(true);
@@ -81,11 +81,11 @@ const Profile = () => {
             </div>
           </div>
         </div>
-       
+
         {!editMode && (
           <button className="btn btn-primary" onClick={toggleEditMode}>Edit</button>
         )}
-      
+
         {editMode && (
           <button className="btn btn-primary" onClick={toggleEditMode}>Save Changes</button>
         )}
@@ -94,7 +94,7 @@ const Profile = () => {
   };
 
   const renderWishlist = () => {
-    
+
     return (
       <>
         <h4><i className="fa fa-heart" /> My Wishlist</h4>
@@ -135,7 +135,7 @@ const Profile = () => {
             <div className="profile-card bg-white shadow rounded-2 p-4 m-4">
               {selectedOption === 'profile' && renderProfileDetails()}
               {selectedOption === 'wishlist' && renderWishlist()}
-              
+
               {selectedOption === 'vouchers' && (
                 <>
                   <h4><i class="fa fa-ticket"></i> My Vouchers</h4>
@@ -176,4 +176,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Wishlist;

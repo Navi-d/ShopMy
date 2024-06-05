@@ -1,5 +1,7 @@
 import React from 'react'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom';
+
 
 function Navbar() {
   return (
@@ -34,7 +36,7 @@ function Navbar() {
                       </li>
                       <li class="nav-item">
                           <a class="nav-link" href="#">
-                              <i class="fa fa-heart"></i> Wishlist (0)
+                          <Link className="dropdown-item" to="/Wishlist"><i className="fa fa-heart"></i> Wishlist</Link> (0)
                           </a>
                       </li>
                       <li class="nav-item dropdown">
@@ -42,9 +44,9 @@ function Navbar() {
                               <i class="fa fa-user"></i> Username 
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a></li>
+                          <Link className="dropdown-item" to="/profile"><i className="fa fa-user"></i> Profile</Link>
                           <li><a class="dropdown-item" href="#"><i class="fa fa-list"></i> My Orders</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> My Wishlist</a></li>
+                          <Link className="dropdown-item" to="/Wishlist"><i className="fa fa-heart"></i> My Wishlist</Link>
                           <li><a class="dropdown-item" href="#"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
                           <li><a class="dropdown-item" href="/signup"><i class="fa fa-sign-out"></i> Signup</a></li>
                           </ul>

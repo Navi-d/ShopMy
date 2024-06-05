@@ -1,27 +1,54 @@
-// App.js
 import React from 'react';
 import Navbar from "./components/Account/Navbar";
 import Signup from "./components/Account/Signup";
 import Login from "./components/Account/Login";
 import PasswordResetRequest from "./components/Account/PasswordResetRequest";
 import PasswordReset from "./components/Account/PasswordReset";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import OurStore from "./components/Products/OurStore"
+import Product from "./components/Products/HomePage"
+import SingleProduct from "./components/Products/SingleProduct"
+import Profile from "./components/Profile/Profile"
+import Layout from "./components/Common/Layout"
+import Wishlist from './components/Profile/Wishlist';
+
 
 function App() {
-  return (
-    <Router>
+  const AppContent = () => {
+    const location = useLocation();
+
+    const hideNavbarPaths = ['/login', '/signup', '/resetPassword', '/'];
+
+    const hideNavbar = hideNavbarPaths.includes(location.pathname);
+
+    return (
       <div className="App">
-        <Navbar />
+        {!hideNavbar && <Navbar />}
         <div className="content">
           <Routes>
-            <Route path="/" element={<Signup />} />
+            {/* <Route path="/" element={<Signup />} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/resetPassword" element={<PasswordResetRequest />} />
             <Route path="/resetPassword/:token" element={<PasswordReset />} />
+            
+            <Route path="/" element={<Layout />}>
+              <Route path="/home" element={<Product />} />
+              <Route path="/browse" element={<OurStore />} />
+              <Route path="/product" element={<SingleProduct />} />
+              <Route path="/Profile" element={<Profile />} />
+              <Route path="/Wishlist" element={<Wishlist />} />
+            </Route>
+            
           </Routes>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
