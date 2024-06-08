@@ -123,7 +123,6 @@ app.post("/resetPassword", async (req, res) => {
 });
 
 
-
 //Products
 let ProductModel = require('./models/Products')
 
@@ -175,19 +174,6 @@ app.post('/postContactus', async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.listen(3001, () => {
     console.log("server has started");
 });
@@ -197,6 +183,10 @@ app.listen(3001, () => {
 //Cart
 const cartRoutes = require('./routes/Cart');
 const wishlistRoutes = require('./routes/wishlist');
+const voucherRoutes = require('./routes/voucher');
+const checkoutRoutes = require('./routes/checkout');
 
+app.use('/api/checkout', checkoutRoutes)
+app.use('/api/vouchers', voucherRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
