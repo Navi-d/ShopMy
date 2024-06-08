@@ -1,73 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faMinus, faPlus, faTrash, faHeart as faHeartRegular } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartSolid } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 
 function Cart() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Apple iPad',
-      price: 499.00, 
-      imageUrl: 'https://www.apple.com/newsroom/images/product/ipad/standard/apple_ipados14_widgets_062220_big.jpg.large.jpg',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: 'Google Pixel',
-      price: 299.00, 
-      imageUrl: 'https://lh3.googleusercontent.com/KaLIFYVg9298b8jv33H3pagRaAz4lCQxrQz-goMEsiTuCmUf2Ood9ktkzgjpotkMuRcAMimOV2RfN7vBZVmnInf5wcwUNsRZpw',
-      quantity: 1,
-    },
-    {
-        id: 3,
-        name: 'Random Product',
-        price: 640.00, 
-        imageUrl: 'https://assets2.razerzone.com/images/pnx.assets/33b3ddff006018e916f46154995087c0/razer-basilisk-v3-x-hyperspeed-500x500.png',
-        quantity: 1,
-      },
-    {
-        id: 4,
-        name: 'Random Product',
-        price: 640.00, 
-        imageUrl: 'https://assets2.razerzone.com/images/pnx.assets/33b3ddff006018e916f46154995087c0/razer-basilisk-v3-x-hyperspeed-500x500.png',
-        quantity: 1,
-    },
-    {
-        id: 5,
-        name: 'Random Product',
-        price: 640.00, 
-        imageUrl: 'https://assets2.razerzone.com/images/pnx.assets/33b3ddff006018e916f46154995087c0/razer-basilisk-v3-x-hyperspeed-500x500.png',
-        quantity: 1,
-    },
-    {
-        id: 6,
-        name: 'Random Product',
-        price: 640.00, 
-        imageUrl: 'https://assets2.razerzone.com/images/pnx.assets/33b3ddff006018e916f46154995087c0/razer-basilisk-v3-x-hyperspeed-500x500.png',
-        quantity: 1,
-    },
-    {
-        id: 7,
-        name: 'Random Product',
-        price: 640.00, 
-        imageUrl: 'https://assets2.razerzone.com/images/pnx.assets/33b3ddff006018e916f46154995087c0/razer-basilisk-v3-x-hyperspeed-500x500.png',
-        quantity: 1,
-    },
-  ]);
-
+  const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
-
+  const userId = "6663c464ad2348001fa188de";
+  
   useEffect(() => {
-    updateSubtotal();
-  }, [cartItems]);
+    fetchCart();
+  }, []);
 
-  const updateSubtotal = () => {
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(`/api/cart/getCart/${userId}`);
+      console.log(response)
+      if (response.ok) {
+        const cartData = await response.json();
+        setCartItems(cartData);
+        updateSubtotal(cartData);
+      } else {
+        const errorMessage = await response.text(); 
+        console.error('Error getting cart:', errorMessage);
+      }
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+    }
+  };
+
+  const updateSubtotal = (items) => {
     let newSubtotal = 0;
-    cartItems.forEach(item => {
+    items.forEach(item => {
       newSubtotal += item.price * item.quantity;
     });
     setSubtotal(newSubtotal);
@@ -79,30 +46,98 @@ function Cart() {
     setTotal(newSubtotal + shipping);
   };
 
-  const incrementQuantity = (index) => {
-    const newItems = [...cartItems];
-    newItems[index].quantity += 1;
-    setCartItems(newItems);
-  };
+  const incrementQuantity = async (productId) => {
+    try {
+      const response = await fetch('/api/cart/updateQuantity', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, productId, quantity: 1 }),
+      });
 
-  const decrementQuantity = (index) => {
-    if (cartItems[index].quantity > 1) {
-      const newItems = [...cartItems];
-      newItems[index].quantity -= 1;
-      setCartItems(newItems);
+      if (response.ok) {
+        fetchCart();
+      } else {
+        console.error('Error incrementing quantity');
+      }
+    } catch (error) {
+      console.error('Error incrementing quantity:', error);
     }
   };
 
-  const handleQuantityChange = (index, value) => {
-    const newItems = [...cartItems];
-    newItems[index].quantity = Math.max(0, parseInt(value, 10) || 0);
-    setCartItems(newItems);
+  const decrementQuantity = async (productId) => {
+    try {
+      const response = await fetch('/api/cart/updateQuantity', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, productId, quantity: -1 }),
+      });
+
+      if (response.ok) {
+        fetchCart();
+      } else {
+        console.error('Error decrementing quantity');
+      }
+    } catch (error) {
+      console.error('Error decrementing quantity:', error);
+    }
   };
 
-  const handleRemoveItem = (index) => {
-    const newItems = [...cartItems];
-    newItems.splice(index, 1);
-    setCartItems(newItems);
+  const handleRemoveItem = async (productId) => {
+    try {
+      const response = await fetch('/api/cart/removeFromCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, productId }),
+      });
+
+      if (response.ok) {
+        fetchCart();
+      } else {
+        console.error('Error removing item from cart');
+      }
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+    }
+  };
+
+  const handleAddToWishlist = async (productId) => {
+    try {
+      // First, remove the product from the cart
+      const cartResponse = await fetch('/api/cart/removeFromCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, productId }),
+      });
+
+      if (cartResponse.ok) {
+        // Then, add the product to the wishlist
+        const wishlistResponse = await fetch('/api/wishlist/addToWishlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, productId }),
+        });
+
+        if (wishlistResponse.ok) {
+          fetchCart();
+        } else {
+          console.error('Error adding to wishlist');
+        }
+      } else {
+        console.error('Error removing from cart');
+      }
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+    }
   };
 
   const extraProducts = [
@@ -118,40 +153,45 @@ function Cart() {
           <h2>Shopping Cart</h2>
           <ul className="list-group mb-5">
             {cartItems.map((item, index) => (
-              <li key={item.id} className="list-group-item d-flex align-items-start">
+              <li key={item._id} className="list-group-item d-flex align-items-start">
                 <div className="row d-flex justify-content-between align-items-center">
                   <div className="col-md-2 col-lg-2 col-xl-2">
-                    <img src={item.imageUrl} alt={item.name} className="img-fluid" />
+                    <img src={item.productId.imageUrl} alt={item.productId.name} className="img-fluid" />
                   </div>
                   <div className="col-md-3 col-lg-3 col-xl-3">
-                    <p className="lead fw-normal mb-2">{item.name}</p>
+                    <p className="lead fw-normal mb-2">{item.productId.name}</p>
                   </div>
                   <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                    <button className="btn btn-link px-2" onClick={() => decrementQuantity(index)}>
-                    <FontAwesomeIcon icon={faMinus} />
+                    <button className="btn btn-link px-2" onClick={() => decrementQuantity(item.productId._id)}>
+                      <FontAwesomeIcon icon={faMinus} />
                     </button>
                     <input
-                      style={{"min-width":"50px"}}
+                      style={{ minWidth: "50px" }}
                       type="number"
                       value={item.quantity}
-                      onChange={(e) => handleQuantityChange(index, e.target.value)}
+                      onChange={(e) => {
+                        const quantity = parseInt(e.target.value, 10);
+                        if (quantity >= 0) {
+                          // Call updateQuantity function with the new quantity
+                        }
+                      }}
                       className="form-control form-control-sm"
                     />
-                    <button className="btn btn-link px-2" onClick={() => incrementQuantity(index)}>
-                    <FontAwesomeIcon icon={faPlus} />
+                    <button className="btn btn-link px-2" onClick={() => incrementQuantity(item.productId._id)}>
+                      <FontAwesomeIcon icon={faPlus} />
                     </button>
                   </div>
                   <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                    <h5 className="mb-0">RM{item.price.toFixed(2)}</h5>
+                    <h5 className="mb-0">RM{(item.productId.price * item.quantity).toFixed(2)}</h5>
                   </div>
                   <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                    <button onClick={() => handleRemoveItem(index)} className="btn btn-link text-danger">
-                    <FontAwesomeIcon icon={faHeart} />
+                    <button onClick={() => handleAddToWishlist(item.productId._id)} className="btn btn-link text-danger">
+                      <FontAwesomeIcon icon={faHeartSolid} />
                     </button>
                   </div>
                   <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                    <button onClick={() => handleRemoveItem(index)} className="btn btn-link text-danger">
-                    <FontAwesomeIcon icon={faTrash} />
+                    <button onClick={() => handleRemoveItem(item.productId._id)} className="btn btn-link text-danger">
+                      <FontAwesomeIcon icon={faTrash} />
                     </button>
                   </div>
                 </div>
@@ -159,9 +199,9 @@ function Cart() {
             ))}
           </ul>
         </div>
-
+  
         <div className="col-md-4">
-          <div className="sticky-top-x" style={{ top: '125px'}}>
+          <div className="sticky-top-x" style={{ top: '125px' }}>
             <div className="card">
               <div className="card-header">Cart Summary</div>
               <div className="card-body d-flex flex-column">
@@ -177,11 +217,9 @@ function Cart() {
                   <strong>Total:</strong>
                   <strong>RM{total.toFixed(2)}</strong>
                 </div>
-                
-                
+  
                 <Link to="/checkout" className="btn btn-dark btn-block">Proceed to Checkout</Link>
-                
-                
+  
               </div>
             </div>
             <div className="mt-3 p-0 border rounded">
@@ -190,11 +228,11 @@ function Cart() {
               </div>
               {extraProducts.map(product => (
                 <div key={product.id} className="d-flex align-items-center p-3 border-bottom">
-                    <img src={product.imageUrl} alt={product.name} className="mr-3" style={{ width: '60px', height: '60px' }} />
-                    <div className="flex-column">
-                        <span className="font-weight-normal" style={{ fontSize: '14px', color: '#333', margin: '10px' }}>{product.name}</span>
-                        <span className="text-muted" style={{ fontSize: '12px' }}>RM{product.price.toFixed(2)}</span>
-                    </div>
+                  <img src={product.imageUrl} alt={product.name} className="mr-3" style={{ width: '60px', height: '60px' }} />
+                  <div className="flex-column">
+                    <span className="font-weight-normal" style={{ fontSize: '14px', color: '#333', margin: '10px' }}>{product.name}</span>
+                    <span className="text-muted" style={{ fontSize: '12px' }}>RM{product.price.toFixed(2)}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -204,4 +242,5 @@ function Cart() {
     </div>
   );
 }
+
 export default Cart;

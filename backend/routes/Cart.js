@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const UserModel = require('../models/User');
-const ProductModel = require('../models/Product');
+const UserModel = require('../models/Users');
+const ProductModel = require('../models/Products');
 
 // Add product to cart
 router.post('/addToCart', async (req, res) => {
@@ -73,12 +73,18 @@ router.post('/updateQuantity', async (req, res) => {
   }
 });
 
+
+
+const ObjectId = require('mongodb').ObjectId;
+const userId = ObjectId("6663c464ad2348001fa188de");
 // Get user's cart
 router.get('/getCart/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await UserModel.findById(userId).populate('cart.productId');
+    const user = await UserModel.findById(ObjectId("6663c464ad2348001fa188de")).populate('cart.productId');
+    console.log(user);
+    console.log("JDADSAHDSHD");
     if (user) {
       res.status(200).json(user.cart);
     } else {
