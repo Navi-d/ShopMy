@@ -92,5 +92,23 @@ router.get('/getCart/:userId', async (req, res) => {
   }
 });
 
+// Clear cart
+router.post('/clearCart', async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    let user = await UserModel.findById(userId);
+
+    if (user) {
+      user.cart = [];
+      await user.save();
+      res.status(200).json(user.cart);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error clearing cart', error });
+  }
+});
 
 module.exports = router;
