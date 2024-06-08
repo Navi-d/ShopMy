@@ -191,3 +191,12 @@ app.post('/postContactus', async (req, res) => {
 app.listen(3001, () => {
     console.log("server has started");
 });
+
+
+
+//Cart
+const cartRoutes = require('./routes/Cart');
+const wishlistRoutes = require('./routes/wishlist');
+
+app.use('/api/cart', cartRoutes);
+app.use('/api/wishlist', wishlistRoutes);
