@@ -1,32 +1,12 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-    username: {
-        type: String,
+const TransactionSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
         required: true
     },
-    email: {
-        type: String,
-        required: true
-<<<<<<< Updated upstream
-    }, 
-    password: {
-        type: String,
-        required: true
-    },
-    resetPasswordToken: String, // Add resetPasswordToken field
-    resetPasswordExpires: Date // Add resetPasswordExpires field
-=======
-      }
-    }
-  ],
-  orders: [
-    { 
-      status: {
-        type: String,
-        default: "Processing"
-      },
-      items: [{
+    items: [{
         _id: false,
         productID: {
             type: mongoose.Schema.Types.ObjectId,
@@ -37,16 +17,16 @@ const UserSchema = new mongoose.Schema({
             type: Number,
             required: true
         }
-      }],
-      totalPayment: {
+    }],
+    totalPayment: {
           type: mongoose.Schema.Types.Decimal128,
           required: true
-      },
-      paymentType: {
+    },
+    paymentType: {
         type: String,
         required: true
-      },
-      deliveryAddress: [{
+    },
+    deliveryAddress: [{
         _id: false,
         address: {
           type: String,
@@ -64,17 +44,13 @@ const UserSchema = new mongoose.Schema({
           type: String,
           required: true
         }
-      }],
-      date: {
+    }],
+    date: {
         type: Date,
         default: Date.now,
         required: true
-      }
     }
-  ]
->>>>>>> Stashed changes
 });
 
-const UserModel = mongoose.model("users", UserSchema)
-
-module.exports = UserModel;
+const TransactionModel = mongoose.model('transaction', TransactionSchema);
+module.exports = TransactionModel;
