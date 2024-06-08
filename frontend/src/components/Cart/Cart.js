@@ -9,7 +9,16 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
-  const userId = "6663da073801ff9b916613b6";  // TODO: connect to userId
+  //const userId = "6663da073801ff9b916613b6";  // TODO: connect to userId
+
+  
+
+  const userJSON = localStorage.getItem('loggedInUser');
+  // Parse the JSON string to convert it into a JavaScript object
+  const user = JSON.parse(userJSON);
+  // Access the _id property of the object
+  const userId = user._id;
+  console.log("User id is " + userId);
 
   useEffect(() => {
     fetchCart();
