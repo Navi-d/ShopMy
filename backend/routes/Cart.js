@@ -75,24 +75,22 @@ router.post('/updateQuantity', async (req, res) => {
 
 
 
-const ObjectId = require('mongodb').ObjectId;
-const userId = ObjectId("6663c464ad2348001fa188de");
 // Get user's cart
 router.get('/getCart/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await UserModel.findById(ObjectId("6663c464ad2348001fa188de")).populate('cart.productId');
-    console.log(user);
-    console.log("JDADSAHDSHD");
+    const user = await UserModel.findById(userId).populate('cart.productId');
     if (user) {
       res.status(200).json(user.cart);
     } else {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
+    console.error('Error fetching cart:', error); // Log the error here
     res.status(500).json({ message: 'Error getting cart', error });
   }
 });
+
 
 module.exports = router;

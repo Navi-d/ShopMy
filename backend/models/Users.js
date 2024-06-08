@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     {
       productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
+        ref: 'products',
         required: true
       },
       quantity: {
@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema({
     {
       productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
+        ref: 'products',
         required: true
       }
     }

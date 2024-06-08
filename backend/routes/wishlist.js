@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const UserModel = require('../models/User');
-const ProductModel = require('../models/Product');
+const UserModel = require('../models/Users');
+const ProductModel = require('../models/Products');
 
 // Add product to wishlist
 router.post('/addToWishlist', async (req, res) => {

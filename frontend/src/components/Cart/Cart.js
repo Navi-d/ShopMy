@@ -9,22 +9,22 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
-  const userId = "6663c464ad2348001fa188de";
-  
+  const userId = "6663da073801ff9b916613b6";
+
   useEffect(() => {
     fetchCart();
   }, []);
 
   const fetchCart = async () => {
     try {
-      const response = await fetch(`/api/cart/getCart/${userId}`);
-      console.log(response)
+      // const response = await fetch(`/api/Cart/getCart/${userId}`);
+      const response = await fetch(`http://localhost:3001/api/Cart/getCart/${userId}`);
       if (response.ok) {
         const cartData = await response.json();
         setCartItems(cartData);
         updateSubtotal(cartData);
       } else {
-        const errorMessage = await response.text(); 
+        const errorMessage = await response.text();
         console.error('Error getting cart:', errorMessage);
       }
     } catch (error) {
@@ -35,7 +35,9 @@ function Cart() {
   const updateSubtotal = (items) => {
     let newSubtotal = 0;
     items.forEach(item => {
-      newSubtotal += item.price * item.quantity;
+      const price = parseFloat(item.productId.productPrice);
+      const quantity = item.quantity;
+      newSubtotal += price * quantity;
     });
     setSubtotal(newSubtotal);
     updateTotal(newSubtotal);
@@ -46,49 +48,31 @@ function Cart() {
     setTotal(newSubtotal + shipping);
   };
 
-  const incrementQuantity = async (productId) => {
+  const updateQuantity = async (productId, newQuantity) => {
+    if (newQuantity <= 0) return;
     try {
-      const response = await fetch('/api/cart/updateQuantity', {
+      const response = await fetch('http://localhost:3001/api/cart/updateQuantity', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId, productId, quantity: 1 }),
+        body: JSON.stringify({ userId, productId, quantity: newQuantity }),
       });
 
       if (response.ok) {
         fetchCart();
       } else {
-        console.error('Error incrementing quantity');
+        console.error('Error updating quantity');
       }
     } catch (error) {
-      console.error('Error incrementing quantity:', error);
+      console.error('Error updating quantity:', error);
     }
   };
 
-  const decrementQuantity = async (productId) => {
-    try {
-      const response = await fetch('/api/cart/updateQuantity', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, productId, quantity: -1 }),
-      });
-
-      if (response.ok) {
-        fetchCart();
-      } else {
-        console.error('Error decrementing quantity');
-      }
-    } catch (error) {
-      console.error('Error decrementing quantity:', error);
-    }
-  };
 
   const handleRemoveItem = async (productId) => {
     try {
-      const response = await fetch('/api/cart/removeFromCart', {
+      const response = await fetch('http://localhost:3001/api/cart/removeFromCart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +93,7 @@ function Cart() {
   const handleAddToWishlist = async (productId) => {
     try {
       // First, remove the product from the cart
-      const cartResponse = await fetch('/api/cart/removeFromCart', {
+      const cartResponse = await fetch('http://localhost:3001/api/cart/removeFromCart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +103,7 @@ function Cart() {
 
       if (cartResponse.ok) {
         // Then, add the product to the wishlist
-        const wishlistResponse = await fetch('/api/wishlist/addToWishlist', {
+        const wishlistResponse = await fetch('http://localhost:3001/api/wishlist/addToWishlist', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -152,54 +136,65 @@ function Cart() {
         <div className="col-md-8">
           <h2>Shopping Cart</h2>
           <ul className="list-group mb-5">
-            {cartItems.map((item, index) => (
-              <li key={item._id} className="list-group-item d-flex align-items-start">
-                <div className="row d-flex justify-content-between align-items-center">
-                  <div className="col-md-2 col-lg-2 col-xl-2">
-                    <img src={item.productId.imageUrl} alt={item.productId.name} className="img-fluid" />
+            {cartItems.length > 0 ? (
+              cartItems.map((item, index) => (
+                <li key={item._id} className="list-group-item d-flex align-items-start">
+                  <div className="row d-flex justify-content-between align-items-center">
+                    <div className="col-md-2 col-lg-2 col-xl-2">
+                      <img src={item.productId.productLink} alt={item.productId.productTitle} className="img-fluid" />
+                    </div>
+                    <div className="col-md-3 col-lg-3 col-xl-3">
+                      <p className="lead fw-normal mb-2">{item.productId.productTitle}</p>
+                    </div>
+                    <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
+                      <button className="btn btn-link px-2" onClick={() => updateQuantity(item.productId._id, item.quantity - 1)}>
+                        <FontAwesomeIcon icon={faMinus} />
+                      </button>
+                      <input
+                        style={{ minWidth: "50px" }}
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) => {
+                          const quantity = parseInt(e.target.value, 10);
+                          if (quantity >= 0) {
+                            // Call updateQuantity function with the new quantity
+                          }
+                        }}
+                        className="form-control form-control-sm"
+                      />
+                      <button className="btn btn-link px-2" onClick={() => updateQuantity(item.productId._id, item.quantity + 1)}>
+                        <FontAwesomeIcon icon={faPlus} />
+                      </button>
+                    </div>
+                    <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                      <h5 className="mb-0">RM{(item.productId.productPrice * item.quantity).toFixed(2)}</h5>
+                    </div>
+                    <div className="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <button onClick={() => handleAddToWishlist(item.productId._id)} className="btn btn-link text-danger">
+                        <FontAwesomeIcon icon={faHeartSolid} />
+                      </button>
+                    </div>
+                    <div className="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <button onClick={() => handleRemoveItem(item.productId._id)} className="btn btn-link text-danger">
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
                   </div>
-                  <div className="col-md-3 col-lg-3 col-xl-3">
-                    <p className="lead fw-normal mb-2">{item.productId.name}</p>
-                  </div>
-                  <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                    <button className="btn btn-link px-2" onClick={() => decrementQuantity(item.productId._id)}>
-                      <FontAwesomeIcon icon={faMinus} />
-                    </button>
-                    <input
-                      style={{ minWidth: "50px" }}
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) => {
-                        const quantity = parseInt(e.target.value, 10);
-                        if (quantity >= 0) {
-                          // Call updateQuantity function with the new quantity
-                        }
-                      }}
-                      className="form-control form-control-sm"
-                    />
-                    <button className="btn btn-link px-2" onClick={() => incrementQuantity(item.productId._id)}>
-                      <FontAwesomeIcon icon={faPlus} />
-                    </button>
-                  </div>
-                  <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                    <h5 className="mb-0">RM{(item.productId.price * item.quantity).toFixed(2)}</h5>
-                  </div>
-                  <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                    <button onClick={() => handleAddToWishlist(item.productId._id)} className="btn btn-link text-danger">
-                      <FontAwesomeIcon icon={faHeartSolid} />
-                    </button>
-                  </div>
-                  <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                    <button onClick={() => handleRemoveItem(item.productId._id)} className="btn btn-link text-danger">
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </div>
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item text-center py-5">
+                <div>
+                  <img src="/cart/empty-cart.png" alt="Empty Cart" style={{ width: '150px', marginBottom: '20px' }} />
+                  <h4>Your cart is empty!</h4>
+                  <p>Looks like you haven't added anything yet.</p>
+                  <p>Why not <Link to="/home">explore our products</Link> and find something you love?</p>
                 </div>
               </li>
-            ))}
+            )}
           </ul>
         </div>
-  
+
         <div className="col-md-4">
           <div className="sticky-top-x" style={{ top: '125px' }}>
             <div className="card">
@@ -217,9 +212,9 @@ function Cart() {
                   <strong>Total:</strong>
                   <strong>RM{total.toFixed(2)}</strong>
                 </div>
-  
+
                 <Link to="/checkout" className="btn btn-dark btn-block">Proceed to Checkout</Link>
-  
+
               </div>
             </div>
             <div className="mt-3 p-0 border rounded">
