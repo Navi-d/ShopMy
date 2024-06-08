@@ -9,7 +9,7 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
-  const userId = "6663da073801ff9b916613b6";
+  const userId = "6663da073801ff9b916613b6";  // TODO: connect to userId
 
   useEffect(() => {
     fetchCart();
@@ -17,7 +17,6 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-      // const response = await fetch(`/api/Cart/getCart/${userId}`);
       const response = await fetch(`http://localhost:3001/api/Cart/getCart/${userId}`);
       if (response.ok) {
         const cartData = await response.json();
