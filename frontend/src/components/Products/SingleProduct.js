@@ -1,24 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import ReactStars from 'react-rating-stars-component';
-import {Link, useParams} from 'react-router-dom';
+import {Link, useParams, useNavigate} from 'react-router-dom';
 import ProductCard from './ProductCard';
 import axios from 'axios';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import ScrollToTop from '../Common/ScrollToTop';
 
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 4
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1
+  }
+};
 
 
 const SingleProduct = () => {
+    const navigate = useNavigate();
     const {productId} = useParams();
     //Get from search bar
     const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState(null);
+    
     const [loading, setLoading] = useState(true);
     const [ratingsNumber, setRatingsNumber] = useState(0);
     const [ratingValue, setRatingValue] = useState(0);
     const [productTitle, setProductTitle] = useState('');
     const [productBrand, setProductBrand] = useState('');
     const [productPrice, setProductPrice] = useState(0);
+    const [reported, setReported] = useState(0);
+    const [stock, setStock] = useState(0);
+
+    const userJSON = localStorage.getItem('loggedInUser');
+    const user = JSON.parse(userJSON);
+    const userId = user._id;
+
+    const [quantity, setquantity] = useState(1);
 
     //Variables
-    const ratingEdit = false;
+    const ratingEdit = true;
 
     //Get single product
     useEffect(() => {
@@ -28,15 +61,17 @@ const SingleProduct = () => {
                 const response = await axios.get(`http://localhost:3001/getProduct/${productId}`);
                 setProduct(response.data);
                 console.log('Data is ='+ product)
-                if(product)
-                    setLoading(false);
+                // if(product != null)
+                setLoading(false);
                 
                 //Variable Settings
                 setRatingValue(product.ratingValue);
-                setRatingsNumber(500);
+                setRatingsNumber(product.totalRatings);
                 setProductBrand(product.productBrand);
                 setProductPrice(product.productPrice);
                 setProductTitle(product.productTitle);
+                setReported(product.reported);
+                setStock(product.stockCurrent);
 
                 console.log('data is\n'+ response.data); // Assuming backend responds with user data
             } catch (error) {
@@ -46,16 +81,71 @@ const SingleProduct = () => {
         
         //call the method
         productFunc();
-      }, [product]); //On change of product id
+      }, [loading]); //On change of product id
+
+      
+      //Get Products
+      useEffect(() => {
+          const productsFunc = async (e) => {
+              // e.preventDefault(); //don't refresh page
+              try {
+                  const response = await axios.get('http://localhost:3001/getProducts');
+                  setProducts(response.data);
+                //   setLoading(false);
+                  console.log('data is\n'+ response.data); // Assuming backend responds with user data
+              } catch (error) {
+                console.error(error);
+              }
+          }
+          
+          //call the method
+          productsFunc();
+        }, [loading]);
+
+    //Report Product
+    const reportProduct = async () => {
+        try {
+            setReported(1+reported);
+            const response = await axios(`http://localhost:3001/api/reportProduct/${productId}/${reported}`);
+            console.log(response);
+
+            // alert("Product has been reported. Sorry for the inconvenience")
+            <div className={`alert alert-success mt-3`} role="alert">
+              {"Product has been reported. Sorry for the inconvenience"}
+            </div>
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
+    //Add product to cart
+    const addToCart= async (e) => {
+        // e.preventDefault(); //don't refresh page
+        try {
+            const response = await axios.post('http://localhost:3001/addToCart', {userId, productId, quantity});
+            console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
+    
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const addToWishlist= async (e) => {
+        // e.preventDefault(); //don't refresh page
+        try {
+            const response = await axios.post('http://localhost:3001/addToWishlist', {userId, productId});
+            console.log('data added to wishlist: '+ response.data); // Assuming backend responds with user data
+    
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
       if(loading) {
-        return (
-            <div>Loading...</div>
-        );
-       }
+        
+       } else
 
-
-    
   return (
     <div class="main-product-wrapper py-5 home-wrapper-2">
         <div class="container-xxl">
@@ -101,7 +191,7 @@ const SingleProduct = () => {
                                     <ReactStars
                                         count={5}
                                         size ={24}
-                                        value={ratingValue}
+                                        value={parseInt(ratingValue)}
                                         edit= {ratingEdit}
                                         activeColor='#ffd700' />
                                     <span>{ratingsNumber} Ratings</span>
@@ -133,7 +223,7 @@ const SingleProduct = () => {
                                     </tr>
                                     <tr>
                                         <td><label>Availabiliy : </label></td>
-                                        <td><small>541 in Stock</small></td>
+                                        <td><small>{(stock>0) ? "in Stock":"out of stock"}</small></td>
                                     </tr>
                                     <tr>
                                         <td><label>Size :</label></td>
@@ -148,7 +238,7 @@ const SingleProduct = () => {
                                 </table>
 
                                 <hr/> 
-                                <Link class='a a-modern report-product'>
+                                <Link class='a a-modern report-product' onClick={reportProduct}>
                                     <i class="fa fa-flag-o text-danger"></i>
                                     <span class="text-danger"> Report an issue with this product or seller</span>
                                 </Link>
@@ -181,7 +271,7 @@ const SingleProduct = () => {
                         <div class="col-3">
                             <div class="buy-card rounded-3 shadow-sm p-3 m-3">
                                 <label>Price:</label>
-                                <span class="h5"> RM100.00</span>
+                                <span class="h5"> RM{productPrice}</span>
 
                                 <p>
                                     <br/>
@@ -192,24 +282,29 @@ const SingleProduct = () => {
                                     </span>
                                 </p>
 
-                                <p class="h5 text-success">In Stock </p>
+                                {(stock > 0) ? (<p class="h5 text-success">In Stock </p>): (<p class="h5 text-danger">Out of Stock </p>)}
+
                                 <br/>
                                 
                                 <span class="rounded-2 shadow home-wrapper-2 p-2">
                                     <label>Quantity : </label>
                                     <select name="Quantity" class="home-wrapper-2 rounded-2 ms-2 w-50" id="">
-                                        <option value="manual">1</option>
-                                        <option value="two">2</option>
-                                        <option value="three">3</option>
-                                        <option value="four">4</option>
+                                        <option value="manual" onSelect={(e) => setquantity(1)}>1</option>
+                                        <option value="two" onSelect={(e) => setquantity(2)}>2</option>
+                                        <option value="three" onSelect={(e) => setquantity(3)}>3</option>
+                                        <option value="four" onSelect={(e) => setquantity(4)}>4</option>
                                     </select>
                                 </span>
 
-                                <Link class='a'>
+                                <Link class='a' onClick={e => addToWishlist}>
                                         <small class=""><br/><i class="fa fa-heart-o mt-4"></i> Add to wishlist</small>
                                 </Link>
-                                <button class="button w-100 mt-2">Add to Cart</button>
-                                <button class="button button-2 w-100 mt-2" >Buy it now</button>
+                                <button class="button w-100 mt-2" onClick={e => addToCart()}>Add to Cart</button>
+                                <button class="button button-2 w-100 mt-2"  
+                                onClick={e => {
+                                    addToCart();
+                                    navigate('/cart')
+                                    }}>Buy it now</button>
                             </div>
 
                             {/* Payment Methods */}
@@ -296,10 +391,33 @@ const SingleProduct = () => {
                         <div class="col-12 pb-3">
                             <h4 class="section-heading">You May Also Like</h4>
                         </div>
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
+                        <Carousel
+                            swipeable={true}
+                            draggable={true}
+                            showDots={true}
+                            responsive={responsive}
+                            ssr={true} // means to render carousel on server-side.
+                            infinite={true}
+                            // autoPlay={this.props.deviceType !== "mobile" ? true : false}
+                            // autoPlaySpeed={1000}
+                            keyBoardControl={true}
+                            customTransition="all .5"
+                            transitionDuration={500}
+                            containerClass="carousel-container"
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            // deviceType={this.props.deviceType}
+                            dotListClass="custom-dot-list-style"
+                            itemClass="carousel-item-padding-40-px"
+                            >
+                                {(products==null) ?
+                                    <div class="class"></div>
+                                : products?.map((item) => (
+                                    <ProductCard {...item}/>
+                                    ))
+                                }
+                                
+                        </Carousel>
+                        
                     </div>
                 </div>
 

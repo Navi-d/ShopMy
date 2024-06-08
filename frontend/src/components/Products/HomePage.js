@@ -5,6 +5,28 @@ import Marquee from 'react-fast-marquee';
 import ProductCard from './ProductCard';
 import SpecialProduct from './SpecialProduct';
 import axios from 'axios';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 4
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1
+  }
+};
 
 
 function HomePage() {
@@ -230,10 +252,34 @@ function HomePage() {
                         <h3 class="section-heading">Featured Collection</h3>
                     </div>
 
-                    {/* //Map all the input */}
-                    {products.map((item) => (
-                        <ProductCard {...item}/>
-                        ))}
+                        <Carousel
+                            swipeable={true}
+                            draggable={true}
+                            showDots={true}
+                            responsive={responsive}
+                            ssr={true} // means to render carousel on server-side.
+                            infinite={true}
+                            // autoPlay={this.props.deviceType !== "mobile" ? true : false}
+                            // autoPlaySpeed={1000}
+                            keyBoardControl={true}
+                            customTransition="all .5"
+                            transitionDuration={500}
+                            containerClass="carousel-container"
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            // deviceType={this.props.deviceType}
+                            dotListClass="custom-dot-list-style"
+                            itemClass="carousel-item-padding-40-px"
+                            >
+                            {/* //Map all the input */}
+                            
+                            {(products==null) ?
+                                    <div class="class"></div>
+                                : products?.map((item) => (
+                                    <ProductCard {...item}/>
+                                    ))
+                                }
+                                
+                        </Carousel>;
                     
                 </div>
             </div>
@@ -247,9 +293,14 @@ function HomePage() {
                     </div>
                 </div>
                 <div class="row mx-4">
-                    <SpecialProduct />
-                    <SpecialProduct />
-                    <SpecialProduct />
+                    {/* //Map all the input */}
+                    {(products==null) ?
+                                    <div class="class"></div>
+                                : products.map((item) => (
+                                    //Render only if its special
+                                    item.specialProduct && <SpecialProduct {...item}/>  
+                                ))}
+
                 </div>
             </div>
          </section>

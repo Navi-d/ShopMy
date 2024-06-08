@@ -1,10 +1,47 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import "../Products/search-bar.css"
+import axios from 'axios';
+
 
 function Navbar() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [query, setQuery] = useState('');
+    const [searchFocus, setSearchFocus] = useState(false);
+
+    //Get Products
+    useEffect(() => {
+        const products = async (e) => {
+            // e.preventDefault(); //don't refresh page
+            try {
+                if (!query) {
+                    // If query is empty, set products to an empty array
+                    setProducts(null);
+                    setLoading(false);
+                    setSearchFocus(false);
+                    return; // Exit the function early
+                }
+                
+                const response = await axios.get(`http://localhost:3001/searchProduct/${query}`);
+                setProducts(response.data);
+                setLoading(false);
+                console.log("final data is" + response.data);
+            } catch (error) {
+            console.error(error);
+            }
+        }
+        
+        //call the method
+        products();
+      }, [query]);
+
+
+       
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     const username = loggedInUser ? loggedInUser.username : '';
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSignOut = () => {
         localStorage.removeItem('loggedInUser');
@@ -23,12 +60,65 @@ function Navbar() {
                         <div className="col-md-5 my-auto">
                             <form role="search">
                                 <div className="input-group">
-                                    <input type="search" placeholder="Search your product" className="form-control" />
-                                    <button className="btn bg-white" type="submit">
-                                        <i className="fa fa-search"></i>
-                                    </button>
+                                    <input type="search" placeholder="Search your product" className="form-control" 
+                                    onChange={(e) => {setQuery(e.target.value); setSearchFocus(true)}} 
+                                    onFocus={(e) => {
+                                        if(e.target.value !== '' && query !== '') {setSearchFocus(true)}
+                                    }} 
+                                    onBlur={(e) => { 
+                                        if (e.target.value === '') { 
+                                            setSearchFocus(false)
+                                        } 
+                                      }} 
+                                    />
+
+                                    <Link
+                                        onClick={(e) => {
+                                            setQuery(''); 
+                                            if(location.pathname === '/browse')
+                                                window.location.reload();}
+                                            } 
+
+                                        to={`/browse`}
+                                        state={products}>
+
+                                        <button className="btn bg-white" type="submit">
+                                            <i className="fa fa-search"></i>
+                                        </button>
+                                    </Link>
+                                    
+
+                                    {//Add serach list}
+                                    //Filter by product brand if clicked from search
+                                            }
+                                    
+                                    <div class="search-list p-2 bg-white rounded shadow-sm" 
+                                    id="search-list"
+                                    style = {{
+                                        display: searchFocus ? 'block' : 'none'
+                                    }}>
+                                        {
+                                            products?.map((items) => {
+                                                return <Link class="a"
+                                                onClick={(e) => {
+                                                    setQuery(`${items.productBrand}`); 
+                                                    if(location.pathname === '/browse')
+                                                        window.location.reload();}
+                                                    } 
+
+                                                to={`/browse`}
+                                                state={products}>
+                                                    <div key={items._id}>{items.productTitle}</div>
+                                                </Link>
+                                                
+                                            })
+                                            
+                                        }
+                                    </div>
                                 </div>
                             </form>
+
+                            
                         </div>
                         <div className="col-md-5 my-auto">
                             <ul className="nav justify-content-end">
@@ -69,10 +159,10 @@ function Navbar() {
                     </div>
                 </div>
             </div>
-            <nav className="navbar navbar-expand-lg">
+            <nav className="bottom-navbar navbar navbar-expand-lg">
                 <div className="container-fluid">
                     <a className="navbar-brand d-block d-sm-block d-md-none d-lg-none" href="#">
-                        Funda Ecom
+                        ShopMY
                     </a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>

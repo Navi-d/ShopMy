@@ -20,6 +20,7 @@ import Faq from './components/Support/Faq.js';
 import ContactUs from './components/Support/ContactUs.js';
 import ContactChatbot from './components/Support/ContactChatbot.js';
 import Wishlist from './components/Profile/Wishlist';
+import ScrollToTop from './components/Common/ScrollToTop.js';
 
 
 
@@ -43,6 +44,7 @@ function App() {
       <div className="App">
         {!hideNavbar && <Navbar />}
         <div className="content">
+
           <Routes>
             {/* <Route path="/" element={<Signup />} /> */}
             <Route path="/login" element={<Login />} />
@@ -75,6 +77,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <AppContent />
     </Router>
   );
