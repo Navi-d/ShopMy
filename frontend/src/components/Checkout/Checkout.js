@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 
+
 function Checkout() {
   const [selectedPayment, setSelectedPayment] = useState("credit-card");
   const [showBottomForm, setShowBottomForm] = useState(true);

@@ -7,6 +7,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ScrollToTop from '../Common/ScrollToTop';
 import BreadCrumbs from '../Common/BreadCrumbs'
+import { Modal, Button, Alert } from 'react-bootstrap';
 
 const responsive = {
   superLargeDesktop: {
@@ -52,7 +53,7 @@ const SingleProduct = () => {
     const [quantity, setquantity] = useState(1);
 
     //Variables
-    const ratingEdit = true;
+    const ratingEdit = false;
 
     //Get single product
     useEffect(() => {
@@ -93,7 +94,7 @@ const SingleProduct = () => {
                   const response = await axios.get('http://localhost:3001/getProducts');
                   setProducts(response.data);
                 //   setLoading(false);
-                  console.log('data is\n'+ response.data); // Assuming backend responds with user data
+                //   console.log('data is\n'+ response.data); // Assuming backend responds with user data
               } catch (error) {
                 console.error(error);
               }
@@ -110,10 +111,7 @@ const SingleProduct = () => {
             const response = await axios(`http://localhost:3001/api/reportProduct/${productId}/${reported}`);
             console.log(response);
 
-            // alert("Product has been reported. Sorry for the inconvenience")
-            <div className={`alert alert-success mt-3`} role="alert">
-              {"Product has been reported. Sorry for the inconvenience"}
-            </div>
+            setAlert('success', 'Product has been Reported')
         } catch (e) {
             console.error(e);
         }
@@ -124,31 +122,85 @@ const SingleProduct = () => {
     const addToCart= async (e) => {
         // e.preventDefault(); //don't refresh page
         try {
-            const response = await axios.post('http://localhost:3001/addToCart', {userId, productId, quantity});
+            const response = await axios.post('http://localhost:3001/api/cart/addToCart', {userId, productId, quantity});
             console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
-    
+            setAlert('success', 'Product has been added to Cart')
         } catch (error) {
             console.error(error);
         }
     };
 
-    const addToWishlist= async (e) => {
+    const addToWishlist = async (e) => {
         // e.preventDefault(); //don't refresh page
         try {
-            const response = await axios.post('http://localhost:3001/addToWishlist', {userId, productId});
-            console.log('data added to wishlist: '+ response.data); // Assuming backend responds with user data
-    
+            const response = await axios.post('http://localhost:3001/api/wishlist/addToWishlist', {userId, productId});
+            console.log('data added to wishlist: '); // Assuming backend responds with user data
+            setAlert('success', 'Product has been added to Wishlist')
         } catch (error) {
+            setAlert('danger', 'Product is already in Wishlist')
             console.error(error);
         }
     };
+    
+    const [showAlert, setShowAlert] = useState(false);
+    const [firstRender, setFirstRender] = useState(true);
+    const [alertSettings, setAlertSettings] = useState(['success', 'success'])
+    const setAlert = (type, msg) => {
+        setAlertSettings([type, msg]);
+        setShowAlert(true);
+    }
+    useEffect(() => {
+        if (firstRender) {
+            setFirstRender(false);
+            return;
+          }
 
-      if(loading) {
-        
-       } else
+        const hideAlert = async () => {
+            await new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds
+            setShowAlert(false);
+        };
+    
+        hideAlert();
+      }, [showAlert]);
 
+
+
+
+
+
+
+
+
+
+
+
+    if(loading) {
+    
+    } else 
   return (
     <div class="main-product-wrapper pt-3 home-wrapper-2">
+        {/* <Modal show={loginSuccess} onHide={() => setLoginSuccess(false)}>
+            <Modal.Header closeButton>
+                <Modal.Title style={{ color: "green" }}>Success</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body className="text-center">
+            <p>Logged in successfully!</p>
+            {<div className="spinner-border text-success" role="status"><span className="visually-hidden">Loading...</span></div>}
+            </Modal.Body>
+            <Modal.Footer>
+
+            <Button variant="secondary" onClick={() => setLoginSuccess(false)}>
+                Close
+            </Button>
+            </Modal.Footer>
+        </Modal> */}
+
+        <Alert class="mask" 
+        key={alertSettings[0]} variant={alertSettings[0]} show={showAlert} >
+            {alertSettings[1]}
+        </Alert>
+
         <BreadCrumbs title = {`Product / ${productTitle}`}/>
         <div class="container-xxl">
 
@@ -298,7 +350,7 @@ const SingleProduct = () => {
                                     </select>
                                 </span>
 
-                                <Link class='a' onClick={e => addToWishlist}>
+                                <Link onClick={() => addToWishlist()}>
                                         <small class=""><br/><i class="fa fa-heart-o mt-4"></i> Add to wishlist</small>
                                 </Link>
                                 <button class="button w-100 mt-2" onClick={e => addToCart()}>Add to Cart</button>

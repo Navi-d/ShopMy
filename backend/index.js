@@ -15,13 +15,7 @@ mongoose.connect('mongodb+srv://Navid:NavidShopMy@shopmycluster.fe5vuty.mongodb.
 //import the usermodel: it returns a value
 const UserModel = require('./models/Users');
 
-//Import Routes:
-const ProdApi = require('./routes/ProdApi')
-app.use(ProdApi)
-const wishlist = require('./routes/wishlist')
-app.use(wishlist)
-const Cart = require('./routes/Cart')
-app.use(Cart)
+
 
 app.get("/getUsers", async (req, res) => {
     try {
@@ -161,28 +155,15 @@ app.post('/postContactus', async (req, res) => {
 
 
 
+//Routes
+const cartRoutes = require('./routes/Cart');
+const wishlistRoutes = require('./routes/wishlist');
+const ProdApi = require('./routes/ProdApi')
 
-
-
-
-
-
-
-
-
-
-
-
+app.use(ProdApi)
+app.use('/api/cart', cartRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 app.listen(3001, () => {
     console.log("server has started");
 });
-
-
-
-//Cart
-const cartRoutes = require('./routes/Cart');
-const wishlistRoutes = require('./routes/wishlist');
-
-app.use('/api/cart', cartRoutes);
-app.use('/api/wishlist', wishlistRoutes);
