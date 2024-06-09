@@ -107,6 +107,29 @@ const SingleProduct = () => {
           productsFunc();
         }, [loading]);
 
+        const [showAlert, setShowAlert] = useState(false);
+        const [firstRender, setFirstRender] = useState(true);
+        const [alertSettings, setAlertSettings] = useState(['success', 'success'])
+        const setAlert = (type, msg) => {
+            setAlertSettings([type, msg]);
+            setShowAlert(true);
+        }
+        useEffect(() => {
+            if (firstRender) {
+                setFirstRender(false);
+                return;
+              }
+    
+            const hideAlert = async () => {
+                await new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds
+                setShowAlert(false);
+            };
+        
+            hideAlert();
+          }, [showAlert]);
+
+
+
     //Report Product
     const reportProduct = async () => {
         try {
@@ -129,7 +152,7 @@ const SingleProduct = () => {
                 alert("Sign In to continue");
                 return;
             }
-            const response = await axios.post('http://localhost:3001/api/cart/addToCart', {userId, productId, quantity});
+            const response = await axios.post('http://localhost:3001/api/Cart/addToCart', {userId, productId, quantity});
             console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
             setAlert('success', 'Product has been added to Cart')
         } catch (error) {
@@ -153,26 +176,6 @@ const SingleProduct = () => {
         }
     };
     
-    const [showAlert, setShowAlert] = useState(false);
-    const [firstRender, setFirstRender] = useState(true);
-    const [alertSettings, setAlertSettings] = useState(['success', 'success'])
-    const setAlert = (type, msg) => {
-        setAlertSettings([type, msg]);
-        setShowAlert(true);
-    }
-    useEffect(() => {
-        if (firstRender) {
-            setFirstRender(false);
-            return;
-          }
-
-        const hideAlert = async () => {
-            await new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds
-            setShowAlert(false);
-        };
-    
-        hideAlert();
-      }, [showAlert]);
 
 
 
@@ -208,8 +211,8 @@ const SingleProduct = () => {
         </Modal> */}
 
         <Alert class="mask" 
-        key={alertSettings[0]} variant={alertSettings[0]} show={showAlert} >
-            {alertSettings[1]}
+            key={alertSettings[0]} variant={alertSettings[0]} show={showAlert} >
+                {alertSettings[1]}
         </Alert>
 
         <BreadCrumbs title = {`Product / ${productTitle}`}/>
