@@ -6,6 +6,7 @@ import axios from 'axios';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ScrollToTop from '../Common/ScrollToTop';
+import BreadCrumbs from '../Common/BreadCrumbs'
 
 const responsive = {
   superLargeDesktop: {
@@ -147,7 +148,8 @@ const SingleProduct = () => {
        } else
 
   return (
-    <div class="main-product-wrapper py-5 home-wrapper-2">
+    <div class="main-product-wrapper pt-3 home-wrapper-2">
+        <BreadCrumbs title = {`Product / ${productTitle}`}/>
         <div class="container-xxl">
 
             <div class="main-product-page">

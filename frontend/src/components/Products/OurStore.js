@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react'
 import ProductCard from './ProductCard';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import BreadCrumbs from '../Common/BreadCrumbs'
 
 
 const OurStore = (props) => {
@@ -50,6 +51,7 @@ const OurStore = (props) => {
   return (
     <>
         <div class="browse-page-wrapper home-wrapper-2 p-4">
+            <BreadCrumbs title = 'OurStore'/>
             <div class="container-xxl">
                 <div class="row">
                     <div class="col-3">

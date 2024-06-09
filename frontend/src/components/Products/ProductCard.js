@@ -19,6 +19,7 @@ const ProductCard = (props) => {
     const ratingEdit = false; // Assuming ratingEdit should always be false
     const [addedToWishlist, setAddedToWishlist] = useState(false);
     const [wishlist, setWishlist] = useState([]);
+    const location = useLocation();
 
     const userJSON = localStorage.getItem('loggedInUser');
     // Parse the JSON string to convert it into a JavaScript object
@@ -67,7 +68,11 @@ const ProductCard = (props) => {
     //Inside bootstraprow component
   return (
     <div class="col" style={{"min-width": "250px", "max-width" : "312px"}}>
-      <Link class='a' to={`/product/${_id}`}>
+      <Link class='a' to={`/product/${_id}`} 
+      onClick={e => {
+        if(location.pathname === `/product/${_id}`)
+            window.location.reload();
+      }}>
         <div class="product-card position-relative my-2">
             <div class="wishlist-icon position-absolute align-items-right">
                 <Link onClick={() => {
