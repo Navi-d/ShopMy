@@ -14,7 +14,8 @@ import axios from 'axios';
 
 
 const ProductCard = (props) => {
-    const {_id, productBrand, productTitle, productLink,   productPrice, ratingValue} = props;
+    //window.location.reload();
+    const {_id, productBrand, productTitle, productLink, productImages,  productPrice, discount, ratingValue} = props;
     const productId = _id;
     const ratingEdit = false; // Assuming ratingEdit should always be false
     const [addedToWishlist, setAddedToWishlist] = useState(false);
@@ -25,24 +26,34 @@ const ProductCard = (props) => {
     // Parse the JSON string to convert it into a JavaScript object
     const user = JSON.parse(userJSON);
     // Access the _id property of the object
-    const userId = user._id;
+    const userId = (user != null) ? user._id : null;
     console.log(user)
 
     const addToWishlist= async (e) => {
         // e.preventDefault(); //don't refresh page
         try {
-            const response = await axios.post('http://localhost:3001/addToWishlist', {userId, productId});
+            if(user == null) {
+                alert("Sign In to continue");
+                return;
+            }
+            const response = await axios.post('http://localhost:3001/api/wishlist/addToWishlist', {userId, productId});
             console.log('data added to wishlist: '+ response.data); // Assuming backend responds with user data
-    
+            setAddedToWishlist(!addedToWishlist)
         } catch (error) {
+            alert('error')
             console.error(error);
         }
     };
 
     const removeWishlist= async (e) => {
         // e.preventDefault(); //don't refresh page
+        if(user == null) {
+            alert("SignIn to continue");
+            return;
+        }
+
         try {
-            const response = await axios.post('http://localhost:3001/removeFromWishlist', {userId, productId});
+            const response = await axios.post('http://localhost:3001/api/wishlist/removeFromWishlist', {userId, productId});
             console.log('data remove to wishlist: '+ response.data); // Assuming backend responds with user data
     
         } catch (error) {
@@ -53,9 +64,14 @@ const ProductCard = (props) => {
 
     const addToCart= async (e) => {
         // e.preventDefault(); //don't refresh page
+        if(user == null) {
+            alert("SignIn to continue");
+            return;
+        }
+
         const one = 1;
         try {
-            const response = await axios.post('http://localhost:3001/addToCart', {userId, productId, one});
+            const response = await axios.post('http://localhost:3001/api/cart/addToCart', {userId, productId, one});
             console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
     
         } catch (error) {
@@ -63,16 +79,19 @@ const ProductCard = (props) => {
         }
     };
     
+        
     
     
+
     //Inside bootstraprow component
   return (
     <div class="col" style={{"min-width": "250px", "max-width" : "312px"}}>
-      <Link class='a' to={`/product/${_id}`} 
+      <Link class='a' 
+      to={`/product/${_id}`} 
       onClick={e => {
-        if(location.pathname === `/product/${_id}`)
-            window.location.reload();
+        
       }}>
+
         <div class="product-card position-relative my-2">
             <div class="wishlist-icon position-absolute align-items-right">
                 <Link onClick={() => {
@@ -80,7 +99,6 @@ const ProductCard = (props) => {
                         removeWishlist();
                     } else
                         addToWishlist(); 
-                    setAddedToWishlist(!addedToWishlist)
                     }}>
                     {
                         addedToWishlist ? <i class="fa fa-heart"></i> : <i class="fa fa-heart-o"></i>
@@ -89,16 +107,16 @@ const ProductCard = (props) => {
                 </Link>
             </div>
 
-            <div class="product-image">
+            <div class="product-image mx-2">
                 <img 
                 class="img-fluid rounded-3"
-                src="https://m.media-amazon.com/images/I/51L70T4ehHL._SX425_.jpg" 
+                src={productLink} 
                 alt="prod Img"/>
 
                 <img 
                 class="img-fluid rounded-3"
-                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
-                alt="prod Img" />
+                src={(productImages != null) ? productImages[1] : null}
+                alt="prod Img" /> 
 
             </div>
             {/*  */}
@@ -114,7 +132,12 @@ const ProductCard = (props) => {
                     edit= {ratingEdit}
                     activeColor='#ffd700' />
 
-                <p class="price">RM{productPrice}</p>
+                {/* <p class="price">RM{productPrice-discount}</p> */}
+                <p class="price">
+                    <span class="red-p">RM{productPrice-discount}</span>
+                    &nbsp;
+                    {(discount > 0) ? <strike>RM{productPrice}</strike> : null}
+                </p>
                 
             </div>
 

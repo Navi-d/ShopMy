@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import {React} from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation} from 'react-router-dom';
 import Navbar from "./components/Account/Navbar";
 import Signup from "./components/Account/Signup";
 import Login from "./components/Account/Login";
@@ -21,6 +21,7 @@ import ContactUs from './components/Support/ContactUs.js';
 import ContactChatbot from './components/Support/ContactChatbot.js';
 import Wishlist from './components/Profile/Wishlist';
 import ScrollToTop from './components/Common/ScrollToTop.js';
+import { GlobalStateProvider } from './components/Common/GlobalContext.js';
 
 
 
@@ -44,7 +45,7 @@ function App() {
       <div className="App">
         {!hideNavbar && <Navbar />}
         <div className="content">
-
+        {/* <GlobalStateProvider>  */}
           <Routes>
             {/* <Route path="/" element={<Signup />} /> */}
             <Route path="/login" element={<Login />} />
@@ -54,7 +55,8 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route path="/home" element={<Product />} />
               <Route path="/browse" element={<OurStore />} />
-              <Route path={`/product/:productId`} element={<SingleProduct />} />
+              {/* Adding key to routes making every route unique, not needing to refresh page manually */}
+              <Route path={`/product/:productId`} element={<SingleProduct key={Math.random()} />}  />
               <Route path="/profile" element={<Profile />} />
               <Route path="/Wishlist" element={<Wishlist />} />
               <Route path="/checkout" element={<Checkout />} />
@@ -70,16 +72,20 @@ function App() {
               <Route path={`/track-order/:orderId`} element={<TrackOrderPage/>} />
             </Route>
           </Routes>
+          {/* </GlobalStateProvider>  */}
         </div>
       </div>
     );
   };
 
   return (
-    <Router>
-      <ScrollToTop />
-      <AppContent />
-    </Router>
+    // <GlobalContext> 
+      <Router>
+        <ScrollToTop />
+        <AppContent />
+      </Router>
+    // </GlobalContext>
+    
   );
 }
 

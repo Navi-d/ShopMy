@@ -28,6 +28,26 @@ const responsive = {
   }
 };
 
+const responsive_main = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 1
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
+
 
 function HomePage() {
     const [products, setProducts] = useState(null);
@@ -71,83 +91,72 @@ function HomePage() {
          <section class="home-wrapper-1 py-5">
             <div class="container-xxl">
                 <div class="row">
-                    <div class="col-6">
-                        <div class="main-banner-content position-relative me-3 rounded-3 bg-white ">
-                            <img 
-                            class="img-fluid shadow-sm"
-                            src='https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-pro-finish-select-202212-12-9inch-space-gray-wificell_AV2?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1670865919694' 
-                            alt='Main banner' />
-
-                            <div class="main-banner-content position-absolute h-100">
-                                <h4>SUPER CHARGED FOR PROS</h4>
-                                <h5>iPad Pro</h5>
-                                <p class="mb-4">From RM999</p>
-                                <Link class="button">BUY NOW</Link>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6 ">
-                        <div class="d-flex flex-wrap mt-4 justify-content-between align-items-center ">
-                            <div class="small-banner rounded-3 position-relative mb-2">
+                    <div class="col-12">
+                    <Carousel
+                            swipeable={true}
+                            draggable={false}
+                            showDots={true}
+                            responsive={responsive_main}
+                            ssr={true} // means to render carousel on server-side.
+                            infinite={true}
+                            autoPlay={true}
+                            autoPlaySpeed={1000}
+                            keyBoardControl={true}
+                            customTransition="all .5"
+                            transitionDuration={1000}
+                            containerClass="carousel-container"
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            deviceType="tablet"
+                            dotListClass="custom-dot-list-style"
+                            itemClass="carousel-item-padding-40-px"
+                            >
+                            {/* //Map all the input */}
+                            
+                            <div class="main-banner-content me-3 rounded-3 bg-black">
                                 <img 
                                 class="img-fluid shadow-sm"
-                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
+                                src='https://www.apple.com/newsroom/images/product/ipad/standard/apple_ipad-pro-spring21_hero_04202021_big.jpg.large.jpg' 
                                 alt='Main banner' />
 
-                                <div class="small-banner-content position-absolute">
-                                    <h4>SUPER CHARGED FOR PROS</h4>
-                                    <h5>iPad Pro</h5>
-                                    <p>From RM999</p>
-                                    {/* <Link class="button">BUY NOW</Link> */}
-                                </div>
+                                    <div class="main-banner-content position-absolute h-100">
+                                        <h4>SUPER CHARGED FOR PROS</h4>
+                                        <h5 className='text-white'>iPad Pro</h5>
+                                        <p class="mb-4 text-secondary">From RM999</p>
+                                        <Link class="button" to="/product/6665bb1584865b8d87b3e6d5">BUY NOW</Link>
+                                    </div>
                             </div>
 
-                            <div class="small-banner rounded-3 position-relative mb-2">
+                            <div class="main-banner-content me-3 rounded-3 bg-white">
                                 <img 
                                 class="img-fluid shadow-sm"
-                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
+                                src='https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-pro-finish-select-202212-12-9inch-space-gray-wificell_AV2?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1670865919694' 
                                 alt='Main banner' />
 
-                                <div class="small-banner-content position-absolute ">
-                                    <h4>BEST SALE</h4>
-                                    <h5>iPad Pro</h5>
-                                    <p>From RM999</p>
-                                    {/* <Link class="button">BUY NOW</Link> */}
-                                </div>
+                                    <div class="main-banner-content position-absolute h-100">
+                                        <h4>SLICK FOR ADVENTURE</h4>
+                                        <h5>iPad Mini</h5>
+                                        <p class="mb-4">From RM999</p>
+                                        <Link class="button" to="/product/6665bb6384865b8d87b3e6d6">BUY NOW</Link>
+                                    </div>
                             </div>
 
-                            <div class="small-banner rounded-3 position-relative ">
+                            <div class="main-banner-content me-3 rounded-3 bg-white">
                                 <img 
                                 class="img-fluid shadow-sm"
-                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
+                                src='https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc4/Zenbook-14-OLED_UM3406HA_Product-photo_Jade-Black_06_header.jpeg' 
                                 alt='Main banner' />
 
-                                <div class="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL</h4>
-                                    <h5>iPad Pro</h5>
-                                    <p>From RM999</p>
-                                    {/* <Link class="button">BUY NOW</Link> */}
-                                </div>
+                                    <div class="main-banner-content position-absolute h-100">
+                                        <h4>SUPER CHARGED FOR PROS</h4>
+                                        <h5>Asus Zenbook 14</h5>
+                                        <p class="mb-4">From RM999</p>
+                                        <Link class="button" to="/product/6665a3fb84865b8d87b3e6d1">BUY NOW</Link>
+                                    </div>
                             </div>
-
-                            <div class="small-banner rounded-3 position-relative ">
-                                <img 
-                                class="img-fluid shadow-sm"
-                                src='https://resource.logitech.com/w_695,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/webcams/c922/c922-feature-2.jpg?v=1' 
-                                alt='Main banner' />
-
-                                <div class="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL</h4>
-                                    <h5>iPad Pro</h5>
-                                    <p>From RM999</p>
-                                    {/* <Link class="button">BUY NOW</Link> */}
-                                </div>
-                            </div>
-                        </div>
+                                
+                        </Carousel>;
                         
                     </div>
-                    
                 </div>
             </div>
          </section>
@@ -204,46 +213,7 @@ function HomePage() {
             </div>
          </section>
 
-         <section class="home-wrapper-2 py-5">
-            <div class="container-xxl">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="categories rounded-2 d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center gap-30">
-                                <div>
-                                    <h6>Cameras</h6>
-                                    <p>10 Items</p>
-                                </div>
-                                <i class="fa fa-camera fa-3x"></i>
-                            </div>
-                            <div class="d-flex align-items-center gap-30">
-                                <div>
-                                    <h6>Smart TV</h6>
-                                    <p>10 Items</p>
-                                </div>
-                                <i class="fa fa-tv fa-4x"></i>
-                            </div>
-
-                            <div class="d-flex align-items-center gap-30">
-                                <div>
-                                    <h6>Smart Phones</h6>
-                                    <p>10 Items</p>
-                                </div>
-                                <i class="fa fa-mobile fa-5x"></i>
-                            </div>
-                            <div class="d-flex align-items-center gap-30">
-                                <div>
-                                    <h6>Smart Watches</h6>
-                                    <p>10 Items</p>
-                                </div>
-                                <i class="fa fa-clock-o fa-4x"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-         </section>
+         
 
          <section class="product-wrapper">
             <div class="continer-xxl">

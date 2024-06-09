@@ -8,18 +8,37 @@ import axios from 'axios';
 let ratingEdit = false;
 // let productLink = "/home";
 
-const addToCart = (productId) => {
-    //Given the Product Id, add the product to cart. If needed you can pass the whole product information
-    //But just for simplicity, pass id then axios(/getProduct/${productId}) to get product details
-    return 0
-};
+
 
 const SpecialProduct = (props) => {
-    const {_id, productBrand, productTitle, productLink,   productPrice, discount, ratingValue, stockCurrent, stockMax, specialProduct} = props;
+    const {_id, productBrand, productTitle, productLink, productImages,  productPrice, discount, ratingValue, stockCurrent, stockMax, specialProduct} = props;
 
     const [products, setProducts] = useState(null);
     const [loading, setLoading] = useState(true);
+    const productId = _id;
+    const userJSON = localStorage.getItem('loggedInUser');
+    // Parse the JSON string to convert it into a JavaScript object
+    const user = JSON.parse(userJSON);
+    // Access the _id property of the object
+    const userId = (user != null) ? user._id : null;
+    console.log(user)
 
+    const addToCart= async (e) => {
+        // e.preventDefault(); //don't refresh page
+        if(user == null) {
+            alert("SignIn to continue");
+            return;
+        }
+    
+        const one = 1;
+        try {
+            const response = await axios.post('http://localhost:3001/api/cart/addToCart', {userId, productId, one});
+            console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
+            alert('product added to cart')  
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
   return (
     <div class="col-6 mb-3">
@@ -28,7 +47,7 @@ const SpecialProduct = (props) => {
             <div class="d-flex justify-content-between p-3">
                 <div>
                     <img class="product-image img-fluid shadow-sm rouded-3"
-                    src="Products/images/amazon-ring.jpg" alt="watch alt" />
+                    src={productLink} alt="watch alt" />
                 </div>
 
                 <div class="special-product-content px-5 w-100">
@@ -41,9 +60,9 @@ const SpecialProduct = (props) => {
                     edit= {ratingEdit}
                     activeColor='#ffd700' />
                     <p class="price">
-                        <span class="red-p">RM{productPrice}</span>
+                        <span class="red-p">RM{productPrice-discount}</span>
                         &nbsp;
-                        <strike>RM{productPrice-discount}</strike>
+                        {(discount > 0) ? <strike>RM{productPrice}</strike> : null}
                     </p>
                     
                     <div class="discount-till mb-5">
@@ -61,10 +80,13 @@ const SpecialProduct = (props) => {
                         
                     </div>
                     
-                    <Link class="button button-sm" onClick={addToCart()}>
+                    <button class="button button-sm" onClick={addToCart}
+                    style={{
+                        position: 'relative'
+                    }}>
                         {/* <i class="fa fa-cart-plus fa-3x fa-pull-left position-absolute"></i> */}
                         Add to Cart
-                    </Link>
+                    </button>
                 </div>
 
                 

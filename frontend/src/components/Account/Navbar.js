@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import "../Products/search-bar.css"
 import axios from 'axios';
+import { GlobalContext } from '../Common/GlobalContext.js';
 
 
 function Navbar() {
@@ -9,7 +10,8 @@ function Navbar() {
     const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState('');
     const [searchFocus, setSearchFocus] = useState(false);
-
+    // const { globalState, setGlobalState } = useContext(GlobalContext);
+    
     //Get Products
     useEffect(() => {
         const products = async (e) => {
@@ -125,8 +127,8 @@ function Navbar() {
                                 {loggedInUser ? (
                                     <>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="#">
-                                                <i className="fa fa-shopping-cart"></i> Cart (0)
+                                            <a className="nav-link" href="/cart">
+                                                <i className="fa fa-shopping-cart"></i> Cart ({0})
                                             </a>
                                         </li>
                                         <li className="nav-item">
@@ -138,11 +140,10 @@ function Navbar() {
                                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i className="fa fa-user"></i> {username}
                                             </a>
-                                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <Link className="dropdown-item" to="/profile"><i className="fa fa-user"></i> Profile</Link>
-                                                <li><a className="dropdown-item" href="#"><i className="fa fa-list"></i> My Orders</a></li>
-                                                <Link className="dropdown-item" to="/profile"><i className="fa fa-heart"></i> My Wishlist</Link>
-                                                <li><a className="dropdown-item" href="#"><i className="fa fa-shopping-cart"></i> My Cart</a></li>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <li><a class="dropdown-item" href="/profile"><i class="fa fa-user"></i> Profile</a></li>
+                                                <li><a class="dropdown-item" href="/manageorders"><i class="fa fa-list"></i> My Orders</a></li>
+                                                <li><a class="dropdown-item" href="/support"><i class="fa fa-headphones"></i> Support</a></li>
                                                 <li><button className="dropdown-item" onClick={handleSignOut}><i className="fa fa-sign-out"></i> Sign out</button></li>
                                             </ul>
                                         </li>
