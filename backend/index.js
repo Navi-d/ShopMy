@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
+
 app.use(express.json());
 app.use(cors());
 
@@ -13,6 +14,8 @@ mongoose.connect('mongodb+srv://Navid:NavidShopMy@shopmycluster.fe5vuty.mongodb.
 
 //import the usermodel: it returns a value
 const UserModel = require('./models/Users');
+
+
 
 app.get("/getUsers", async (req, res) => {
     try {
@@ -123,30 +126,7 @@ app.post("/resetPassword", async (req, res) => {
 });
 
 
-//Products
-let ProductModel = require('./models/Products')
 
-app.get('/getProducts', async (req, res) => {
-    try {
-        const result = await ProductModel.find({});
-        res.json(result);
-    } catch (error) {
-        res.json(error);
-    }
-})
-
-app.get('/getProduct/:id', async (req, res) => {
-    try {
-        const result = await ProductModel.findById(req.params.id);
-        console.log("Product Data Sent")
-        if (!result) {
-            return res.status(404).json({ error: 'Product not found' });
-        }
-        res.json(result);
-    } catch (error) {
-        res.json(error);
-    }
-})
 
 
 //Contactus
@@ -190,3 +170,10 @@ app.use('/api/checkout', checkoutRoutes)
 app.use('/api/vouchers', voucherRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+const ProdApi = require('./routes/ProdApi')
+
+app.use(ProdApi)
+
+app.listen(3001, () => {
+    console.log("server has started");
+});

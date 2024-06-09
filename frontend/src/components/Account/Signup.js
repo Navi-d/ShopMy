@@ -10,10 +10,40 @@ function Signup() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [signupError, setSignupError] = useState('');
 
+  const validatePassword = (password) => {
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) {
+      return `Password must be at least ${minLength} characters long.`;
+    }
+    if (!hasUppercase) {
+      return 'Password must contain at least one uppercase letter.';
+    }
+    if (!hasLowercase) {
+      return 'Password must contain at least one lowercase letter.';
+    }
+    if (!hasNumber) {
+      return 'Password must contain at least one number.';
+    }
+    if (!hasSpecialChar) {
+      return 'Password must contain at least one special character.';
+    }
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setSignupError('Passwords do not match.');
+      return;
+    }
+    const passwordValidationError = validatePassword(password);
+    if (passwordValidationError) {
+      setSignupError(passwordValidationError);
       return;
     }
     try {

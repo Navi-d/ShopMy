@@ -15,12 +15,39 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
     productPrice: {
-        type: String,
-        required: true
+        type: Number,
+        required: true,
+        default: 0
+    },
+    discount: {
+        type: Number,
+        required: true,
+        default: 0
     },
     ratingValue: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
+    },
+    totalRatings: {
+        type:Number,
+        default: 0
+    },
+    reported: {
+        type:Number,
+        default: 0
+    },
+    stockCurrent: {
+        type: Number,
+        default: 50
+    },
+    stockMax: {
+        type: Number,
+        default: 100
+    },
+    specialProduct: {
+        type: Boolean,
+        default: false
     }
 });
 
