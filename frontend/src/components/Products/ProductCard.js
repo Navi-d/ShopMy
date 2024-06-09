@@ -30,17 +30,17 @@ const ProductCard = (props) => {
     console.log(user)
 
     const addToWishlist= async (e) => {
-        // e.preventDefault(); //don't refresh page
         try {
+            // e.preventDefault(); //don't refresh page
             if(user == null) {
                 alert("Sign In to continue");
                 return;
             }
             const response = await axios.post('http://localhost:3001/api/wishlist/addToWishlist', {userId, productId});
             console.log('data added to wishlist: '+ response.data); // Assuming backend responds with user data
-            setAddedToWishlist(!addedToWishlist)
+            setAddedToWishlist(true)
+            // alert('Product added to wishlist')
         } catch (error) {
-            alert('error')
             console.error(error);
         }
     };
@@ -55,7 +55,8 @@ const ProductCard = (props) => {
         try {
             const response = await axios.post('http://localhost:3001/api/wishlist/removeFromWishlist', {userId, productId});
             console.log('data remove to wishlist: '+ response.data); // Assuming backend responds with user data
-    
+            setAddedToWishlist(false)
+            // alert('Product Removed from wishlist')
         } catch (error) {
             console.error(error);
         }
@@ -78,6 +79,32 @@ const ProductCard = (props) => {
             console.error(error);
         }
     };
+
+    
+
+    const getWishlist= async (e) => {
+        // e.preventDefault(); //don't refresh page
+        if(user == null) {
+            alert("SignIn to continue");
+            return;
+        }
+        
+        try {
+            const response = await axios.get(`http://localhost:3001/api/wishlist/getWishlist/${userId}`);
+            console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
+            setWishlist(response.data);
+
+            if (response.data.some((item) => item.productId._id === productId)) {
+                setAddedToWishlist(true);
+                // alert('data found!')
+            } else {
+                setAddedToWishlist(false);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {getWishlist()}, []);
     
         
     

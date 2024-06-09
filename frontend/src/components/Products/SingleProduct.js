@@ -131,8 +131,9 @@ const SingleProduct = () => {
 
 
     //Report Product
-    const reportProduct = async () => {
+    const reportProduct = async (e) => {
         try {
+            e.preventDefault();
             setReported(1+reported);
             const response = await axios(`http://localhost:3001/api/reportProduct/${productId}/${reported}`);
             console.log(response);
