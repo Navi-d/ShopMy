@@ -361,7 +361,7 @@ const SingleProduct = () => {
                                     </select>
                                 </span>
 
-                                <Link onClick={() => addToWishlist()}>
+                                <Link onClick={(e) => {e.preventDefault(); addToWishlist()}}>
                                         <small class=""><br/><i class="fa fa-heart-o mt-4"></i> Add to wishlist</small>
                                 </Link>
                                 <button class="button w-100 mt-2" onClick={e => addToCart()}>Add to Cart</button>

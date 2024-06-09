@@ -174,6 +174,6 @@ const ProdApi = require('./routes/ProdApi')
 
 app.use(ProdApi)
 
-app.listen(3001, () => {
+app.listen(3002, () => {
     console.log("server has started");
 });
