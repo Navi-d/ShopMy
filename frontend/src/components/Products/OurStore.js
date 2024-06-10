@@ -1,10 +1,57 @@
-import React from 'react'
+import React, { useEffect, useState} from 'react'
 import ProductCard from './ProductCard';
+import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import BreadCrumbs from '../Common/BreadCrumbs'
 
-const OurStore = () => {
+
+const OurStore = (props) => {
+    const [products, setProducts] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    //Get Products from Search Results
+    const location = useLocation();
+    // console.log('the products from state var is ' + location.state)
+
+
+    //Get Products
+    useEffect(() => {
+        const products = async (e) => {
+            // e.preventDefault(); //don't refresh page
+            try {
+                if(location.state != null && location.state != []) {
+                    console.log(location.state);
+                    setProducts(location.state);
+                    setLoading(false);
+                    return;
+                }
+                const response = await axios.get('http://localhost:3001/getProducts');
+                setProducts(response.data);
+                setLoading(false);
+                console.log('data is\n'+ response.data); // Assuming backend responds with user data
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    
+        //call the method
+        products();
+    }, []);
+
+
+    
+    
+
+    if(loading) {
+        return (
+            <div>Loading...</div>
+        );
+    }
+
   return (
     <>
         <div class="browse-page-wrapper home-wrapper-2 p-4">
+            <BreadCrumbs title = 'OurStore'/>
             <div class="container-xxl">
                 <div class="row">
                     <div class="col-3">
@@ -119,7 +166,7 @@ const OurStore = () => {
                                 
 
                                <div class="d-flex gap-10 justify-content-between align-items-center">
-                                    <p class="mt-2 d-block me-2">7 products</p>
+                                    <p class="mt-2 d-block me-2">{products.length} products</p>
                                     <i class="fa fa-bars fa-1x rounded-2 p-2 m-0 bg-light"></i> 
                                     {/* <i class="fa fa-bars fa-1x rounded-2 p-2 bg-light"></i> 
                                     <i class="fa fa-bars fa-1x rounded-2 p-2 bg-light"></i>  */}
@@ -132,13 +179,11 @@ const OurStore = () => {
 
                         {/* Add the boxes just below it */}
                         <div class="d-flex gap-15 flex-wrap">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
+
+                            {products.map((item) => (
+                                <ProductCard {...item}/>
+                                ))}
+
                         </div>
                         
                     </div>

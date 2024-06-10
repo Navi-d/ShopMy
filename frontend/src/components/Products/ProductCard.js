@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactStars from 'react-rating-stars-component';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 // //Star rating value
 // let ratingValue = 3;
@@ -9,39 +10,140 @@ import { Link } from 'react-router-dom';
 // let productTitle = 'Ring Video Doorbell, Venetian Bronze with All-new Ring Indoor Cam';
 // let productBrand = 'Amazon';
 // let productPrice = '100.00';]
+//posting data
 
-const addToCart = (productId) => {
-    //Given the Product Id, add the product to cart. If needed you can pass the whole product information
-    //But just for simplicity, pass id then axios(/getProduct/${productId}) to get product details
-    return 0
-};
 
 const ProductCard = (props) => {
-    const {_id, productBrand, productTitle, productLink,   productPrice, ratingValue} = props;
+    //window.location.reload();
+    const {_id, productBrand, productTitle, productLink, productImages,  productPrice, discount, ratingValue} = props;
     const productId = _id;
     const ratingEdit = false; // Assuming ratingEdit should always be false
+    const [addedToWishlist, setAddedToWishlist] = useState(false);
+    const [wishlist, setWishlist] = useState([]);
+    const location = useLocation();
+
+    const userJSON = localStorage.getItem('loggedInUser');
+    // Parse the JSON string to convert it into a JavaScript object
+    const user = JSON.parse(userJSON);
+    // Access the _id property of the object
+    const userId = (user != null) ? user._id : null;
+    console.log(user)
+
+    const addToWishlist= async (e) => {
+        try {
+            // e.preventDefault(); //don't refresh page
+            if(user == null) {
+                alert("Sign In to continue");
+                return;
+            }
+            const response = await axios.post('http://localhost:3001/api/wishlist/addToWishlist', {userId, productId});
+            console.log('data added to wishlist: '+ response.data); // Assuming backend responds with user data
+            setAddedToWishlist(true)
+            // alert('Product added to wishlist')
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const removeWishlist= async (e) => {
+        // e.preventDefault(); //don't refresh page
+        if(user == null) {
+            alert("SignIn to continue");
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:3001/api/wishlist/removeFromWishlist', {userId, productId});
+            console.log('data remove to wishlist: '+ response.data); // Assuming backend responds with user data
+            setAddedToWishlist(false)
+            // alert('Product Removed from wishlist')
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    const addToCart= async (e) => {
+        // e.preventDefault(); //don't refresh page
+        if(user == null) {
+            alert("SignIn to continue");
+            return;
+        }
+
+        const one = 1;
+        try {
+            const response = await axios.post('http://localhost:3001/api/cart/addToCart', {userId, productId, one});
+            console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
     
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    
+
+    const getWishlist= async (e) => {
+        // e.preventDefault(); //don't refresh page
+        if(user == null) {
+            alert("SignIn to continue");
+            return;
+        }
+        
+        try {
+            const response = await axios.get(`http://localhost:3001/api/wishlist/getWishlist/${userId}`);
+            console.log('data added to cart: '+ response.data); // Assuming backend responds with user data
+            setWishlist(response.data);
+
+            if (response.data.some((item) => item.productId._id === productId)) {
+                setAddedToWishlist(true);
+                // alert('data found!')
+            } else {
+                setAddedToWishlist(false);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {getWishlist()}, []);
+    
+        
+    
+    
+
     //Inside bootstraprow component
   return (
     <div class="col" style={{"min-width": "250px", "max-width" : "312px"}}>
-      <Link class='a' to={`/product/${_id}`}>
+      <Link class='a' 
+      to={`/product/${_id}`} 
+      onClick={e => {
+        
+      }}>
+
         <div class="product-card position-relative my-2">
             <div class="wishlist-icon position-absolute align-items-right">
-                <Link>
-                    <i class="fa fa-heart-o"></i>
+                <Link onClick={() => {
+                    if(addedToWishlist) {
+                        removeWishlist();
+                    } else
+                        addToWishlist(); 
+                    }}>
+                    {
+                        addedToWishlist ? <i class="fa fa-heart"></i> : <i class="fa fa-heart-o"></i>
+                    }
+                    
                 </Link>
             </div>
 
-            <div class="product-image">
+            <div class="product-image mx-2">
                 <img 
                 class="img-fluid rounded-3"
-                src="https://m.media-amazon.com/images/I/51L70T4ehHL._SX425_.jpg" 
+                src={productLink} 
                 alt="prod Img"/>
 
                 <img 
                 class="img-fluid rounded-3"
-                src="https://m.media-amazon.com/images/I/51KfTljedfL._SX425_.jpg"
-                alt="prod Img" />
+                src={(productImages != null) ? productImages[1] : null}
+                alt="prod Img" /> 
 
             </div>
             {/*  */}
@@ -57,13 +159,18 @@ const ProductCard = (props) => {
                     edit= {ratingEdit}
                     activeColor='#ffd700' />
 
-                <p class="price">RM{productPrice}</p>
+                {/* <p class="price">RM{productPrice-discount}</p> */}
+                <p class="price">
+                    <span class="red-p">RM{productPrice-discount}</span>
+                    &nbsp;
+                    {(discount > 0) ? <strike>RM{productPrice}</strike> : null}
+                </p>
                 
             </div>
 
             <div class="action-bar position-absolute">
                 <div class="d-flex flex-column gap-15">
-                    <Link to={productLink}>
+                    <Link to={`/product/${_id}`} >
                         <i class="fa fa-eye"></i>
                     </Link>
 
@@ -72,9 +179,8 @@ const ProductCard = (props) => {
                         //Perhaps can change to button
                         //Cart Icon in Card view of product
                     }
-                    <Link to={productLink}>
-                        {addToCart(productId)}
-                        <i class="fa fa-cart-plus"></i>
+                    <Link >
+                        <i onClick={() => addToCart()}class="fa fa-cart-plus"></i>
                     </Link>
                 </div>
             </div>

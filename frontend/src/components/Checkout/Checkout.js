@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
+
 
 function Checkout() {
   const [selectedPayment, setSelectedPayment] = useState("credit-card");
@@ -12,8 +13,79 @@ function Checkout() {
   const [errorMessage, setErrorMessage] = useState('');
   const [placeholder, setPlaceholder] = useState('Enter code or voucher');
   const [invalidCode, setInvalidCode] = useState(false);
-  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [totalAmount, setTotal] = useState(0);
 
+  const navigate = useNavigate();
+  
+const userJSON = localStorage.getItem('loggedInUser');
+// Parse the JSON string to convert it into a JavaScript object
+const user = JSON.parse(userJSON);
+// Access the _id property of the object
+const userId = user._id;
+
+
+  useEffect(() => {
+    fetchCart();
+    fetchVouchers();
+    const fetchData = async () => {
+    try {
+      const cartResponse = await fetch(`http://localhost:3001/api/Cart/getCart/${userId}`);
+      const voucherResponse = await fetch('http://localhost:3001/api/vouchers/getVoucher');
+
+      if (cartResponse.ok && voucherResponse.ok) {
+        const cartData = await cartResponse.json();
+        const voucherData = await voucherResponse.json();
+
+        const subtotal = cartData.reduce((total, item) => (total + parseFloat(item.productId.productPrice) * item.quantity), 0).toFixed(2);
+        setSubtotal(subtotal);
+
+        const tax = parseFloat((subtotal * 0.1).toFixed(2));
+        setTax(tax);
+
+        const totalAmount = parseFloat(subtotal + tax + 2).toFixed(2);
+        setTotal(totalAmount);
+      } else {
+        console.error('Error fetching cart or vouchers');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchData();
+  }, []);
+
+  const fetchVouchers = async () => {
+    try {
+        const response = await fetch('http://localhost:3001/api/vouchers/getVoucher');
+        if (response.ok) {
+          const voucherData = await response.json();
+          setVouchers(voucherData);
+          console.log(voucherData)
+        }
+    } catch (error) {
+        console.log("IS an ERROR");
+    }
+};
+
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/Cart/getCart/${userId}`);
+      if (response.ok) {
+        const cartData = await response.json();
+        setCartItems(cartData);
+      } else {
+        const errorMessage = await response.text();
+        console.error('Error getting cart:', errorMessage);
+      }
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+    }
+  };
 
   const handlePaymentOptionClick = (option) => {
     setSelectedPayment(option);
@@ -28,7 +100,7 @@ function Checkout() {
   const applyVoucher = (voucher) => {
     setSelectedVoucher(voucher.code);
     setDiscount(voucher.amount);
-    const newTotal = subtotal + tax + 2 - voucher.amount;
+    const newTotal = (subtotal + tax + 2 - voucher.amount).toFixed(2);
     setTotal(newTotal);
     updateTotal(newTotal);
   };
@@ -57,24 +129,7 @@ function Checkout() {
     setPlaceholder('Enter code or voucher');
   };
 
-  const vouchers = [
-    { id: 1, code: "VOUCHER1", amount: 10 },
-    { id: 2, code: "VOUCHER2", amount: 2 },
-    { id: 3, code: "VOUCHER5", amount: 5 },
-    { id: 4, code: "VOUCHER3", amount: 3 },
-    { id: 5, code: "VOUCHER14", amount: 14 },
-    { id: 6, code: "VOUCHER16", amount: 16 },
-  ];
 
-  const items = [
-    { id: 1, img: "https://images-na.ssl-images-amazon.com/images/I/714im+KNaqL._AC_UL320_SR320,320_.jpg", name: "Item 1", description: "this is the description for item 1", price: 10 },
-    { id: 2, img: "https://images-na.ssl-images-amazon.com/images/I/714im+KNaqL._AC_UL320_SR320,320_.jpg", name: "item 2", description: "this is the description for item 2", price: 5 },
-  ];
-
-  const subtotal = items.reduce((total, item) => total + item.price, 0);
-  const tax = subtotal * 0.1;
-
-  const [total, setTotal] = useState(subtotal + tax + 2);
 
   const updateTotal = (total) =>{
     if (total < 0) {
@@ -82,9 +137,9 @@ function Checkout() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    
     if (selectedPayment !== "cash-on-delivery") {
       const nameOnCard = e.target.cardName.value;
       const cardNumber = e.target.cardNumber.value;
@@ -97,13 +152,51 @@ function Checkout() {
       }
     }
 
-    document.getElementById('notification').classList.remove('hide');
-    setTimeout(function() {
-      document.getElementById('notification').classList.add('hide');
-      setTimeout(function() {
-        navigate('/payment'); 
-      }, 500); 
-    }, 1500);
+    const deliveryAddress = {
+      address: e.target.address.value,
+      city: e.target.city.value,
+      country: e.target.country.value,
+      postcode: e.target.postcode.value
+    };
+
+    const orders = cartItems.map(item => ({
+      productID: item.productId._id,
+      quantity: item.quantity
+    }));
+
+    const orderData = {
+      userId,
+      orders,
+      totalPayment: totalAmount,
+      paymentType: selectedPayment,
+      deliveryAddress
+    };
+    
+    try {
+      const response = await fetch('http://localhost:3001/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+        document.getElementById('notification').classList.remove('hide');
+        setTimeout(function() {
+          document.getElementById('notification').classList.add('hide');
+          setTimeout(function() {
+            navigate('/payment'); 
+          }, 500); 
+        }, 1500);
+      } else {
+        const errorMessage = await response.text();
+        console.error('Error placing order:', errorMessage);
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+    }
+
     e.target.reset();
   };
 
@@ -273,24 +366,24 @@ function Checkout() {
                   </div>
                   
                   <div class="card-body p-4">
-                    {items.map((item) =>(
+                    {cartItems.map((item) =>(
                       <div class="order-item d-flex justify-content-between mb-3">
                         <div class="d-flex">
                           <img
-                            src={item.img}
+                            src={item.productId.productLink}
                             alt="item"
                             class="img-thumbnail mr-3"
                           />
                           <div class="item-details" >
                             <div class="order-summary d-flex  mb-2">
-                              <p class="item-name">{item.name}</p>
+                              <p class="item-name">{item.productId.productTitle}</p>
                             </div>
                             <p class="item-description">
-                              {item.description}
+                              Quantity: {item.quantity}
                             </p>
                           </div>
                         </div>
-                        <p class="item-price">RM{item.price}</p>
+                        <p class="item-price" style={{marginTop: "20px"}}>RM{(item.productId.productPrice * item.quantity).toFixed(2)}</p>
                       </div>
                     ))}
                     
@@ -317,7 +410,7 @@ function Checkout() {
                     <hr class="my-2" />
                     <div class="order-summary d-flex justify-content-between font-weight-bold">
                       <p>Total:</p>
-                      <p>RM{total}</p>
+                      <p>RM{totalAmount}</p>
                     </div>
                     <div class="d-flex mt-4">
                       <input

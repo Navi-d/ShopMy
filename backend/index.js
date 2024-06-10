@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 
+
 app.use(express.json());
 app.use(cors());
 
@@ -17,9 +18,20 @@ const FaqModel = require('./models/Faqs');
 
 
 
+
+
 app.get("/getUsers", async (req, res) => {
     try {
         const result = await UserModel.find({});
+        res.json(result);
+    } catch (error) {
+        res.json(error);
+    }
+});
+
+app.get("/getUser/:userId", async (req, res) => {
+    try {
+        const result = await UserModel.findById(req.params.userId);
         res.json(result);
     } catch (error) {
         res.json(error);
@@ -127,30 +139,6 @@ app.post("/resetPassword", async (req, res) => {
 
 
 
-//Products
-let ProductModel = require('./models/Products')
-
-app.get('/getProducts', async (req, res) => {
-    try {
-        const result = await ProductModel.find({});
-        res.json(result);
-    } catch (error) {
-        res.json(error);
-    }
-})
-
-app.get('/getProduct/:id', async (req, res) => {
-    try {
-        const result = await ProductModel.findById(req.params.id);
-        console.log("Product Data Sent")
-        if (!result) {
-            return res.status(404).json({ error: 'Product not found' });
-        }
-        res.json(result);
-    } catch (error) {
-        res.json(error);
-    }
-})
 
 
 //Contactus
@@ -187,5 +175,28 @@ app.get('/getFaqs', async (req, res) => {
 
 
 app.listen(3001, () => {
+    console.log("server has started");
+});
+
+
+
+//Cart
+const cartRoutes = require('./routes/Cart');
+const wishlistRoutes = require('./routes/wishlist');
+const voucherRoutes = require('./routes/voucher');
+const checkoutRoutes = require('./routes/checkout');
+const profile = require('./routes/profile');
+const ProdApi = require('./routes/ProdApi')
+
+app.use('/api/checkout', checkoutRoutes)
+app.use('/api/vouchers', voucherRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+
+
+app.use(ProdApi)
+app.use(profile)
+
+app.listen(3002, () => {
     console.log("server has started");
 });
