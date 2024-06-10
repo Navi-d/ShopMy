@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import "../Products/Home.css";
 import ProductCard from '../Products/ProductCard';
 
 const Profile = () => {
   const [selectedOption, setSelectedOption] = useState('profile');
   const [editMode, setEditMode] = useState(false);
-  const [userData, setUserData] = useState({
-    name: "User Name",
-    email: "user@example.com",
-    birthday: "January 1, 1990",
-    password: "********"
-  });
+  const [userData, setUserData] = useState({});
   const [newVoucher, setNewVoucher] = useState('');
+
   const [vouchers, setVouchers] = useState([
     { id: 1, code: "VOUCHER1", discount: "10%", expiryDate: "2024-06-01" },
     { id: 2, code: "VOUCHER2", discount: "20%", expiryDate: "2024-06-15" },
@@ -20,13 +17,43 @@ const Profile = () => {
   ]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
+
+  
+  useEffect(() => {
+    fetchProfileData();
+}, []);
+
+
+
+  const fetchProfileData = async () => {
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+      if (loggedInUser) {
+        setUserData(loggedInUser);
+      } else {
+        // Redirect or handle not logged in case
+      }
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
+
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
-  const toggleEditMode = () => {
+  const toggleEditMode = async () => {
+    if (editMode) {
+      try {
+        const response = await axios.put('http://localhost:3007/users/6665222052153aa067cc3c35', userData);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
+    }
     setEditMode(prevMode => !prevMode);
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +64,6 @@ const Profile = () => {
   };
 
   const handleAddVoucher = () => {
-    // Check if the voucher code is not empty
     if (newVoucher.trim() !== '') {
       const newVoucherObj = { id: vouchers.length + 1, code: newVoucher, discount: 'Unknown', expiryDate: "YYYY-MM-DD" }; // Add a placeholder expiry date
       setVouchers([...vouchers, newVoucherObj]);
@@ -54,6 +80,7 @@ const Profile = () => {
     setVouchers(vouchers.filter(voucher => voucher.id !== id));
   };
 
+
   const renderProfileDetails = () => {
     return (
       <>
@@ -62,17 +89,17 @@ const Profile = () => {
         <div className="row">
           <div className="col-6 mb-3">
             <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
-              <p>Name: {editMode ? <input type="text" name="name" value={userData.name} onChange={handleInputChange} /> : userData.name}</p>
+              <p>Name: {editMode ? <input type="text" name="name" value={userData.username} onChange={handleInputChange} /> : userData.username}</p>
             </div>
           </div>
           <div className="col-6 mb-3">
             <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
-              <p>Email: {editMode ? <input type="text" name="email" value={userData.email} onChange={handleInputChange} /> : userData.email}</p>
+              <p>Email: {editMode ? <input type="email" name="email" value={userData.email} onChange={handleInputChange} /> : userData.email}</p>
             </div>
           </div>
           <div className="col-6 mb-3">
             <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
-              <p>Birthday: {editMode ? <input type="text" name="birthday" value={userData.birthday} onChange={handleInputChange} /> : userData.birthday}</p>
+              <p>Birthday: {editMode ? <input type="date" name="birthdate" value={userData.birthdate} onChange={handleInputChange} /> : userData.birthdate}</p>
             </div>
           </div>
           <div className="col-6 mb-3">
@@ -81,37 +108,66 @@ const Profile = () => {
             </div>
           </div>
         </div>
-       
-       
         {!editMode && (
           <button className="btn btn-primary me-5 mb-5" onClick={toggleEditMode}>Edit</button>
         )}
-      
         {editMode && (
           <button className="btn btn-primary me-5 mb-5" onClick={toggleEditMode}>Save Changes</button>
         )}
-        
       </>
     );
   };
+  const [products, setProducts] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+
+  //Get Products
+  useEffect(() => {
+      const products = async (e) => {
+          // e.preventDefault(); //don't refresh page
+          try {
+              const response = await axios.get('http://localhost:3007/getProducts');
+              setProducts(response.data);
+              setLoading(false);
+              console.log('data is\n'+ response.data); // Assuming backend responds with user data
+          } catch (error) {
+          console.error(error);
+          }
+      }
+     
+      //call the method
+      products();
+    }, []);
+   
+  if(loading) {
+      return (
+          <div>Loading...</div>
+      );
+  }
+  
   const renderWishlist = () => {
-    
+    const wishlistProducts = products.filter(product =>
+      userData.wishlist.some(item => item.productId === product._id)
+    );
+  
     return (
       <>
         <h4><i className="fa fa-heart" /> My Wishlist</h4>
-        <div className="row">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-        </div>
+        {wishlistProducts.length > 0 ? (
+          <div className="row">
+            {wishlistProducts.map(product => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <p>No products in the wishlist</p>
+        )}
       </>
     );
   };
-
+  
+  
+  
   return (
     <div className="profile-wrapper home-wrapper-2" style={{ minHeight: "100vh", backgroundImage: "url(https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=960,h=640,fit=crop/YBg8Oqy2oQsXp8y5/building-an-ios-app-5-ALpb8Rpn27cGN4wM.png)" }}>
       <div className="container-xxl">
@@ -128,48 +184,50 @@ const Profile = () => {
         </ul>
         <div className="row">
           <div className="col-12">
-            <div className="profile-card bg-white shadow rounded-2 p-4 m-4">
-              {selectedOption === 'profile' && renderProfileDetails()}
-              {selectedOption === 'wishlist' && renderWishlist()}
-              
-              {selectedOption === 'vouchers' && (
-                <>
-                  <h4><i class="fa fa-ticket"></i> My Vouchers</h4>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <input type="text" className="form-control mb-3" placeholder="Enter voucher code" value={newVoucher} onChange={(e) => setNewVoucher(e.target.value)} />
-                      <button className="btn btn-success mb-3" onClick={handleAddVoucher}>Add Voucher</button>
-                      {showSuccessPopup && (
-                        <div className="alert alert-success" role="alert">
-                          Voucher added successfully!
-                        </div>
-                      )}
-                    </div>
-                    <div className="col-md-12">
-                      <div className="row">
-                        {vouchers.map(voucher => (
-                          <div key={voucher.id} className="col-md-4 mb-3">
-                            <div className="voucher-card bg-white shadow rounded-2 p-3">
-                              <h5>Voucher Code: {voucher.code}</h5>
-                              <p>Discount: {voucher.discount}</p>
-                              <p>Expiry Date: {voucher.expiryDate}</p>
-                              <button className="btn btn-danger" onClick={() => handleDeleteVoucher(voucher.id)}>
-                                <i className="fa fa-trash" />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
+                     <div className="profile-card bg-white shadow rounded-2 p-4 m-4">
+             {/* Conditional rendering based on selectedOption */}
+             {selectedOption === 'profile' && renderProfileDetails()}
+             {selectedOption === 'wishlist' && renderWishlist()}
+             {selectedOption === 'vouchers' && (
+              <>
+                <h4><i className="fa fa-ticket"></i> My Vouchers</h4>
+                <div className="row">
+                  <div className="col-md-6">
+                    <input type="text" className="form-control mb-3" placeholder="Enter voucher code" value={newVoucher} onChange={(e) => setNewVoucher(e.target.value)} />
+                    <button className="btn btn-success mb-3" onClick={handleAddVoucher}>Add Voucher</button>
+                    {showSuccessPopup && (
+                      <div className="alert alert-success" role="alert">
+                        Voucher added successfully!
                       </div>
+                    )}
+                  </div>
+                  <div className="col-md-12">
+                    <div className="row">
+                      {/* Render vouchers cards */}
+                      {vouchers.map(voucher => (
+                        <div key={voucher.id} className="col-md-4 mb-3">
+                          <div className="voucher-card bg-white shadow rounded-2 p-3">
+                            <h5>Voucher Code: {voucher.code}</h5>
+                            <p>Discount: {voucher.discount}</p>
+                            <p>Expiry Date: {voucher.expiryDate}</p>
+                            <button className="btn btn-danger" onClick={() => handleDeleteVoucher(voucher.id)}>
+                              <i className="fa fa-trash" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </>
-              )}
-            </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
+
 
 export default Profile;
