@@ -132,7 +132,7 @@ function Navbar() {
                                             </a>
                                         </li>
                                         <li className="nav-item">
-                                            <Link className="nav-link" to="/profile">
+                                            <Link className="nav-link" to="/wishlist">
                                                 <i className="fa fa-heart"></i> Wishlist (0)
                                             </Link>
                                         </li>
