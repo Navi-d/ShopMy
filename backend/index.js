@@ -26,6 +26,15 @@ app.get("/getUsers", async (req, res) => {
     }
 });
 
+app.get("/getUser/:userId", async (req, res) => {
+    try {
+        const result = await UserModel.findById(req.params.userId);
+        res.json(result);
+    } catch (error) {
+        res.json(error);
+    }
+});
+
 app.post("/createUser", async (req, res) => {
     const { username, email, password } = req.body;
     try {
@@ -165,14 +174,17 @@ const cartRoutes = require('./routes/Cart');
 const wishlistRoutes = require('./routes/wishlist');
 const voucherRoutes = require('./routes/voucher');
 const checkoutRoutes = require('./routes/checkout');
+const profile = require('./routes/profile');
+const ProdApi = require('./routes/ProdApi')
 
 app.use('/api/checkout', checkoutRoutes)
 app.use('/api/vouchers', voucherRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
-const ProdApi = require('./routes/ProdApi')
+
 
 app.use(ProdApi)
+app.use(profile)
 
 app.listen(3002, () => {
     console.log("server has started");

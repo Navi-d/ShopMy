@@ -18,18 +18,58 @@ const Profile = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
 
+  useEffect(() => {
+    addVoucher();
+  }, []);
+
+  const checkVoucher = () => {
+
+  }
   
+  const addVoucher = async () => {
+    try {
+      // const localData = JSON.parse(localStorage.getItem('loggedInUser'));
+      const userJSON = localStorage.getItem('loggedInUser');
+      // Parse the JSON string to convert it into a JavaScript object
+      const user = JSON.parse(userJSON);
+      // Access the _id property of the object
+      const userId = user._id;
+      console.log("User id is " + userId);
+
+      const loggedInUser = await axios.get(`http://localhost:3001/getUser/${userId}`)
+      if (user) {
+        console.log("Mohammed's user data is " + loggedInUser)
+        setUserData(loggedInUser.data);
+        // alert(loggedInUser.data.username)
+      } else {
+        // Redirect or handle not logged in case
+      }
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
+
+
   useEffect(() => {
     fetchProfileData();
-}, []);
-
+  }, []);
 
 
   const fetchProfileData = async () => {
     try {
-      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-      if (loggedInUser) {
-        setUserData(loggedInUser);
+      // const localData = JSON.parse(localStorage.getItem('loggedInUser'));
+      const userJSON = localStorage.getItem('loggedInUser');
+      // Parse the JSON string to convert it into a JavaScript object
+      const user = JSON.parse(userJSON);
+      // Access the _id property of the object
+      const userId = user._id;
+      console.log("User id is " + userId);
+
+      const loggedInUser = await axios.get(`http://localhost:3001/getUser/${userId}`)
+      if (user) {
+        console.log("Mohammed's user data is " + loggedInUser)
+        setUserData(loggedInUser.data);
+        // alert(loggedInUser.data.username)
       } else {
         // Redirect or handle not logged in case
       }
@@ -47,7 +87,7 @@ const Profile = () => {
   const toggleEditMode = async () => {
     if (editMode) {
       try {
-        const response = await axios.put('http://localhost:3000/users/', userData);
+        const response = await axios.put('http://localhost:3001/users/', userData);
         console.log(response.data);
       } catch (error) {
         console.error('Error updating profile:', error);
@@ -64,6 +104,24 @@ const Profile = () => {
       [name]: value
     }));
   };
+
+  const handleSaveData = async () => {
+    try {
+      // const localData = JSON.parse(localStorage.getItem('loggedInUser'));
+      const userJSON = localStorage.getItem('loggedInUser');
+      // Parse the JSON string to convert it into a JavaScript object
+      const user = JSON.parse(userJSON);
+      // Access the _id property of the object
+      const userId = user._id;
+      console.log("User id is " + userId);
+
+      const response = await axios.post(`http://localhost:3001/saveUser`, {userId, userData});
+      // setUserData(response.data);
+      // alert(loggedInUser.data.username)
+    } catch (error) {
+      console.error('Error saving profile data:', error);
+    }
+  }
 
   const handleAddVoucher = () => {
     if (newVoucher.trim() !== '') {
@@ -82,6 +140,7 @@ const Profile = () => {
     setVouchers(vouchers.filter(voucher => voucher.id !== id));
   };
 
+  
 
   const renderProfileDetails = () => {
     return (
@@ -114,7 +173,11 @@ const Profile = () => {
           <button className="btn btn-primary me-5 mb-5" onClick={toggleEditMode}>Edit</button>
         )}
         {editMode && (
-          <button className="btn btn-primary me-5 mb-5" onClick={toggleEditMode}>Save Changes</button>
+          <button className="btn btn-primary me-5 mb-5" onClick={ () => {
+              handleSaveData();
+              toggleEditMode();
+            }
+          }>Save Changes</button>
         )}
       </>
     );
@@ -128,7 +191,7 @@ const Profile = () => {
       const products = async (e) => {
           // e.preventDefault(); //don't refresh page
           try {
-              const response = await axios.get('http://localhost:3000/getProducts');
+              const response = await axios.get('http://localhost:3001/getProducts');
               setProducts(response.data);
               setLoading(false);
               console.log('data is\n'+ response.data); // Assuming backend responds with user data
