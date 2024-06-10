@@ -37,6 +37,7 @@ const ContactUs = () => {
             console.log('data is'+ response.data.firstName); // Assuming backend responds with user data
 
             setDescription(response.data.description);
+            alert("Inquiry sent Successfully")
         } catch (error) {
             console.error(error);
         }
@@ -67,7 +68,7 @@ const ContactUs = () => {
                             <div className='m-2 '>
                                 <form action="">
                                     <div class="form-group">
-                                        <label for="text">First Name</label>
+                                        <label for="text" class="text-black">First Name</label>
                                         <input type="text" class="form-control bg-light" 
                                         onChange={(e) => setfirstName(e.target.value)}/>
                                     </div>  
@@ -77,9 +78,9 @@ const ContactUs = () => {
                             <div className='m-2 '>
                                 <form action="">
                                     <div class="form-group">
-                                        <label for="text">Last Name</label>
+                                        <label for="text" class="text-black">Last Name</label>
                                         <input type="text" 
-                                        class="form-control bg-light" 
+                                        class="form-control bg-light text-black" 
                                         onChange={(e) => setlastName(e.target.value)}/>
                                     </div>  
                                 </form>   
@@ -89,14 +90,14 @@ const ContactUs = () => {
                         <div className='mx-2 '>
                             <form action="">
                                 <div class="form-group">
-                                    <label for="email">Email</label>
+                                    <label for="email" class="text-black">Email</label>
                                     <input type="email" 
                                     class="form-control bg-light"
                                     onChange={(e) => setEmail(e.target.value)} />
                                 </div>  
 
                                 <div class="form-group mb-2">
-                                    <label for="email">What can we help you with?</label>
+                                    <label for="email" class="text-black">What can we help you with?</label>
                                     <textarea type="textarea" rows={3} 
                                     class="form-control bg-light"
                                     onChange={(e) => setDescription(e.target.value)} />
