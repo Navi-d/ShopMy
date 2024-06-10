@@ -38,6 +38,8 @@ const Profile = () => {
     }
   };
 
+
+
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
@@ -45,7 +47,7 @@ const Profile = () => {
   const toggleEditMode = async () => {
     if (editMode) {
       try {
-        const response = await axios.put('http://localhost:3007/users/6665222052153aa067cc3c35', userData);
+        const response = await axios.put('http://localhost:3000/users/', userData);
         console.log(response.data);
       } catch (error) {
         console.error('Error updating profile:', error);
@@ -126,7 +128,7 @@ const Profile = () => {
       const products = async (e) => {
           // e.preventDefault(); //don't refresh page
           try {
-              const response = await axios.get('http://localhost:3007/getProducts');
+              const response = await axios.get('http://localhost:3000/getProducts');
               setProducts(response.data);
               setLoading(false);
               console.log('data is\n'+ response.data); // Assuming backend responds with user data
