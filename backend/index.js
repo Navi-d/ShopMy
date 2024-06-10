@@ -13,6 +13,9 @@ mongoose.connect('mongodb+srv://Navid:NavidShopMy@shopmycluster.fe5vuty.mongodb.
 
 //import the usermodel: it returns a value
 const UserModel = require('./models/Users');
+const FaqModel = require('./models/Faqs');
+
+
 
 app.get("/getUsers", async (req, res) => {
     try {
@@ -151,7 +154,8 @@ app.get('/getProduct/:id', async (req, res) => {
 
 
 //Contactus
-let ContactusModel = require('./models/Contactus')
+let ContactusModel = require('./models/Contactus');
+const { error } = require('console');
 
 app.get('/getContactus', async (req, res) => {
     try {
@@ -173,18 +177,12 @@ app.post('/postContactus', async (req, res) => {
     }
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
+//faq
+app.get('/getFaqs', async (req, res) => {
+    FaqModel.find()
+    .then(faqs => res.json(faqs))
+    .catch(err => res.json(err))
+})
 
 
 

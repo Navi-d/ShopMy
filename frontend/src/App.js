@@ -5,6 +5,23 @@ import Signup from "./components/Account/Signup";
 import Login from "./components/Account/Login";
 import PasswordResetRequest from "./components/Account/PasswordResetRequest";
 import PasswordReset from "./components/Account/PasswordReset";
+import OurStore from "./components/Products/OurStore"
+import Product from "./components/Products/HomePage"
+import SingleProduct from "./components/Products/SingleProduct"
+import Profile from "./components/Profile/Profile"
+import Layout from "./components/Common/Layout"
+import Checkout from "./components/Checkout/Checkout"
+import PaymentProcessing from "./components/Checkout/PaymentProcessing"
+import Support from "./components/Support/Support"
+import Cart from "./components/Cart/Cart"
+import ManageOrder from './components/ManageOrder/manageorder.js';
+import TrackOrderPage from './components/ManageOrder/trackorder.js';
+import Faq from './components/Support/Faq.js';
+import ContactUs from './components/Support/ContactUs.js';
+import ContactChatbot from './components/Support/ContactChatbot.js';
+import Wishlist from './components/Profile/Wishlist';
+
+
 
 function App() {
   const AppContent = () => {
@@ -32,8 +49,6 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/resetPassword" element={<PasswordResetRequest />} />
             <Route path="/resetPassword/:token" element={<PasswordReset />} />
-<<<<<<< HEAD
-=======
             <Route path="/" element={<Layout />}>
               <Route path="/home" element={<Product />} />
               <Route path="/browse" element={<OurStore />} />
@@ -52,7 +67,6 @@ function App() {
               <Route path="/manageorders" element={<ManageOrder />} />
               <Route path={`/track-order/:orderId`} element={<TrackOrderPage/>} />
             </Route>
->>>>>>> 8de9aec165486f536382fe466ac0a59b9155a93e
           </Routes>
         </div>
       </div>

@@ -2,35 +2,50 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 export const Support = () => {
-  return (
-    
-    <section className="support-wrapper bg-dark ">
-    <div className="container py-5">
-        <div className="support-center-wrapper">
-          <div className="card" style={{borderRadius: "1rem", height: "663px"}}>
-            <div className="row">
-              <div className="col-md-7 col-lg-7 d-md-block">
-                <img src="/Products/images/sideimage.png"
-                  alt="we are happy to help you" className="img-fluid" style={{borderRadius: "1rem 0 0 1rem", height: "661px"}} />
+    return (
+      <section className="support-wrapper">
+        <div className="support-header">
+          <img src="Products/images/support-header.png" alt="We are happy to help" className="support-background" />
+          
+        </div>
+        <div className="support-options">
+          <div className="support-card">
+            <Link to="./ContactUs" className="support-link">
+              <div className="support-icon">
+                <img src="Products/images/contactus-icon.png" alt="Contact us" />
               </div>
-              <div className="col-md-5 col-lg-5 d-flex align-items-center">
-                <div className="card-body p-4 p-lg-5">
-                    <div className="d-flex">
-                    </div>
-                    <div class="d-grid gap-5 col-lg mx-auto">
-                      <Link to="./ContactUs" class="btn btn-lg btn-outline-dark p-3" type="button">Contact us</Link>
-                      <Link to="./Contactchatbot" class="btn btn-lg btn-outline-dark p-3" type="button">Contact chatbot </Link>
-                      <Link to="./FAQ" class="btn btn-lg btn-outline-dark p-3" type="button">FAQ</Link>
-                    </div>
+              <div className="support-text">
+                <h2>Contact us</h2>
+                <p>Have a question or need assistance? Get in touch with our friendly support team for help.</p>
               </div>
-
-            </div>
+            </Link>
+          </div>
+          <div className="support-card">
+            <Link to="./Contactchatbot" className="support-link">
+              <div className="support-icon">
+                <img src="Products/images/chatbot-icon.png" alt="Contact chatbot" />
+              </div>
+              <div className="support-text">
+                <h2>Contact chatbot</h2>
+                <p>Need quick help? Connect with our chatbot for immediate support.</p>
+              </div>
+            </Link>
+          </div>
+          <div className="support-card">
+            <Link to="./FAQ" className="support-link">
+              <div className="support-icon">
+                <img src="Products/images/FAQ-icon.png" alt="FAQs" />
+              </div>
+              <div className="support-text">
+                <h2>FAQs</h2>
+                <p>Looking for answers? Explore our FAQs to find solutions to common questions and concerns.</p>
+              </div>
+            </Link>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-  )
-};
+      </section>
+    );
+  };
+
 
 export default Support
