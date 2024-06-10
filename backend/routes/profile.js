@@ -6,10 +6,10 @@ const UserModel = require('../models/Users');
 router.post('/saveUser', async (req, res) => {
     try {
         const { userId, userData } = req.body;
-        const { username, email, password } = userData;
+        const { username, email, password, birthdate } = userData;
         const result = await UserModel.findOneAndUpdate(
             { _id: userId }, 
-            { username: username, email: email, password: password },
+            { username: username, email: email, password: password, birthdate: birthdate },
             { new: true }
         );
 
