@@ -159,7 +159,7 @@ const Profile = () => {
         <div className="row">
           <div className="col-6 mb-3">
             <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
-              <p>Name: {editMode ? <input type="text" name="name" value={userData.username} onChange={handleInputChange} /> : userData.username}</p>
+              <p>Name: {editMode ? <input type="text" name="username" value={userData.username} onChange={handleInputChange} /> : userData.username}</p>
             </div>
           </div>
           <div className="col-6 mb-3">
@@ -168,9 +168,9 @@ const Profile = () => {
             </div>
           </div>
           <div className="col-6 mb-3">
-            <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
-              <p>Birthday: {editMode ? <input type="date" name="birthdate" value={userData.birthdate} onChange={handleInputChange} /> : userData.birthdate}</p>
-            </div>
+          <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
+            <p>Birthdate: {editMode ? <input type="date" name="birthdate" value={userData.birthdate.split('T')[0]} onChange={handleInputChange} /> : userData.birthdate.split('T')[0]}</p>
+          </div>
           </div>
           <div className="col-6 mb-3">
             <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
@@ -229,9 +229,10 @@ const Profile = () => {
         <h4><i className="fa fa-heart" /> My Wishlist</h4>
         {wishlistProducts.length > 0 ? (
           <div className="row">
-            {wishlistProducts.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {wishlistProducts.map((item) => (
+                  <ProductCard {...item}/>
+                  ))
+              }
           </div>
         ) : (
           <p>No products in the wishlist</p>
