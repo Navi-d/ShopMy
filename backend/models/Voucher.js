@@ -1,13 +1,18 @@
 const mongoose = require('mongoose');
 
+
 const VoucherSchema = new mongoose.Schema({
   code: {
-    type: String,
-    required: true
+      type: String,
+      required: true
   },
-  amount: {
-    type: Number,
-    required: true
+  discount: {
+      type: Number,
+      required: true
+  },
+  expiryDate: {
+      type: Date,
+      required: true
   }
 });
 

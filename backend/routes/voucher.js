@@ -12,4 +12,21 @@ router.get('/getVoucher', async (req, res) => {
     }
 });
 
+// Route to check if a voucher exists
+router.get('/checkVoucher/:voucherCode', async (req, res) => {
+    try {
+        const voucherCode = req.params.voucherCode;
+        const voucher = await Voucher.findOne({ code: voucherCode });
+
+        if (voucher) {
+            res.json({ exists: true, voucher });
+        } else {
+            res.json({ exists: false });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
 module.exports = router;

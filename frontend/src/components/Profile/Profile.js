@@ -2,74 +2,32 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../Products/Home.css";
 import ProductCard from '../Products/ProductCard';
+import { format } from 'date-fns';
+
 
 const Profile = () => {
   const [selectedOption, setSelectedOption] = useState('profile');
   const [editMode, setEditMode] = useState(false);
   const [userData, setUserData] = useState({});
   const [newVoucher, setNewVoucher] = useState('');
-
-  const [vouchers, setVouchers] = useState([
-    { id: 1, code: "VOUCHER1", discount: "10%", expiryDate: "2024-06-01" },
-    { id: 2, code: "VOUCHER2", discount: "20%", expiryDate: "2024-06-15" },
-    { id: 3, code: "VOUCHER3", discount: "15%", expiryDate: "2024-07-01" },
-    { id: 4, code: "VOUCHER4", discount: "25%", expiryDate: "2024-07-15" }
-  ]);
+  const [vouchers, setVouchers] = useState([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-
-
-  useEffect(() => {
-    addVoucher();
-  }, []);
-
-  const checkVoucher = () => {
-
-  }
-  
-  const addVoucher = async () => {
-    try {
-      // const localData = JSON.parse(localStorage.getItem('loggedInUser'));
-      const userJSON = localStorage.getItem('loggedInUser');
-      // Parse the JSON string to convert it into a JavaScript object
-      const user = JSON.parse(userJSON);
-      // Access the _id property of the object
-      const userId = user._id;
-      console.log("User id is " + userId);
-
-      const loggedInUser = await axios.get(`http://localhost:3001/getUser/${userId}`)
-      if (user) {
-        console.log("Mohammed's user data is " + loggedInUser)
-        setUserData(loggedInUser.data);
-        // alert(loggedInUser.data.username)
-      } else {
-        // Redirect or handle not logged in case
-      }
-    } catch (error) {
-      console.error('Error fetching profile data:', error);
-    }
-  };
-
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   useEffect(() => {
     fetchProfileData();
+    fetchUserVouchers();
   }, []);
-
 
   const fetchProfileData = async () => {
     try {
-      // const localData = JSON.parse(localStorage.getItem('loggedInUser'));
       const userJSON = localStorage.getItem('loggedInUser');
-      // Parse the JSON string to convert it into a JavaScript object
       const user = JSON.parse(userJSON);
-      // Access the _id property of the object
       const userId = user._id;
-      console.log("User id is " + userId);
 
-      const loggedInUser = await axios.get(`http://localhost:3001/getUser/${userId}`)
+      const loggedInUser = await axios.get(`http://localhost:3001/getUser/${userId}`);
       if (user) {
-        console.log("Mohammed's user data is " + loggedInUser)
         setUserData(loggedInUser.data);
-        // alert(loggedInUser.data.username)
       } else {
         // Redirect or handle not logged in case
       }
@@ -78,7 +36,20 @@ const Profile = () => {
     }
   };
 
+  const fetchUserVouchers = async () => {
+    try {
+      const userJSON = localStorage.getItem('loggedInUser');
+      const user = JSON.parse(userJSON);
+      const userId = user._id;
 
+      const response = await axios.get(`http://localhost:3001/getUserVouchers/${userId}`);
+      console.log(response.data);
+
+      setVouchers(response.data);
+    } catch (error) {
+      console.error('Error fetching user vouchers:', error);
+    }
+  };
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -88,7 +59,6 @@ const Profile = () => {
     if (editMode) {
       try {
         const response = await axios.put('http://localhost:3001/users/', userData);
-        console.log(response.data);
       } catch (error) {
         console.error('Error updating profile:', error);
       }
@@ -113,7 +83,6 @@ const Profile = () => {
       const user = JSON.parse(userJSON);
       // Access the _id property of the object
       const userId = user._id;
-      console.log("User id is " + userId);
 
       const response = await axios.post(`http://localhost:3001/saveUser`, {userId, userData});
       // setUserData(response.data);
@@ -123,21 +92,61 @@ const Profile = () => {
     }
   }
 
-  const handleAddVoucher = () => {
+  const handleAddVoucher = async () => {
     if (newVoucher.trim() !== '') {
-      const newVoucherObj = { id: vouchers.length + 1, code: newVoucher, discount: 'Unknown', expiryDate: "YYYY-MM-DD" }; // Add a placeholder expiry date
-      setVouchers([...vouchers, newVoucherObj]);
-      setNewVoucher('');
-      setShowSuccessPopup(true);
+      try {
+        const userJSON = localStorage.getItem('loggedInUser');
+        const user = JSON.parse(userJSON);
+        const userId = user._id;
 
-      setTimeout(() => {
-        setShowSuccessPopup(false);
-      }, 2000);
+        // Check if the voucher exists in the database
+        const voucherResponse = await axios.get(`http://localhost:3001/api/vouchers/checkVoucher/${newVoucher}`);
+          
+        if (voucherResponse.data.exists) {
+          // Add the voucher to the user's vouchers
+          const addVoucherResponse = await axios.post(`http://localhost:3001/addVoucher`, { userId, voucherId: voucherResponse.data.voucher._id });
+          if (addVoucherResponse.status === 200) {
+            setShowSuccessPopup(true);
+            fetchUserVouchers(); // Fetch updated vouchers
+            setNewVoucher('');
+
+            setTimeout(() => {
+              setShowSuccessPopup(false);
+            }, 2000);
+          } else {
+            setShowErrorPopup(true);
+            setTimeout(() => {
+              setShowErrorPopup(false);
+            }, 2000);
+          }
+        } else {
+          setShowErrorPopup(true);
+          setTimeout(() => {
+            setShowErrorPopup(false);
+          }, 2000);
+        }
+      } catch (error) {
+        console.log('Error adding voucher:', error);
+        
+      }
     }
   };
 
-  const handleDeleteVoucher = (id) => {
-    setVouchers(vouchers.filter(voucher => voucher.id !== id));
+  const handleDeleteVoucher = async (voucherId) => {
+    try {
+      console.log(voucherId);
+      const userJSON = localStorage.getItem('loggedInUser');
+      const user = JSON.parse(userJSON);
+      const userId = user._id;
+
+      const response = await axios.post(`http://localhost:3001/removeVoucher`, { userId, voucherId });
+      console.log(response)
+      if (response.status === 200) {
+        fetchUserVouchers(); // Fetch updated vouchers
+      }
+    } catch (error) {
+      console.error('Error deleting voucher:', error);
+    }
   };
 
   
@@ -194,7 +203,7 @@ const Profile = () => {
               const response = await axios.get('http://localhost:3001/getProducts');
               setProducts(response.data);
               setLoading(false);
-              console.log('data is\n'+ response.data); // Assuming backend responds with user data
+              // console.log('data is\n'+ response.data); // Assuming backend responds with user data
           } catch (error) {
           console.error(error);
           }
@@ -270,12 +279,12 @@ const Profile = () => {
                     <div className="row">
                       {/* Render vouchers cards */}
                       {vouchers.map(voucher => (
-                        <div key={voucher.id} className="col-md-4 mb-3">
+                        <div key={voucher._id} className="col-md-4 mb-3">
                           <div className="voucher-card bg-white shadow rounded-2 p-3">
-                            <h5>Voucher Code: {voucher.code}</h5>
-                            <p>Discount: {voucher.discount}</p>
-                            <p>Expiry Date: {voucher.expiryDate}</p>
-                            <button className="btn btn-danger" onClick={() => handleDeleteVoucher(voucher.id)}>
+                            <h5>Voucher Code: {voucher.voucherId.code}</h5>
+                            <p>Discount: {voucher.voucherId.discount}</p>
+                            <p>Expiry Date: {format(new Date(voucher.voucherId.expiryDate), 'MMMM dd, yyyy')}</p>
+                            <button className="btn btn-danger" onClick={() => handleDeleteVoucher(voucher._id)}>
                               <i className="fa fa-trash" />
                             </button>
                           </div>

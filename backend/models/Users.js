@@ -89,6 +89,15 @@ const UserSchema = new mongoose.Schema({
         required: true
       }
     }
+  ],
+  vouchers: [
+    {
+      voucherId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'vouchers',
+        required: true
+      }
+    }
   ]
 });
 
