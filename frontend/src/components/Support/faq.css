@@ -1,0 +1,115 @@
+.faq-wrapper {
+    /* background: url(faq-bg.png) no-repeat center center; */
+    background-attachment: fixed;
+    background-size: cover;
+    width: 100%;
+    color: #333;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 100px); 
+}
+
+.faq-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.faq-header {
+    flex: 1;
+    margin-right: 40px;
+    position: sticky;
+    top: 100px; 
+    left: 20px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-left: 30px;
+    margin-top: 50px;
+}
+
+.faq-header p {
+    font-size: 16px;
+    color: #ffffff;
+    margin-top: 10px;
+}
+
+.faq-header a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.faq-list-container {
+    flex: 2;
+    max-width: 600px;
+    width: 100%;
+    margin-left: 20px; 
+    overflow-y: auto;
+    padding-bottom: 100px; 
+    margin-top: 50px;
+}
+
+.faq-list {
+    background-color: #333;
+    border-radius: 8px;
+    padding: 20px;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+.faq-item {
+    border-bottom: 1px solid #ffffff;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-item.active {
+    background-color: #333;
+}
+
+.faq-question {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+}
+
+.faq-toggle {
+    margin-right: 10px;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.faq-answer {
+    font-size: 16px;
+    color: #ffffff;
+    padding-left: 30px;
+    margin-top: 10px;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+}

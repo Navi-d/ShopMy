@@ -1,82 +1,53 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import '../Products/Home.css'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './faq.css';
 
-const Faq = () => {
-  return (
-    <div class="">
-        <div className='container-xxl'>
-                <section class="m-4 p-3 shadow rounded-2">
-                <h3 class="text-center mb-4 pb-2 text-primary fw-bold">FAQ</h3>
-                <p class="text-center mb-5">
-                    Find the answers for the most frequently asked questions below
-                </p>
+function Faq() {
+    const [faqs, setFaqs] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(null);
 
-                <div class="row">
-                    <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="mb-3 text-primary"><i class="fa fa-paper-plane text-primary pe-2"></i> A simple
-                        question?</h6>
-                    <p>
-                        <strong><u>Absolutely!</u></strong> We work with top payment companies which guarantees
-                        your
-                        safety and
-                        security. All billing information is stored on our payment processing partner.
-                    </p>
-                    </div>
+    useEffect(() => {
+        axios.get('http://localhost:3001/getFaqs')
+            .then(response => setFaqs(response.data))
+            .catch(err => console.log(err));
+    }, []);
 
-                    <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="mb-3 text-primary"><i class="fa fa-pen-alt text-primary pe-2"></i> A question
-                        that
-                        is longer then the previous one?</h6>
-                    <p>
-                        <strong><u>Yes, it is possible!</u></strong> You can cancel your subscription anytime in
-                        your
-                        account. Once the subscription is
-                        cancelled, you will not be charged next month.
-                    </p>
-                    </div>
+    const toggleAnswer = (index) => {
+        setActiveIndex(activeIndex === index ? null : index);
+    };
 
-                    <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="mb-3 text-primary"><i class="fa fa-user text-primary pe-2"></i> A simple
-                        question?
-                    </h6>
-                    <p>
-                        Currently, we only offer monthly subscription. You can upgrade or cancel your monthly
-                        account at any time with no further obligation.
-                    </p>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="mb-3 text-primary"><i class="fa fa-rocket text-primary pe-2"></i> A simple
-                        question?
-                    </h6>
-                    <p>
-                        Yes. Go to the billing section of your dashboard and update your payment information.
-                    </p>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="mb-3 text-primary"><i class="fa fa-home text-primary pe-2"></i> A simple
-                        question?
-                    </h6>
-                    <p><strong><u>Unfortunately no</u>.</strong> We do not issue full or partial refunds for any
-                        reason.</p>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="mb-3 text-primary"><i class="fa fa-book-open text-primary pe-2"></i> Another
-                        question that is longer than usual</h6>
-                    <p>
-                        Of course! We’re happy to offer a free plan to anyone who wants to try our service.
-                    </p>
+    return (
+        <section className='faq-wrapper'>
+            <div className='faq-container'>
+                <div className='faq-header'>
+                    <h1>Any questions? We got you.</h1>
+                    <p>Find answers to all your questions. We've compiled the most common inquiries for you to be able to find the information you need, all in one place.</p>
+                    <a href="/support/contactus">Didn't find the answer you're looking for?</a>
+                </div>
+                <div className='faq-list-container'>
+                    <div className='faq-list'>
+                        {faqs.map((faq, index) => (
+                            <div
+                                key={index}
+                                className={`faq-item ${activeIndex === index ? 'active' : ''}`}
+                                onClick={() => toggleAnswer(index)}
+                            >
+                                <div className='faq-question'>
+                                    <span className='faq-toggle'>{activeIndex === index ? <i className="fa fa-chevron-up" aria-hidden="true"></i> : <i className="fa fa-chevron-down" aria-hidden="true"></i>}</span>
+                                    {faq.Question}
+                                </div>
+                                {activeIndex === index && (
+                                    <div className='faq-answer'>
+                                        {faq.Answer}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 </div>
-                </section>
-                </div>
-
-    </div>
-    
-  )
+            </div>
+        </section>
+    );
 }
 
-export default Faq
+export default Faq;

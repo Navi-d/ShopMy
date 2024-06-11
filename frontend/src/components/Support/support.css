@@ -1,18 +1,57 @@
-.p-text {
-    font-weight: 200;
-    letter-spacing: -0.2px;
-}
-
-.footer-form {
-    max-width: 100px;
-    background-color: rgb(231, 231, 231);
-}
-
-.p-footer {
-    font-size: small;
+.support-wrapper {
     text-align: center;
-}
+    background-color: #2b2929;
+    padding-bottom: 20px;
+  }
 
-.contact-wrapper {
-    background: url('https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=960,h=640,fit=crop/YBg8Oqy2oQsXp8y5/building-an-ios-app-5-ALpb8Rpn27cGN4wM.png');
-}
+  .support-header {
+    width: 100%;
+    max-height: 100vh ;
+    position: relative;
+    margin-bottom: 50px;
+  }
+  
+  .support-background {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .support-options {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-right: 90px;
+    margin-left: 90px;
+  }
+  
+  .support-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .support-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .support-icon img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  
+  .support-text h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .support-text p {
+    color: #000000;
+  }
+  

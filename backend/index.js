@@ -15,8 +15,6 @@ mongoose.connect('mongodb+srv://Navid:NavidShopMy@shopmycluster.fe5vuty.mongodb.
 //import the usermodel: it returns a value
 const UserModel = require('./models/Users');
 
-
-
 app.get("/getUsers", async (req, res) => {
     try {
         const result = await UserModel.find({});
@@ -137,38 +135,6 @@ app.post("/resetPassword", async (req, res) => {
 
 
 
-
-//Contactus
-let ContactusModel = require('./models/Contactus')
-
-app.get('/getContactus', async (req, res) => {
-    try {
-        const result = await ContactusModel.findById("usernameId");
-        res.json(result);
-    } catch (error) {
-        res.json(error);
-    }
-})
-
-app.post('/postContactus', async (req, res) => {
-    try {
-        const {firstName, lastName, email, description} = req.body;
-        const newContactUs = new ContactusModel({firstName, lastName, email, description});
-        let result = await newContactUs.save();
-        res.json(result);
-    } catch (error) {
-        res.json(error);
-    }
-})
-
-
-
-app.listen(3001, () => {
-    console.log("server has started");
-});
-
-
-
 //Cart
 const cartRoutes = require('./routes/Cart');
 const wishlistRoutes = require('./routes/wishlist');
@@ -176,16 +142,19 @@ const voucherRoutes = require('./routes/voucher');
 const checkoutRoutes = require('./routes/checkout');
 const profile = require('./routes/profile');
 const ProdApi = require('./routes/ProdApi')
+const supportRoutes = require('./routes/support')
 
 app.use('/api/checkout', checkoutRoutes)
 app.use('/api/vouchers', voucherRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
-
-
 app.use(ProdApi)
 app.use(profile)
+app.use(supportRoutes)
 
 app.listen(3002, () => {
-    console.log("server has started");
+    console.log("server 1 has started");
+});
+app.listen(3001, () => {
+    console.log("server 2 has started");
 });
