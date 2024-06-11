@@ -176,8 +176,9 @@ const Profile = () => {
               Birthdate: 
               {(userData.birthdate) && (editMode ? 
                 <input type="date" name="birthdate" value={userData.birthdate.split('T')[0]} onChange={handleInputChange} /> 
-                : userData.birthdate.split('T')[0])}
-            
+                ) : (
+                  userData.birthdate ? userData.birthdate.split('T')[0] : ''
+                )}
             </p>
           </div>
           </div>
