@@ -169,7 +169,14 @@ const Profile = () => {
           </div>
           <div className="col-6 mb-3">
           <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
-            <p>Birthdate: {editMode ? <input type="date" name="birthdate" value={userData.birthdate.split('T')[0]} onChange={handleInputChange} /> 
+            <p>Birthdate: 
+                {editMode ? (
+                  <input 
+                    type="date" 
+                    name="birthdate" 
+                    value={userData.birthdate ? userData.birthdate.split('T')[0] : ''} 
+                    onChange={handleInputChange} 
+                  />
                 ) : (
                   userData.birthdate ? userData.birthdate.split('T')[0] : ''
                 )}</p>
