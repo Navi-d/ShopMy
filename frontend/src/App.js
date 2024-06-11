@@ -69,7 +69,7 @@ function App() {
               <Route path="/support/Contactchatbot" element={<ContactChatbot />} />
 
               <Route path="/manageorders" element={<ManageOrder />} />
-              <Route path={`/track-order/:orderId`} element={<TrackOrderPage/>} />
+              <Route path={`/track-order/:orderId/:productId`} element={<TrackOrderPage/>} />
             </Route>
           </Routes>
           {/* </GlobalStateProvider>  */}

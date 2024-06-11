@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,23 +31,21 @@ const userId = user._id;
 
   useEffect(() => {
     fetchCart();
-    fetchVouchers();
+    fetchUserVouchers();
     const fetchData = async () => {
     try {
       const cartResponse = await fetch(`http://localhost:3001/api/Cart/getCart/${userId}`);
-      const voucherResponse = await fetch('http://localhost:3001/api/vouchers/getVoucher');
 
-      if (cartResponse.ok && voucherResponse.ok) {
+      if (cartResponse.ok) {
         const cartData = await cartResponse.json();
-        const voucherData = await voucherResponse.json();
-
+        
         const subtotal = cartData.reduce((total, item) => (total + parseFloat(item.productId.productPrice) * item.quantity), 0).toFixed(2);
         setSubtotal(subtotal);
 
         const tax = parseFloat((subtotal * 0.1).toFixed(2));
         setTax(tax);
 
-        const totalAmount = parseFloat(subtotal + tax + 2).toFixed(2);
+        const totalAmount = (parseFloat(subtotal) + tax + 25).toFixed(2);
         setTotal(totalAmount);
       } else {
         console.error('Error fetching cart or vouchers');
@@ -59,18 +58,20 @@ const userId = user._id;
   fetchData();
   }, []);
 
-  const fetchVouchers = async () => {
+  const fetchUserVouchers = async () => {
     try {
-        const response = await fetch('http://localhost:3001/api/vouchers/getVoucher');
-        if (response.ok) {
-          const voucherData = await response.json();
-          setVouchers(voucherData);
-          console.log(voucherData)
-        }
+      const userJSON = localStorage.getItem('loggedInUser');
+      const user = JSON.parse(userJSON);
+      const userId = user._id;
+
+      const response = await axios.get(`http://localhost:3001/getUserVouchers/${userId}`);
+      console.log(response.data);
+
+      setVouchers(response.data);
     } catch (error) {
-        console.log("IS an ERROR");
+      console.error('Error fetching user vouchers:', error);
     }
-};
+  };
 
   const fetchCart = async () => {
     try {
@@ -98,9 +99,9 @@ const userId = user._id;
   };
 
   const applyVoucher = (voucher) => {
-    setSelectedVoucher(voucher.code);
-    setDiscount(voucher.amount);
-    const newTotal = (subtotal + tax + 2 - voucher.amount).toFixed(2);
+    setSelectedVoucher(voucher.voucherId.code);
+    setDiscount(voucher.voucherId.discount);
+    const newTotal = (parseFloat(subtotal) + tax + 25 - voucher.voucherId.discount).toFixed(2);
     setTotal(newTotal);
     updateTotal(newTotal);
   };
@@ -108,7 +109,7 @@ const userId = user._id;
   const setVoucher = (voucher) => {
     if (voucher){
       const code = voucher.toUpperCase();
-      const matchingVoucher = vouchers.find(voucher => voucher.code === code);
+      const matchingVoucher = vouchers.find(voucher => voucher.voucherId.code === code);
       if (matchingVoucher) {
         applyVoucher(matchingVoucher);
       } else {
@@ -395,7 +396,7 @@ const userId = user._id;
                     </div>
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Shipping:</p>
-                      <p>RM2</p>
+                      <p>RM25</p>
                     </div>
                     <div class="order-summary d-flex justify-content-between mb-2">
                       <p class="text-muted">Tax:</p>
@@ -454,8 +455,8 @@ const userId = user._id;
                         <div class="modal-body" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                           <ul class="voucher-list">
                             {vouchers.map((voucher) => (
-                              <li class="voucher-button" key={voucher.id} onClick={() => applyVoucher(voucher)} data-bs-dismiss="modal">
-                                {voucher.code} - RM{voucher.amount}
+                              <li class="voucher-button" key={voucher._id} onClick={() => applyVoucher(voucher)} data-bs-dismiss="modal">
+                                {voucher.voucherId.code} - RM{voucher.voucherId.discount}
                               </li>
                             ))}
                           </ul>

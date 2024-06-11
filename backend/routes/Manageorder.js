@@ -8,23 +8,20 @@ router.get('/:userId/orders', async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.userId)
       .populate({
-        path: 'orders.deliveryAddress',
-        select: 'address city country postcode',
-      })
-      // .populate({
-      //   path: 'orders.items.productID',
-      //   select: 'productName price',
-      // });
+        path: 'orders.items.productID',
+        model: 'products',
+        select: 'productTitle productLink productPrice'
+      });
 
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    res.json(user.orders); // Send orders --> delivery addresses/details
+    res.json(user.orders);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
-  }
+  }
 });
 
 router.post('/:userId/orders/checkout', async (req, res) => {

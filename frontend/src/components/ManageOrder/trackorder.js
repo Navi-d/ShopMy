@@ -1,48 +1,102 @@
 /*AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH */
 
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import '../Products/Home.css'
+import { useParams } from 'react-router-dom';
 
-function TrackOrderPage(props) {
-  const orderId = props.orderId; // Get order ID from URL params
-  const [orderData, setOrderData] = useState(null); // State to store order details
+function TrackOrderPage() {
+  const {orderId, productId} = useParams(); // Get order ID from URL params
+  const [product, setProduct] = useState({})
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const [order, setOrder] = useState('');
+  const fetchOrders = async () => {
+    try {
+      const userJSON = localStorage.getItem('loggedInUser');
+      const user = JSON.parse(userJSON);
+      const userId = user._id;
+
+      const orderData = await axios.get(`http://localhost:3001/api/orders/${userId}/orders`);
+      if (orderData) {
+        setOrder(orderData.data.find((o) => (o._id == orderId)));
+        fetchProduct(productId)
+        console.log(orderData.data.find(() => (orderData._id == orderId)))
+        setLoading(false)
+      } else {
+        // Redirect or handle not logged in case
+      }
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
+  
+  const fetchProduct = async (productId) => {
+    try {  
+      // alert('gotten products')
+      const response = await axios.get(`http://localhost:3001/getProduct/${productId}`);
+      if(response) {
+        setProduct(response.data);
+        // console.log(product)
+      }
     
-    const simulatedOrderData = {
-      orderId: orderId,
-      orderName: "Order Name",
-      status: "Shipped",
-      orderDate: "2024-01-01",
-      totalAmount: 100.00,
-      shippingInfo: {
-        address: "123 Main Street, Petaling Jaya, Malaysia 12345",
-        courier: "USPS",
-        trackingNumber: "1Z9876543210"
-      },
-      // ... other order details
-    };
-    setOrderData(simulatedOrderData);
-  }, [orderId]); // Fetch data only when orderId changes
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
+  useEffect(() => {
+    fetchOrders()
+  }, [])
+
+  let progress = 0
+
+  if(loading) {
+    return (
+        <div>Loading...</div>
+    );
+  } else
+
+  
 
   return (
     <div className="track-order-page home-wrapper-2">
       <h2 className='section-header ms-4 pt-4'>Track Order Details (Order ID: {orderId})</h2>
-      {orderData && ( //TBD Conditionally render content if orderData is available
+      {(order && product) && ( //TBD Conditionally render content if order is available
 
         <div className='track-order-card bg-white shadow rounded-2 m-4 p-4'>
           {/*TBD Order Details Section */}
           <div className="order-details">
-            <span className="order-name h5">{orderData.orderName}</span>
-            <br/>
-            <span className="order-status h5">Status: {orderData.status}</span>
+            <p className="h3">{product.productTitle}</p>
+            <div class='image-container'>
+              <img className='img-fluid main-image' src={product.productLink} />
+            </div>
+            
+            <br/><br/>
+            <div className="order-status-wrapper">
+              Status: 
+              {(order.status == 'Ordered') ? <span className={`order-status bg-warning`}>{order.status}</span> : null}
+              {(order.status == 'Processing') ? <span className={`order-status bg-warning`}>{order.status}</span> : null}
+              {(order.status == 'Shipped') ? <span className={`order-status bg-primary`}>{order.status}</span> : null}
+              {(order.status == 'Delivered') ? <span className={`order-status bg-success`}>{order.status}</span> : null}
+
+              {/* ... other order details (if needed) */}
+            </div>
             {/*TBD Other details like order date, total amount */}
+
+            <span className='hide'>
+                {(order.status == 'Ordered') ? progress = 0 : null}
+                {(order.status == 'Processing') ? progress = 25  : null}
+                {(order.status == 'Shipped') ? progress = 75 : null}
+                {(order.status == 'Delivered') ? progress = 10 : null}
+
+            </span>
+            
 
             <div class="progress my-2">
               <div className="progress-bar"
                 role="progressBar"
-                style={{"width": "75%"}}
-                aria-valuenow="25"
+                style={{"width": progress+"%"}}
+                aria-valuenow="0"
                 aria-valuemin='0'
                 aria-valuemax='100'
                 ></div>
@@ -65,9 +119,10 @@ function TrackOrderPage(props) {
           {/*TBD Additional Information Sections */}
           <div className="shipping-info">
             <h3>Shipping Information</h3>
-            <p>Address: {orderData.shippingInfo.address}</p>
-            <p>Courier: {orderData.shippingInfo.courier}</p>
-            <p>Tracking Number: {orderData.shippingInfo.trackingNumber}</p>
+            <p>Address: {order.deliveryAddress[0].address}</p>
+            <p>City: {order.deliveryAddress[0].city}</p>
+            <p>Country: {order.deliveryAddress[0].country}</p>
+            <p>Order Date: {order.date}</p>
           </div>
 
           <hr className='my-5'/>

@@ -54,6 +54,7 @@ h2 {
 .order-image {
   width: 100%;
   height: auto;
+  max-width: 250px;
   object-fit: cover;
   border-radius: 5px;
 }
@@ -127,4 +128,20 @@ h2 {
 
 .request-refund-btn:hover {
   background-color: #D73B57;
+}
+
+.image-container {
+  width: 100%;
+  /* Optionally, set display to flex or grid if needed */
+  display: flex;
+  justify-content: center;
+}
+.track-order-card .main-image {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hide {
+  display: none;
 }
