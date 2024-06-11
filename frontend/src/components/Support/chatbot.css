@@ -1,7 +1,15 @@
-body {
+/* body {
   background-color: #333;
   color: #fff;
   font-family: Arial, sans-serif;
+} */
+.chatbot-container {
+  height: 100vh;
+  background-color: #0d0947;
+}
+
+.chatbox-overflow {
+  overflow: scroll;
 }
 
 .contact-wrapper {
@@ -24,7 +32,7 @@ body {
   text-align: center;
 }
 
-.chatbot-container {
+.chatbot-container2 {
   background-color: #444;
   border-radius: 10px;
   padding: 20px;
@@ -51,6 +59,10 @@ body {
   cursor: pointer;
   display: block;
   margin: 0 auto;
+}
+
+.restartBtn {
+  right: 11%
 }
 
 .start-chat-btn:hover {

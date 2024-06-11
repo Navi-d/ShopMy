@@ -28,7 +28,7 @@ const Profile = () => {
       const loggedInUser = await axios.get(`http://localhost:3001/getUser/${userId}`);
       if (user) {
         setUserData(loggedInUser.data);
-         if(loggedInUser.data.birthdate == null) {
+         if(loggedInUser.data.birthdate == undefined) {
             loggedInUser.data.birthdate = '2000-00-00T00:00:00.000+00:00'
          }
       } else {
