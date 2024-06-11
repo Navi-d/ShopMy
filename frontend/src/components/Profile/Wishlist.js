@@ -230,26 +230,30 @@ const Profile = () => {
   }
   
   const renderWishlist = () => {
-    const wishlistProducts = products.filter(product =>
-      userData.wishlist.some(item => item.productId === product._id)
-    );
-  
-    return (
-      <>
-        <h4><i className="fa fa-heart" /> My Wishlist</h4>
-        {wishlistProducts.length > 0 ? (
-          <div className="row">
-            {wishlistProducts.map((item) => (
-                  <ProductCard {...item}/>
-                  ))
-              }
-          </div>
-        ) : (
-          <p>No products in the wishlist</p>
-        )}
-      </>
-    );
-  };
+  if (!userData.wishlist || !Array.isArray(userData.wishlist)) {
+    return <p>No wishlist data available</p>;
+  }
+
+  const wishlistProducts = products.filter(product =>
+    userData.wishlist.some(item => item.productId === product._id)
+  );
+
+  return (
+    <>
+      <h4><i className="fa fa-heart" /> My Wishlist</h4>
+      {wishlistProducts.length > 0 ? (
+        <div className="row">
+          {wishlistProducts.map((item) => (
+            <ProductCard key={item._id} {...item} />
+          ))}
+        </div>
+      ) : (
+        <p>No products in the wishlist</p>
+      )}
+    </>
+  );
+};
+
   
   
   
