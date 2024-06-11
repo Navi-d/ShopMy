@@ -143,7 +143,9 @@ const checkoutRoutes = require('./routes/checkout');
 const profile = require('./routes/profile');
 const ProdApi = require('./routes/ProdApi')
 const supportRoutes = require('./routes/support')
+const manageOrderRoutes = require('./routes/Manageorder')
 
+app.use('/api/orders', manageOrderRoutes);
 app.use('/api/checkout', checkoutRoutes)
 app.use('/api/vouchers', voucherRoutes);
 app.use('/api/cart', cartRoutes);

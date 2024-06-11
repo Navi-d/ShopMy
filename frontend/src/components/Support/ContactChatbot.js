@@ -58,7 +58,8 @@ const ChatBot = () => {
       } else if(["Technical Support", "Login Issues", "General Inquiry"].some((item) => (item == option))) {
         navigate('/support/ContactUs')
       } else if(["Data Access", "Data Deletion", "Data Sharing"].some(item => (item == option))) {
-        handleMessage("Sorry, " + option + " is currently under development process ")
+        // handleMessage("Sorry, " + option + " is currently under development process ")
+        handleMessage("Under our privacy policy, you have the right to access your personal data that we have collected. If you would like to request access to your data, please contact our support team with your request. We will verify your identity and provide the requested information within a reasonable timeframe, usually within 30 days.")
       } else
         handleMessage("Sorry, I didn't understand that. Please select an option.");
       // setOptions([]);
