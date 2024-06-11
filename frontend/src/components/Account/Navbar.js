@@ -128,12 +128,12 @@ function Navbar() {
                                     <>
                                         <li className="nav-item">
                                             <a className="nav-link" href="/cart">
-                                                <i className="fa fa-shopping-cart"></i> Cart ({0})
+                                                <i className="fa fa-shopping-cart"></i> Cart
                                             </a>
                                         </li>
                                         <li className="nav-item">
                                             <Link className="nav-link" to="/wishlist">
-                                                <i className="fa fa-heart"></i> Wishlist (0)
+                                                <i className="fa fa-heart"></i> Wishlist
                                             </Link>
                                         </li>
                                         <li className="nav-item dropdown">
