@@ -28,7 +28,7 @@ const Profile = () => {
       const loggedInUser = await axios.get(`http://localhost:3001/getUser/${userId}`);
       if (user) {
         setUserData(loggedInUser.data);
-         if(loggedInUser.data.birthdate == null) {
+         if(loggedInUser.data.birthdate == undefined) {
             loggedInUser.data.birthdate = '2000-00-00T00:00:00.000+00:00'
          }
       } else {
@@ -172,10 +172,13 @@ const Profile = () => {
           </div>
           <div className="col-6 mb-3">
           <div className={`profile-detail-bubble bg-light p-3 shadow rounded-2 ${editMode ? 'edit-mode' : ''}`}>
-            <p>Birthdate: {editMode ? 
-              <input type="date" name="birthdate" value={userData.birthdate.split('T')[0]} onChange={handleInputChange} /> : 
-              userData.birthdate.split('T')[0]}</p>
+            <p>
+              Birthdate: 
+              {(userData.birthdate) && (editMode ? 
+                <input type="date" name="birthdate" value={userData.birthdate.split('T')[0]} onChange={handleInputChange} /> 
+                : userData.birthdate.split('T')[0])}
             
+            </p>
           </div>
           </div>
           <div className="col-6 mb-3">
