@@ -10,25 +10,6 @@ const ContactUs = () => {
     const [email, setEmail] = useState('');
     const [description, setDescription] = useState('');
 
-    // function Contactus() {
-    //     async (e) => {
-    //             e.preventDefault(); //don't refresh page
-    //             try {
-    //                 const response = await axios.get('http://localhost:3001/getContactus');
-    //                 console.log('data is'+ response.data); // Assuming backend responds with user data
-
-    //                 setDescription(response.data.description);
-    //             } catch (error) {
-    //                 console.error(error);
-    //             }
-    //         };
-    // } 
-
-    // useEffect(() => {
-    //     Contactus();
-    //   }, []);
-
-
     //posting data
     const handleSubmit = async (e) => {
         e.preventDefault(); //don't refresh page

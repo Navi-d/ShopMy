@@ -1,25 +1,32 @@
 const mongoose = require('mongoose');
 
-const schemaDefinition = {
-  title: [{
-    type: String,
-    required: true
-  }],
-  options: [{
-    type: String,
-    required: true
-  }]
-};
-
-const chatSchema = new mongoose.Schema({
-  chatinit: schemaDefinition,
-  Profile: schemaDefinition,
-  Account: schemaDefinition,
-  Privacy: schemaDefinition,
-  Cart: schemaDefinition,
-  Support: schemaDefinition
+const chatbotSchema = new mongoose.Schema({
+  chatinit: {
+    title: [String],
+    options: [String]
+  },
+  Profile: {
+    title: [String],
+    options: [String]
+  },
+  Account: {
+    title: [String],
+    options: [String]
+  },
+  Privacy: {
+    title: [String],
+    options: [String]
+  },
+  Cart: {
+    title: [String],
+    options: [String]
+  },
+  Support: {
+    title: [String],
+    options: [String]
+  }
 });
 
-const ChatbotModel = mongoose.model('chatbot', chatSchema);
+const Chatbot = mongoose.model('Chatbot', chatbotSchema);
 
-module.exports = ChatbotModel;
+module.exports = Chatbot;

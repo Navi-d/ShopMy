@@ -1,6 +1,7 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
-const ChatbotModel = require('../models/chatbot')
+const Chatbot = require('../models/chatbot')
 const FaqModel = require('../models/Faqs');
 
 //Contactus
@@ -37,9 +38,10 @@ router.get('/getFaqs', async (req, res) => {
 
 router.get('/getChatbotData', async (req, res) => {
     try {
-        const result = await ChatbotModel.find();
+        const result = await Chatbot.find();
         
         console.log("ChatbotModel Data Sent")
+        // res.json(result)
         res.json({chatinit: {
             title: ["Hello I’m Mr. Chatbot, how can I help you?"],
             options: ["Profile", "Cart", "Support"]
@@ -71,6 +73,24 @@ router.get('/getChatbotData', async (req, res) => {
         res.json(error);
     }
 })
+
+const {ObjectId} = mongoose.Types
+/// Define a route to get the chatbot data
+router.get('/chatbot', async (req, res) => {
+  try {
+    const chatbotId = '666735a8b5acc878775859ec';
+    const chatbotData = await Chatbot.findOne({ '_id': new ObjectId(chatbotId) }).exec();
+
+    if (!chatbotData) {
+      return res.status(404).send({ error: 'Chatbot data not found' });
+    }
+
+    res.json(chatbotData);
+  } catch (err) {
+    console.error('Error fetching chatbot data:', err);
+    res.status(500).send({ error: 'Failed to fetch chatbot data' });
+  }
+});
 
 
 module.exports = router;
